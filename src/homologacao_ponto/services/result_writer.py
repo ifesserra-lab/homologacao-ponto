@@ -3,7 +3,13 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from homologacao_ponto.models import CrawlResult, EspelhoPontoExport, ExportacaoEspelhoResult, NavigationResult, SelecaoServidorResult
+from homologacao_ponto.models import (
+    CrawlResult,
+    EspelhoPontoExport,
+    ExportacaoEspelhoResult,
+    NavigationResult,
+    SelecaoServidorResult,
+)
 
 
 class ResultWriteError(RuntimeError):
@@ -15,8 +21,19 @@ class ResultWriter:
         self.output_dir = Path(output_dir)
 
     def write(
-        self, result: CrawlResult | NavigationResult | SelecaoServidorResult | EspelhoPontoExport | ExportacaoEspelhoResult
-    ) -> CrawlResult | NavigationResult | SelecaoServidorResult | EspelhoPontoExport | ExportacaoEspelhoResult:
+        self,
+        result: CrawlResult
+        | NavigationResult
+        | SelecaoServidorResult
+        | EspelhoPontoExport
+        | ExportacaoEspelhoResult,
+    ) -> (
+        CrawlResult
+        | NavigationResult
+        | SelecaoServidorResult
+        | EspelhoPontoExport
+        | ExportacaoEspelhoResult
+    ):
         subdir = getattr(result, "output_subdir", None)
         output_path = (
             self.output_dir / subdir / result.output_filename
@@ -32,4 +49,6 @@ class ResultWriter:
             )
             return persisted
         except OSError as exc:
-            raise ResultWriteError(f"arquivo JSON local não pôde ser escrito: {exc}") from exc
+            raise ResultWriteError(
+                f"arquivo JSON local não pôde ser escrito: {exc}"
+            ) from exc

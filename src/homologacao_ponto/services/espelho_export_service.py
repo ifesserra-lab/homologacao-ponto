@@ -5,8 +5,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
 
-from homologacao_ponto.infrastructure.espelho_ponto_parser import EspelhoPontoParseError, EspelhoPontoParser
-from homologacao_ponto.models import BrowserSession, ExportacaoEspelhoResult, ExportStatus
+from homologacao_ponto.infrastructure.espelho_ponto_parser import (
+    EspelhoPontoParseError,
+    EspelhoPontoParser,
+)
+from homologacao_ponto.models import (
+    BrowserSession,
+    ExportacaoEspelhoResult,
+    ExportStatus,
+)
 from homologacao_ponto.services.result_writer import ResultWriteError, ResultWriter
 
 
@@ -31,7 +38,9 @@ class EspelhoExportService:
         self.result_writer = result_writer
         self.parser = parser or EspelhoPontoParser()
 
-    def export(self, session: BrowserSession, request: EspelhoExportRequest) -> ExportacaoEspelhoResult:
+    def export(
+        self, session: BrowserSession, request: EspelhoExportRequest
+    ) -> ExportacaoEspelhoResult:
         session.require_authenticated()
         started_at = datetime.now(timezone.utc).isoformat()
         run_id = request.run_id or uuid4().hex
@@ -39,11 +48,27 @@ class EspelhoExportService:
             snapshot = self.browser.capture_espelho_snapshot()
             if self.browser.is_anti_automation(snapshot.html):
                 return self._persist_result(
-                    self._failure(request, run_id, started_at, ExportStatus.BLOCKED, "Validar Espelho", "anti_automation", "proteção anti-automação impede a automação")
+                    self._failure(
+                        request,
+                        run_id,
+                        started_at,
+                        ExportStatus.BLOCKED,
+                        "Validar Espelho",
+                        "anti_automation",
+                        "proteção anti-automação impede a automação",
+                    )
                 )
             if self.browser.is_session_expired(snapshot.html):
                 return self._persist_result(
-                    self._failure(request, run_id, started_at, ExportStatus.FAILED, "Validar Espelho", "session_expired", "BrowserSession expirada durante a exportação")
+                    self._failure(
+                        request,
+                        run_id,
+                        started_at,
+                        ExportStatus.FAILED,
+                        "Validar Espelho",
+                        "session_expired",
+                        "BrowserSession expirada durante a exportação",
+                    )
                 )
             export = self.parser.parse(
                 snapshot,
@@ -59,23 +84,45 @@ class EspelhoExportService:
                 requested_server=request.requested_server,
                 selected_server=export.servidor,
                 periodo_referencia=export.periodo_referencia,
-                status=ExportStatus.EMPTY if export.status == "empty" else ExportStatus.COMPLETED,
+                status=ExportStatus.EMPTY
+                if export.status == "empty"
+                else ExportStatus.COMPLETED,
                 success=True,
                 final_step="Espelho Exportado",
-                message="Espelho de Ponto sem registros" if export.status == "empty" else "Espelho de Ponto exportado com sucesso",
+                message="Espelho de Ponto sem registros"
+                if export.status == "empty"
+                else "Espelho de Ponto exportado com sucesso",
                 export_path=persisted_export.output_path,
             )
             return self._persist_result(result)
         except EspelhoPontoParseError as exc:
             return self._persist_result(
-                self._failure(request, run_id, started_at, ExportStatus.FAILED, "Validar Espelho", exc.code, exc.message)
+                self._failure(
+                    request,
+                    run_id,
+                    started_at,
+                    ExportStatus.FAILED,
+                    "Validar Espelho",
+                    exc.code,
+                    exc.message,
+                )
             )
         except ResultWriteError as exc:
             return self._persist_result(
-                self._failure(request, run_id, started_at, ExportStatus.FAILED, "Escrever JSON", "write_failed", str(exc))
+                self._failure(
+                    request,
+                    run_id,
+                    started_at,
+                    ExportStatus.FAILED,
+                    "Escrever JSON",
+                    "write_failed",
+                    str(exc),
+                )
             )
 
-    def _persist_result(self, result: ExportacaoEspelhoResult) -> ExportacaoEspelhoResult:
+    def _persist_result(
+        self, result: ExportacaoEspelhoResult
+    ) -> ExportacaoEspelhoResult:
         try:
             return self.result_writer.write(result)
         except ResultWriteError:

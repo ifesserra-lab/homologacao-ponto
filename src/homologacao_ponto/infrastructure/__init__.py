@@ -2,4 +2,3 @@ from homologacao_ponto.infrastructure.logging import configure_logging, redact_s
 from homologacao_ponto.infrastructure.rate_limiter import RateLimiter
 
 __all__ = ["RateLimiter", "configure_logging", "redact_sensitive"]
-

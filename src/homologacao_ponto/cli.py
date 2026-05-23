@@ -22,6 +22,16 @@ def build_parser() -> argparse.ArgumentParser:
     espelho.add_argument("--mes", type=int, choices=range(1, 13), metavar="{1..12}")
     espelho.add_argument("--ano", type=int)
     espelho.add_argument("--siape")
+    batch = subcommands.add_parser("batch")
+    batch.add_argument(
+        "--file",
+        required=True,
+        help="Caminho para arquivo YAML com lista de servidores",
+    )
+    batch.add_argument("--output-dir", default="./data/runs")
+    batch.add_argument("--env-file", default=".env")
+    batch.add_argument("--mes", type=int, choices=range(1, 13), metavar="{1..12}")
+    batch.add_argument("--ano", type=int)
     return parser
 
 
@@ -45,13 +55,40 @@ def main(argv: list[str] | None = None) -> int:
         )
         siape = getattr(args, "siape", None)
         if args.servidor and (args.mes is not None or args.ano is not None):
-            result = app.run_espelho_ponto(servidor=args.servidor, mes=args.mes, ano=args.ano, siape=siape)
+            result = app.run_espelho_ponto(
+                servidor=args.servidor, mes=args.mes, ano=args.ano, siape=siape
+            )
         elif args.servidor:
             result = app.run_espelho_ponto(servidor=args.servidor, siape=siape)
         else:
             result = app.run_espelho_ponto()
         stream = sys.stderr if result.exit_code else sys.stdout
         print(result.message, file=stream)
+        return result.exit_code
+    if args.command == "batch":
+        from pathlib import Path as _Path
+        from homologacao_ponto.models.batch_config import (
+            BatchConfig,
+            BatchConfigLoader,
+            BatchConfigError,
+        )
+
+        try:
+            config = BatchConfigLoader.load(_Path(args.file))
+            if args.mes:
+                config = BatchConfig(
+                    servidores=config.servidores, mes=args.mes, ano=config.ano
+                )
+            if args.ano:
+                config = BatchConfig(
+                    servidores=config.servidores, mes=config.mes, ano=args.ano
+                )
+        except BatchConfigError as exc:
+            print(f"Erro no arquivo YAML: {exc}", file=__import__("sys").stderr)
+            return 1
+        app = create_app(output_dir=args.output_dir, env_file=args.env_file)
+        result = app.run_batch(config)
+        print(result.message)
         return result.exit_code
     return 1
 

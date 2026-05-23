@@ -75,9 +75,24 @@ class SigrhBrowser:
             self.start()
         page = self._page
         page.goto(LOGIN_URL)
-        self._fill_first_available(page, ["input[name='username']", "input[name='login']", "#username"], credential.username)
-        self._fill_first_available(page, ["input[type='password']", "input[name='password']", "#password"], credential.password)
-        self._click_first_available(page, ["input[type='submit']", "button[type='submit']", "button:has-text('Entrar')"])
+        self._fill_first_available(
+            page,
+            ["input[name='username']", "input[name='login']", "#username"],
+            credential.username,
+        )
+        self._fill_first_available(
+            page,
+            ["input[type='password']", "input[name='password']", "#password"],
+            credential.password,
+        )
+        self._click_first_available(
+            page,
+            [
+                "input[type='submit']",
+                "button[type='submit']",
+                "button:has-text('Entrar')",
+            ],
+        )
         html = page.content()
         current_url = getattr(page, "url", LOGIN_URL)
         return self.detect_login_result(html, current_url, session)
@@ -100,7 +115,9 @@ class SigrhBrowser:
                 state=BrowserSessionState.EXPIRED,
                 message="BrowserSession expirada.",
                 landing_url=current_url,
-                browser_session=base_session.failed("session expired before authentication"),
+                browser_session=base_session.failed(
+                    "session expired before authentication"
+                ),
             )
         if self.is_invalid_login(html):
             return SigrhLoginResult(
@@ -115,7 +132,9 @@ class SigrhBrowser:
             state=BrowserSessionState.AUTHENTICATED,
             message="Login realizado com sucesso.",
             landing_url=current_url,
-            browser_session=base_session.authenticated(base_session.context_id or uuid4().hex, current_url),
+            browser_session=base_session.authenticated(
+                base_session.context_id or uuid4().hex, current_url
+            ),
         )
 
     def capture_snapshot(self) -> SigrhPageSnapshot:
@@ -143,12 +162,16 @@ class SigrhBrowser:
         self._page.goto(url)
         return self.capture_snapshot()
 
-    def click_menu_path(self, labels: list[str], timeout_seconds: int = 15) -> SigrhPageSnapshot:
+    def click_menu_path(
+        self, labels: list[str], timeout_seconds: int = 15
+    ) -> SigrhPageSnapshot:
         snapshot: SigrhPageSnapshot | None = None
         for label in labels:
             snapshot = self.click_menu_label(label, timeout_seconds)
         if snapshot is None:
-            raise MenuNavigationError("", NavigationStepStatus.MISSING, "caminho de menu vazio")
+            raise MenuNavigationError(
+                "", NavigationStepStatus.MISSING, "caminho de menu vazio"
+            )
         return snapshot
 
     def wait_for_menu_label(self, label: str, timeout_seconds: int = 15):
@@ -172,13 +195,17 @@ class SigrhBrowser:
             f"menu não encontrado em até {timeout_seconds} segundos: {label}",
         )
 
-    def click_menu_label(self, label: str, timeout_seconds: int = 15) -> SigrhPageSnapshot:
+    def click_menu_label(
+        self, label: str, timeout_seconds: int = 15
+    ) -> SigrhPageSnapshot:
         locator = self.wait_for_menu_label(label, timeout_seconds)
         locator.click()
         self._wait_after_menu_click(timeout_seconds)
         return self.capture_snapshot()
 
-    def hover_menu_label(self, label: str, timeout_seconds: int = 15) -> SigrhPageSnapshot:
+    def hover_menu_label(
+        self, label: str, timeout_seconds: int = 15
+    ) -> SigrhPageSnapshot:
         locator = self.wait_for_menu_label(label, timeout_seconds)
         locator.hover()
         return self.capture_snapshot()
@@ -205,8 +232,17 @@ class SigrhBrowser:
             self.start()
         page = self._page
         self._select_reference_period(page, reference_month, reference_year)
-        self._check_first_available(page, ["#form\\:checkServidor", "input[name='form:checkServidor']"])
-        field = self._first_available(page, ["#form\\:nomeServidor", "input[name='form:nomeServidor']", "input[title='Servidor']"])
+        self._check_first_available(
+            page, ["#form\\:checkServidor", "input[name='form:checkServidor']"]
+        )
+        field = self._first_available(
+            page,
+            [
+                "#form\\:nomeServidor",
+                "input[name='form:nomeServidor']",
+                "input[title='Servidor']",
+            ],
+        )
         if field is not None:
             field.click()
             field.fill("")
@@ -224,11 +260,15 @@ class SigrhBrowser:
         self, page: Any, reference_month: int | None, reference_year: int | None
     ) -> None:
         if reference_month is not None:
-            month = self._first_available(page, ["#form\\:mes", "select[name='form:mes']"])
+            month = self._first_available(
+                page, ["#form\\:mes", "select[name='form:mes']"]
+            )
             if month is not None:
                 month.select_option(str(reference_month))
         if reference_year is not None:
-            year = self._first_available(page, ["#form\\:ano", "input[name='form:ano']"])
+            year = self._first_available(
+                page, ["#form\\:ano", "input[name='form:ano']"]
+            )
             if year is not None:
                 year.fill(str(reference_year))
 
@@ -250,27 +290,42 @@ class SigrhBrowser:
             identifier = identifier_match.group(0) if identifier_match else None
             display_name = self._display_name_from_row(row_text, identifier)
             if display_name:
-                results.append(ServidorResultado(display_name, identifier, row_text, selection_available))
+                results.append(
+                    ServidorResultado(
+                        display_name, identifier, row_text, selection_available
+                    )
+                )
         return results
 
     def empty_query_matches_server(self, server_name: str) -> bool:
         if self._page is None:
             return False
-        server_value = self._input_value(["#form\\:nomeServidor", "input[name='form:nomeServidor']"])
-        if normalize_server_name(server_name) not in normalize_server_name(server_value):
+        server_value = self._input_value(
+            ["#form\\:nomeServidor", "input[name='form:nomeServidor']"]
+        )
+        if normalize_server_name(server_name) not in normalize_server_name(
+            server_value
+        ):
             return False
         try:
             body_text = self._page.locator("body").inner_text()
         except Exception:
             body_text = self._page.content()
         normalized_text = normalize_server_name(body_text)
-        return "nenhum registro de ponto" in normalized_text or "nenhum registro" in normalized_text
+        return (
+            "nenhum registro de ponto" in normalized_text
+            or "nenhum registro" in normalized_text
+        )
 
     def queried_server_name(self) -> str | None:
-        value = self._input_value(["#form\\:nomeServidor", "input[name='form:nomeServidor']"])
+        value = self._input_value(
+            ["#form\\:nomeServidor", "input[name='form:nomeServidor']"]
+        )
         return value or None
 
-    def select_server_result(self, result: ServidorResultado, timeout_seconds: int = 15) -> SigrhPageSnapshot:
+    def select_server_result(
+        self, result: ServidorResultado, timeout_seconds: int = 15
+    ) -> SigrhPageSnapshot:
         if self._page is None:
             self.start()
         rows = self._page.locator("table.listagem tr")
@@ -293,7 +348,9 @@ class SigrhBrowser:
             f"seleção não disponível para servidor: {result.display_name}",
         )
 
-    def selected_server_visible(self, server_name: str, identifier: str | None = None) -> bool:
+    def selected_server_visible(
+        self, server_name: str, identifier: str | None = None
+    ) -> bool:
         if self._page is None:
             return False
         visible_text = f"{self._page.title()} {self._page.content()}"
@@ -316,12 +373,23 @@ class SigrhBrowser:
     @staticmethod
     def is_invalid_login(html: str) -> bool:
         lowered = html.lower()
-        return any(token in lowered for token in ("senha inval", "senha invál", "usuario ou senha", "usuário ou senha"))
+        return any(
+            token in lowered
+            for token in (
+                "senha inval",
+                "senha invál",
+                "usuario ou senha",
+                "usuário ou senha",
+            )
+        )
 
     @staticmethod
     def is_anti_automation(html: str) -> bool:
         lowered = html.lower()
-        return any(token in lowered for token in ("captcha", "mfa", "anti-autom", "bloqueio de autom"))
+        return any(
+            token in lowered
+            for token in ("captcha", "mfa", "anti-autom", "bloqueio de autom")
+        )
 
     @staticmethod
     def is_session_expired(html: str) -> bool:
@@ -364,14 +432,18 @@ class SigrhBrowser:
                 return
 
     def _espelho_form_context_html(self) -> str:
-        server = self._input_value(["#form\\:nomeServidor", "input[name='form:nomeServidor']"])
+        server = self._input_value(
+            ["#form\\:nomeServidor", "input[name='form:nomeServidor']"]
+        )
         year = self._input_value(["#form\\:ano", "input[name='form:ano']"])
         month = self._input_value(["#form\\:mes", "select[name='form:mes']"])
         pieces: list[str] = []
         if server:
             pieces.append(f'<div class="servidor">Servidor: {server}</div>')
         if month and year:
-            pieces.append(f'<div class="periodo">Periodo: {self._month_name(month)}/{year}</div>')
+            pieces.append(
+                f'<div class="periodo">Periodo: {self._month_name(month)}/{year}</div>'
+            )
         return "".join(pieces)
 
     def _input_value(self, selectors: list[str]) -> str:
@@ -425,12 +497,16 @@ class SigrhBrowser:
         if self._page is None:
             return
         try:
-            self._page.wait_for_load_state("domcontentloaded", timeout=timeout_seconds * 1000)
+            self._page.wait_for_load_state(
+                "domcontentloaded", timeout=timeout_seconds * 1000
+            )
         except Exception:
             pass
         self._page.wait_for_timeout(500)
 
-    def _menu_label_locators(self, exact_text: re.Pattern[str], loose_text: re.Pattern[str]) -> list[Any]:
+    def _menu_label_locators(
+        self, exact_text: re.Pattern[str], loose_text: re.Pattern[str]
+    ) -> list[Any]:
         if self._page is None:
             return []
         return [
@@ -445,7 +521,9 @@ class SigrhBrowser:
             self._page.locator("li:visible").filter(has_text=loose_text),
         ]
 
-    def _click_server_suggestion(self, server_name: str, identifier_hint: str | None = None) -> None:
+    def _click_server_suggestion(
+        self, server_name: str, identifier_hint: str | None = None
+    ) -> None:
         if self._page is None:
             return
         deadline = time.monotonic() + 8
@@ -476,7 +554,9 @@ class SigrhBrowser:
                     continue
             self._page.wait_for_timeout(300)
         try:
-            field = self._first_available(self._page, ["#form\\:nomeServidor", "input[name='form:nomeServidor']"])
+            field = self._first_available(
+                self._page, ["#form\\:nomeServidor", "input[name='form:nomeServidor']"]
+            )
             if field is not None:
                 field.press("ArrowDown")
                 self._page.wait_for_timeout(800)
@@ -486,7 +566,11 @@ class SigrhBrowser:
             return
 
     def _click_buscar(self, page: Any) -> None:
-        buscar_selectors = ["#form\\:buscarServidores", "input[name='form:buscarServidores']", "input[value='Buscar']"]
+        buscar_selectors = [
+            "#form\\:buscarServidores",
+            "input[name='form:buscarServidores']",
+            "input[value='Buscar']",
+        ]
         buscar = self._first_available(page, buscar_selectors)
         if buscar is None:
             return
@@ -504,7 +588,12 @@ class SigrhBrowser:
 
     @staticmethod
     def _display_name_from_row(row_text: str, identifier: str | None) -> str:
-        text = re.sub(r"\bSIAPE\b|\bNome\b|\bCargo\b|Selecionar( Servidor)?", " ", row_text, flags=re.IGNORECASE)
+        text = re.sub(
+            r"\bSIAPE\b|\bNome\b|\bCargo\b|Selecionar( Servidor)?",
+            " ",
+            row_text,
+            flags=re.IGNORECASE,
+        )
         if identifier:
             text = text.replace(identifier, " ")
         text = re.sub(r"\s+", " ", text).strip()

@@ -35,7 +35,9 @@ class BrowserSession:
             BrowserSessionState.EXPIRED,
         }
 
-    def authenticated(self, context_id: str, current_url: str | None = None) -> BrowserSession:
+    def authenticated(
+        self, context_id: str, current_url: str | None = None
+    ) -> BrowserSession:
         if self.state != BrowserSessionState.ANONYMOUS:
             raise ValueError("only an anonymous session can authenticate")
         return replace(

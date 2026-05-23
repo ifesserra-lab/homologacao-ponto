@@ -35,4 +35,3 @@ class CrawlScope:
     def assert_allows(self, url: str) -> None:
         if not self.allows(url):
             raise ValueError(f"out-of-scope SIGRH URL rejected: {url}")
-

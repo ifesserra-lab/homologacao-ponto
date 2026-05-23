@@ -28,4 +28,3 @@ class RateLimiter:
             now = self.clock()
         self._last_action_at = now
         return wait_for
-

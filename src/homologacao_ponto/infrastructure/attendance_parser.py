@@ -79,7 +79,9 @@ class AttendanceParser:
             point_date = str(row.get("point_date") or "").strip()
             if not point_date:
                 continue
-            entry_times = [t for t in row.get("entry_times", []) if self.TIME_RE.match(t)]  # type: ignore[arg-type]
+            entry_times = [
+                t for t in row.get("entry_times", []) if self.TIME_RE.match(t)
+            ]  # type: ignore[arg-type]
             exit_times = [t for t in row.get("exit_times", []) if self.TIME_RE.match(t)]  # type: ignore[arg-type]
             try:
                 records.append(
@@ -94,4 +96,3 @@ class AttendanceParser:
             except ValueError:
                 continue
         return records
-

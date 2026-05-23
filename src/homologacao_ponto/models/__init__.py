@@ -3,16 +3,52 @@ from homologacao_ponto.models.browser_session import BrowserSession, BrowserSess
 from homologacao_ponto.models.credential import Credential, CredentialSource
 from homologacao_ponto.models.crawl_result import CrawlResult, CrawlStatus
 from homologacao_ponto.models.crawl_scope import CrawlScope
-from homologacao_ponto.models.espelho_export_result import ExportacaoEspelhoResult, ExportStatus
-from homologacao_ponto.models.espelho_ponto_export import EspelhoPontoExport, RegistroDiaPonto, ServidorSelecionado
-from homologacao_ponto.models.navigation_path import NavigationPath, normalize_navigation_label
-from homologacao_ponto.models.navigation_result import NavigationResult, NavigationStatus
-from homologacao_ponto.models.navigation_step import NavigationStep, NavigationStepStatus
-from homologacao_ponto.models.server_selection import ServidorConsulta, ServidorResultado, normalize_server_name
-from homologacao_ponto.models.server_selection_result import SelecaoServidorResult, SelectionStatus
+from homologacao_ponto.models.espelho_export_result import (
+    ExportacaoEspelhoResult,
+    ExportStatus,
+)
+from homologacao_ponto.models.espelho_ponto_export import (
+    EspelhoPontoExport,
+    RegistroDiaPonto,
+    ServidorSelecionado,
+)
+from homologacao_ponto.models.navigation_path import (
+    NavigationPath,
+    normalize_navigation_label,
+)
+from homologacao_ponto.models.navigation_result import (
+    NavigationResult,
+    NavigationStatus,
+)
+from homologacao_ponto.models.navigation_step import (
+    NavigationStep,
+    NavigationStepStatus,
+)
+from homologacao_ponto.models.server_selection import (
+    ServidorConsulta,
+    ServidorResultado,
+    normalize_server_name,
+)
+from homologacao_ponto.models.server_selection_result import (
+    SelecaoServidorResult,
+    SelectionStatus,
+)
+from homologacao_ponto.models.batch_config import (
+    BatchConfig,
+    BatchConfigError,
+    BatchConfigLoader,
+    BatchEntry,
+)
+from homologacao_ponto.models.batch_result import BatchEntryResult, BatchResult
 
 __all__ = [
     "AttendanceRecord",
+    "BatchConfig",
+    "BatchConfigError",
+    "BatchConfigLoader",
+    "BatchEntry",
+    "BatchEntryResult",
+    "BatchResult",
     "BrowserSession",
     "BrowserSessionState",
     "Credential",

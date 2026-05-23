@@ -24,7 +24,9 @@ class SelecaoServidorResult:
     selected_identifier: str | None = None
     message: str | None = None
     run_id: str = field(default_factory=lambda: uuid4().hex)
-    completed_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    completed_at: str = field(
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+    )
     output_path: str | None = None
 
     def __post_init__(self) -> None:
@@ -36,8 +38,13 @@ class SelecaoServidorResult:
             raise ValueError("final_step is required")
         if self.status == SelectionStatus.COMPLETED and not self.selected_server:
             raise ValueError("completed selection requires selected_server")
-        if self.status == SelectionStatus.COMPLETED and self.final_step != "Servidor Selecionado":
-            raise ValueError("completed selection requires final_step Servidor Selecionado")
+        if (
+            self.status == SelectionStatus.COMPLETED
+            and self.final_step != "Servidor Selecionado"
+        ):
+            raise ValueError(
+                "completed selection requires final_step Servidor Selecionado"
+            )
         if self.status != SelectionStatus.COMPLETED and not self.message:
             raise ValueError("unsuccessful selection results require a message")
 
