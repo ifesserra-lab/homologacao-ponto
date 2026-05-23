@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homologacao-ponto.local/contracts/crawl-result.schema.json",
+  "title": "CrawlResult",
+  "type": "object",
+  "required": [
+    "run_id",
+    "collected_at",
+    "username_ref",
+    "record_count",
+    "visited_page_count",
+    "records",
+    "status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "collected_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "username_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "visited_page_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 20
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/AttendanceRecord"
+      }
+    },
+    "output_path": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["completed", "partial", "failed", "blocked"]
+    },
+    "message": {
+      "type": ["string", "null"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": { "const": "partial" }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "record_count": { "const": 0 },
+          "status": { "const": "completed" }
+        },
+        "required": ["record_count", "status"]
+      },
+      "then": {
+        "properties": {
+          "records": {
+            "type": "array",
+            "maxItems": 0
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "AttendanceRecord": {
+      "type": "object",
+      "required": [
+        "point_date",
+        "entry_times",
+        "exit_times",
+        "source_url",
+        "collected_at"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "point_date": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entry_times": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "exit_times": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "source_url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "collected_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

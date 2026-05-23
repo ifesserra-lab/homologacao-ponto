@@ -17,10 +17,10 @@
   the iteration process.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
+**Language/Version**: Python 3.12+  
+**Primary Dependencies**: [Python packages/frameworks required by this feature or NEEDS CLARIFICATION]  
 **Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+**Testing**: pytest with TDD red/green/refactor evidence  
 **Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
 **Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]  
 **Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
@@ -31,7 +31,16 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Test-first delivery: identify the first failing tests for each user story and
+  confirm tests precede implementation tasks.
+- Python runtime: confirm Python 3.12+ and Python-based tooling unless an
+  exception is recorded in Complexity Tracking.
+- Object-oriented design: identify domain classes, services, clients, policies,
+  repositories, or factories and their responsibilities.
+- Design patterns: name each pattern used and justify the concrete complexity
+  it reduces; omit patterns that do not reduce current complexity.
+- Quality gates: define commands for tests, linting/formatting, and independent
+  story validation.
 
 ## Project Structure
 
@@ -101,4 +110,5 @@ directories captured above]
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
 | [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+| [e.g., Non-Python component] | [specific problem] | [why Python 3.12+ is insufficient] |
+| [e.g., Repository pattern] | [specific problem] | [why direct persistence access insufficient] |

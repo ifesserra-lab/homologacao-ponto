@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.homologacao-ponto/schemas/export-result.schema.json",
+  "title": "ExportacaoEspelhoResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "started_at",
+    "completed_at",
+    "success",
+    "status",
+    "final_step",
+    "message"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["completed", "empty", "failed", "blocked"]
+    },
+    "final_step": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requested_server": {
+      "type": ["string", "null"]
+    },
+    "selected_server": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/servidor"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "periodo_referencia": {
+      "type": ["string", "null"]
+    },
+    "export_path": {
+      "type": ["string", "null"]
+    },
+    "message": {
+      "type": "string",
+      "minLength": 1
+    },
+    "error_code": {
+      "type": ["string", "null"]
+    }
+  },
+  "$defs": {
+    "servidor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nome"],
+      "properties": {
+        "nome": {
+          "type": "string",
+          "minLength": 1
+        },
+        "identificador": {
+          "type": ["string", "null"]
+        },
+        "texto_visivel": {
+          "type": ["string", "null"]
+        }
+      }
+    }
+  }
+}

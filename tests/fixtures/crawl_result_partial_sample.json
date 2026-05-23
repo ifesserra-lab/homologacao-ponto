@@ -1,0 +1,12 @@
+{
+  "run_id": "sample-partial",
+  "collected_at": "2026-05-20T12:00:00+00:00",
+  "username_ref": "usuario",
+  "record_count": 0,
+  "visited_page_count": 1,
+  "records": [],
+  "output_path": "data/runs/crawl-result-sample-partial.json",
+  "status": "partial",
+  "message": "BrowserSession expirada durante o crawl"
+}
+
