@@ -226,10 +226,21 @@ Given that feature description, do this:
 
    d. **Update Checklist**: After each validation iteration, update the checklist file with current pass/fail status
 
-8. **Report completion** to the user with:
+8. **Update backlog** — MANDATORY before reporting completion:
+
+   Update `docs/architecture/backlog.md` by adding or updating the row for this feature:
+
+   - Locate the correct EPIC table (or add a new row at the bottom of the last EPIC)
+   - Add/update: `| NNN | [NNN-branch](../../specs/NNN-branch/) | Título da feature | US resumo | Status |`
+   - Update the **Resumo** table at the top: increment feature count, US count, and Draft counter
+   - **Status** comes from `**Status**:` field in spec.md (default: `Draft`)
+   - If `docs/architecture/backlog.md` does not exist, create it with EPIC-based structure
+
+9. **Report completion** to the user with:
    - `SPECIFY_FEATURE_DIRECTORY` — the feature directory path
    - `SPEC_FILE` — the spec file path
    - Checklist results summary
+   - Backlog updated: `docs/architecture/backlog.md`
    - Readiness for the next phase (`/speckit-clarify` or `/speckit-plan`)
 
 9. **Check for extension hooks**: After reporting completion, check if `.specify/extensions.yml` exists in the project root.

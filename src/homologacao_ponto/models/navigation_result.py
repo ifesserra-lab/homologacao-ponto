@@ -24,7 +24,9 @@ class NavigationResult:
     steps: list[NavigationStep]
     message: str | None = None
     run_id: str = field(default_factory=lambda: uuid4().hex)
-    completed_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    completed_at: str = field(
+        default_factory=lambda: datetime.now(timezone.utc).isoformat()
+    )
     output_path: str | None = None
 
     def __post_init__(self) -> None:
@@ -34,8 +36,13 @@ class NavigationResult:
             raise ValueError("final_step is required")
         if not self.steps:
             raise ValueError("steps are required")
-        if self.status == NavigationStatus.COMPLETED and self.final_step != "Espelho do Ponto":
-            raise ValueError("completed navigation requires final_step Espelho do Ponto")
+        if (
+            self.status == NavigationStatus.COMPLETED
+            and self.final_step != "Espelho do Ponto"
+        ):
+            raise ValueError(
+                "completed navigation requires final_step Espelho do Ponto"
+            )
         if self.status != NavigationStatus.COMPLETED and not self.message:
             raise ValueError("unsuccessful navigation results require a message")
 

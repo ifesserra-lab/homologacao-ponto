@@ -39,11 +39,17 @@ class ExportacaoEspelhoResult:
             raise ValueError("final_step is required")
         if not self.message:
             raise ValueError("message is required")
-        if self.success and self.status not in {ExportStatus.COMPLETED, ExportStatus.EMPTY}:
+        if self.success and self.status not in {
+            ExportStatus.COMPLETED,
+            ExportStatus.EMPTY,
+        }:
             raise ValueError("successful export requires completed or empty status")
         if self.success and not self.export_path:
             raise ValueError("successful export requires export_path")
-        if not self.success and self.status in {ExportStatus.COMPLETED, ExportStatus.EMPTY}:
+        if not self.success and self.status in {
+            ExportStatus.COMPLETED,
+            ExportStatus.EMPTY,
+        }:
             raise ValueError("unsuccessful export cannot use successful status")
         if not self.run_id:
             object.__setattr__(self, "run_id", uuid4().hex)
@@ -101,7 +107,9 @@ class ExportacaoEspelhoResult:
             "status": self.status.value,
             "final_step": self.final_step,
             "requested_server": self.requested_server,
-            "selected_server": self.selected_server.to_dict() if self.selected_server else None,
+            "selected_server": self.selected_server.to_dict()
+            if self.selected_server
+            else None,
             "periodo_referencia": self.periodo_referencia,
             "export_path": self.export_path,
             "message": self.message,

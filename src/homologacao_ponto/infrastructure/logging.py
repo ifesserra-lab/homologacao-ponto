@@ -34,7 +34,9 @@ def configure_logging(level: int = logging.INFO) -> logging.Logger:
     return logger
 
 
-def log_navigation_event(logger: logging.Logger, message: str, **fields: object) -> None:
+def log_navigation_event(
+    logger: logging.Logger, message: str, **fields: object
+) -> None:
     safe_fields = {key: redact_sensitive(value) for key, value in fields.items()}
     if safe_fields:
         logger.info("%s %s", redact_sensitive(message), safe_fields)

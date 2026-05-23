@@ -32,4 +32,3 @@ class Credential:
 
     def username_ref(self) -> str:
         return self.username
-

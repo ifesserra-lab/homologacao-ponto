@@ -228,40 +228,13 @@ Given that feature description, do this:
 
 8. **Update backlog** — MANDATORY before reporting completion:
 
-   Update `docs/architecture/backlog.md` by adding or updating the row for this feature in the Features table:
+   Update `docs/architecture/backlog.md` by adding or updating the row for this feature:
 
-   ```markdown
-   | NNN | `NNN-branch-name` | Feature title (from spec.md `# ` heading) | Draft | ✓/— | ✓/— |
-   ```
-
-   - **#**: 3-digit number from the spec directory name
-   - **Branch**: spec directory name (e.g. `005-exportar-espelho-json`)
-   - **Título**: text after `# Feature Specification:` in spec.md
-   - **Status**: value of `**Status**:` field in spec.md (default: `Draft`)
-   - **Plano**: ✓ if `plan.md` exists in the spec dir, — otherwise
-   - **Tasks**: ✓ if `tasks.md` exists in the spec dir, — otherwise
-
-   If `docs/architecture/backlog.md` does not exist, create it using this structure:
-
-   ```markdown
-   # Backlog de Features — homologacao-ponto
-
-   > Atualizado automaticamente pelo skill `speckit-specify` a cada nova feature.
-
-   ## Features
-
-   | # | Branch | Título | Status | Plano | Tasks |
-   |---|--------|--------|--------|-------|-------|
-   | NNN | `branch` | Título | Draft | — | — |
-
-   ## Legenda de Colunas
-
-   | Coluna | Significado |
-   |--------|------------|
-   | Status | Draft / In Progress / Implemented / Cancelled |
-   | Plano | ✓ = `plan.md` existe · — = ausente |
-   | Tasks | ✓ = `tasks.md` existe · — = ausente |
-   ```
+   - Locate the correct EPIC table (or add a new row at the bottom of the last EPIC)
+   - Add/update: `| NNN | [NNN-branch](../../specs/NNN-branch/) | Título da feature | US resumo | Status |`
+   - Update the **Resumo** table at the top: increment feature count, US count, and Draft counter
+   - **Status** comes from `**Status**:` field in spec.md (default: `Draft`)
+   - If `docs/architecture/backlog.md` does not exist, create it with EPIC-based structure
 
 9. **Report completion** to the user with:
    - `SPECIFY_FEATURE_DIRECTORY` — the feature directory path

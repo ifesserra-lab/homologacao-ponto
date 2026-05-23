@@ -3,10 +3,18 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 
-from homologacao_ponto.infrastructure.attendance_parser import AttendanceParser, SigrhPageSnapshot
+from homologacao_ponto.infrastructure.attendance_parser import (
+    AttendanceParser,
+    SigrhPageSnapshot,
+)
 from homologacao_ponto.infrastructure.rate_limiter import RateLimiter
 from homologacao_ponto.infrastructure.sigrh_browser import SigrhBrowser
-from homologacao_ponto.models import BrowserSession, CrawlResult, CrawlScope, CrawlStatus
+from homologacao_ponto.models import (
+    BrowserSession,
+    CrawlResult,
+    CrawlScope,
+    CrawlStatus,
+)
 
 
 class ScopePolicyError(RuntimeError):
@@ -31,7 +39,9 @@ class CrawlerService:
         self.browser = browser
         self.scope = scope or CrawlScope()
         self.parser = parser or AttendanceParser(self.scope)
-        self.rate_limiter = rate_limiter or RateLimiter(self.scope.min_navigation_interval_seconds)
+        self.rate_limiter = rate_limiter or RateLimiter(
+            self.scope.min_navigation_interval_seconds
+        )
         self.logger = logger or logging.getLogger("homologacao_ponto")
 
     def crawl(self, session: BrowserSession, request: CrawlRequest) -> CrawlResult:
@@ -85,20 +95,48 @@ class CrawlerService:
             status=CrawlStatus.COMPLETED,
         )
 
-    def crawl_snapshots(self, session: BrowserSession, username_ref: str, snapshots: list[SigrhPageSnapshot]) -> CrawlResult:
+    def crawl_snapshots(
+        self,
+        session: BrowserSession,
+        username_ref: str,
+        snapshots: list[SigrhPageSnapshot],
+    ) -> CrawlResult:
         session.require_authenticated()
         records = []
         for index, snapshot in enumerate(snapshots[: self.scope.max_pages], start=1):
             if not self.scope.allows(snapshot.url):
                 raise ScopePolicyError(f"out-of-scope URL: {snapshot.url}")
             if self.browser.is_session_expired(snapshot.html):
-                return CrawlResult(username_ref, index, records, CrawlStatus.PARTIAL, "BrowserSession expirada durante o crawl")
+                return CrawlResult(
+                    username_ref,
+                    index,
+                    records,
+                    CrawlStatus.PARTIAL,
+                    "BrowserSession expirada durante o crawl",
+                )
             if self.browser.is_anti_automation(snapshot.html):
-                return CrawlResult(username_ref, index, records, CrawlStatus.BLOCKED, "proteção anti-automação impede a automação")
+                return CrawlResult(
+                    username_ref,
+                    index,
+                    records,
+                    CrawlStatus.BLOCKED,
+                    "proteção anti-automação impede a automação",
+                )
             records.extend(self.parser.parse(snapshot))
         if len(snapshots) > self.scope.max_pages:
-            return CrawlResult(username_ref, self.scope.max_pages, records, CrawlStatus.PARTIAL, "limite de páginas atingido")
+            return CrawlResult(
+                username_ref,
+                self.scope.max_pages,
+                records,
+                CrawlStatus.PARTIAL,
+                "limite de páginas atingido",
+            )
         if not records:
-            return CrawlResult(username_ref, len(snapshots), [], CrawlStatus.COMPLETED, "nenhum registro encontrado")
+            return CrawlResult(
+                username_ref,
+                len(snapshots),
+                [],
+                CrawlStatus.COMPLETED,
+                "nenhum registro encontrado",
+            )
         return CrawlResult(username_ref, len(snapshots), records)
-

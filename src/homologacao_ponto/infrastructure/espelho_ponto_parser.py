@@ -5,7 +5,12 @@ from html.parser import HTMLParser
 from urllib.parse import urlparse
 
 from homologacao_ponto.infrastructure.attendance_parser import SigrhPageSnapshot
-from homologacao_ponto.models import EspelhoPontoExport, RegistroDiaPonto, ServidorSelecionado, normalize_server_name
+from homologacao_ponto.models import (
+    EspelhoPontoExport,
+    RegistroDiaPonto,
+    ServidorSelecionado,
+    normalize_server_name,
+)
 
 
 _SIGRH_ROW_RE = re.compile(r"frequenciaForm:listagemPontos:\d+:")
@@ -56,8 +61,13 @@ class _EspelhoHTMLParser(HTMLParser):
                 return
             if {"registro-dia", "registro-ponto"}.intersection(classes):
                 self._row = {
-                    "data": "", "dia_semana": "", "marcacoes": [],
-                    "ocorrencias": [], "observacoes": [], "situacao": "", "textos_visiveis": [],
+                    "data": "",
+                    "dia_semana": "",
+                    "marcacoes": [],
+                    "ocorrencias": [],
+                    "observacoes": [],
+                    "situacao": "",
+                    "textos_visiveis": [],
                 }
 
         if tag == "script":
@@ -95,7 +105,9 @@ class _EspelhoHTMLParser(HTMLParser):
             if tag == "td":
                 self._sigrh_td_depth -= 1
                 if self._sigrh_td_depth == 0:
-                    cell_text = " ".join(p.strip() for p in self._sigrh_cell_buf if p.strip())
+                    cell_text = " ".join(
+                        p.strip() for p in self._sigrh_cell_buf if p.strip()
+                    )
                     self._sigrh_cells.append(cell_text)
                     self._sigrh_cell_buf = []
             elif tag == "tr":
@@ -106,13 +118,26 @@ class _EspelhoHTMLParser(HTMLParser):
                 self._sigrh_cells = []
             return
 
-        if self._capture is not None and tag in {"td", "span", "div", "p", "h1", "h2", "strong"}:
+        if self._capture is not None and tag in {
+            "td",
+            "span",
+            "div",
+            "p",
+            "h1",
+            "h2",
+            "strong",
+        }:
             value = " ".join(part.strip() for part in self._buffer if part.strip())
             if value:
                 if self._capture == "mensagem":
                     self.messages.append(value)
                 elif self._row is not None:
-                    if self._capture in {"marcacoes", "ocorrencias", "observacoes", "textos_visiveis"}:
+                    if self._capture in {
+                        "marcacoes",
+                        "ocorrencias",
+                        "observacoes",
+                        "textos_visiveis",
+                    }:
                         self._row[self._capture].append(value)  # type: ignore[index]
                     else:
                         self._row[self._capture] = value
@@ -138,16 +163,30 @@ class _EspelhoHTMLParser(HTMLParser):
             return None
 
         day_match = re.search(r"Dia da Semana:\s*(\w+)", date_cell, re.IGNORECASE)
-        obs_match = re.search(r"Observa[çc][aã]o:\s*(.+?)(?:\s*//|$)", date_cell, re.IGNORECASE | re.DOTALL)
+        obs_match = re.search(
+            r"Observa[çc][aã]o:\s*(.+?)(?:\s*//|$)",
+            date_cell,
+            re.IGNORECASE | re.DOTALL,
+        )
 
-        time_cell = self._sigrh_cells[date_idx + 1] if date_idx + 1 < len(self._sigrh_cells) else ""
+        time_cell = (
+            self._sigrh_cells[date_idx + 1]
+            if date_idx + 1 < len(self._sigrh_cells)
+            else ""
+        )
 
         occ_cell = next(
-            (c for c in self._sigrh_cells if re.search(r"Ocorrência:|Ocorrencia:", c, re.IGNORECASE)),
+            (
+                c
+                for c in self._sigrh_cells
+                if re.search(r"Ocorrência:|Ocorrencia:", c, re.IGNORECASE)
+            ),
             "",
         )
         occ_match = re.search(
-            r"Ocorrên[çc]ia:\s*(.*?)(?=\s*Situa[çc][aã]o:|$)", occ_cell, re.IGNORECASE | re.DOTALL
+            r"Ocorrên[çc]ia:\s*(.*?)(?=\s*Situa[çc][aã]o:|$)",
+            occ_cell,
+            re.IGNORECASE | re.DOTALL,
         )
 
         return {
@@ -207,11 +246,15 @@ class EspelhoPontoParser:
         visible_text = " ".join(parsed.texts)
         normalized_text = normalize_server_name(visible_text)
         if "espelho" not in normalized_text or "ponto" not in normalized_text:
-            raise EspelhoPontoParseError("invalid_page", "pagina aberta nao e um Espelho de Ponto")
+            raise EspelhoPontoParseError(
+                "invalid_page", "pagina aberta nao e um Espelho de Ponto"
+            )
         if normalize_server_name(expected_server) not in normalized_text and not (
             expected_identifier and expected_identifier in visible_text
         ):
-            raise EspelhoPontoParseError("wrong_server", "pagina nao identifica o servidor selecionado")
+            raise EspelhoPontoParseError(
+                "wrong_server", "pagina nao identifica o servidor selecionado"
+            )
 
         servidor = ServidorSelecionado(
             nome=self._server_name(visible_text, expected_server),
@@ -282,7 +325,9 @@ class EspelhoPontoParser:
 
     @staticmethod
     def _period(text: str) -> str | None:
-        match = re.search(r"Per[ií]odo\s*:\s*([A-Za-zçÇéÉíÍóÓúÚãÃõÕ]+/\d{4})", text, re.IGNORECASE)
+        match = re.search(
+            r"Per[ií]odo\s*:\s*([A-Za-zçÇéÉíÍóÓúÚãÃõÕ]+/\d{4})", text, re.IGNORECASE
+        )
         if match:
             return match.group(1)
         match = re.search(
@@ -296,12 +341,18 @@ class EspelhoPontoParser:
 
     @staticmethod
     def _identifier(text: str) -> str | None:
-        match = re.search(r"(?:SIAPE|Matr[ií]cula)\s*:?\s*(\d{5,})", text, re.IGNORECASE)
+        match = re.search(
+            r"(?:SIAPE|Matr[ií]cula)\s*:?\s*(\d{5,})", text, re.IGNORECASE
+        )
         return match.group(1) if match else None
 
     @staticmethod
     def _server_name(text: str, expected: str) -> str:
-        match = re.search(r"Servidor\s*:\s*([A-ZÁÉÍÓÚÃÕÇ ]+?)(?:\s*-\s*SIAPE|\s+SIAPE|$)", text, re.IGNORECASE)
+        match = re.search(
+            r"Servidor\s*:\s*([A-ZÁÉÍÓÚÃÕÇ ]+?)(?:\s*-\s*SIAPE|\s+SIAPE|$)",
+            text,
+            re.IGNORECASE,
+        )
         return " ".join(match.group(1).split()).upper() if match else expected.upper()
 
     @staticmethod

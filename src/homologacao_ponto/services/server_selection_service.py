@@ -41,10 +41,18 @@ class ServerSelectionService:
         self.rate_limiter = rate_limiter or RateLimiter(2)
         self.logger = logger or logging.getLogger("homologacao_ponto")
 
-    def select_server(self, session: BrowserSession, request: ServerSelectionRequest) -> SelecaoServidorResult:
+    def select_server(
+        self, session: BrowserSession, request: ServerSelectionRequest
+    ) -> SelecaoServidorResult:
         session.require_authenticated()
-        consulta = ServidorConsulta(request.requested_server, request.requested_identifier)
-        log_navigation_event(self.logger, "server selection started", requested_server=request.requested_server)
+        consulta = ServidorConsulta(
+            request.requested_server, request.requested_identifier
+        )
+        log_navigation_event(
+            self.logger,
+            "server selection started",
+            requested_server=request.requested_server,
+        )
 
         self.rate_limiter.wait_before_action()
         if request.reference_month is None and request.reference_year is None:
@@ -66,13 +74,19 @@ class ServerSelectionService:
         if self.browser.is_session_expired(search_snapshot.html):
             return self._partial(request, "Busca de Servidor")
 
-        matches = [result for result in self.browser.find_server_results(request.requested_server) if result.matches(consulta)]
+        matches = [
+            result
+            for result in self.browser.find_server_results(request.requested_server)
+            if result.matches(consulta)
+        ]
         if not matches:
             if (
                 request.reference_month is not None
                 or request.reference_year is not None
             ) and self._empty_query_matches_server(request):
-                selected_server = self.browser.queried_server_name() or request.requested_server
+                selected_server = (
+                    self.browser.queried_server_name() or request.requested_server
+                )
                 return SelecaoServidorResult(
                     username_ref=request.username_ref,
                     requested_server=request.requested_server,
@@ -81,28 +95,48 @@ class ServerSelectionService:
                     selected_server=selected_server.upper(),
                     message="servidor selecionado sem registros no periodo",
                 )
-            return self._failed(request, "Busca de Servidor", f"servidor não encontrado: {request.requested_server}")
+            return self._failed(
+                request,
+                "Busca de Servidor",
+                f"servidor não encontrado: {request.requested_server}",
+            )
         if len(matches) > 1:
-            return self._failed(request, "Busca de Servidor", f"resultado ambíguo para servidor: {request.requested_server}")
+            return self._failed(
+                request,
+                "Busca de Servidor",
+                f"resultado ambíguo para servidor: {request.requested_server}",
+            )
 
         selected = matches[0]
         if not selected.can_select:
-            return self._failed(request, "Selecionar Servidor", f"seleção não disponível para servidor: {selected.display_name}")
+            return self._failed(
+                request,
+                "Selecionar Servidor",
+                f"seleção não disponível para servidor: {selected.display_name}",
+            )
 
         self.rate_limiter.wait_before_action()
-        selection_snapshot = self.browser.select_server_result(selected, request.max_step_wait_seconds)
+        selection_snapshot = self.browser.select_server_result(
+            selected, request.max_step_wait_seconds
+        )
         if self.browser.is_anti_automation(selection_snapshot.html):
             return self._blocked(request, "Selecionar Servidor")
         if self.browser.is_session_expired(selection_snapshot.html):
             return self._partial(request, "Selecionar Servidor")
-        if not self.browser.selected_server_visible(selected.display_name, selected.identifier):
+        if not self.browser.selected_server_visible(
+            selected.display_name, selected.identifier
+        ):
             return self._failed(
                 request,
                 "Servidor Selecionado",
                 f"confirmação visível do servidor selecionado não encontrada: {selected.display_name}",
             )
 
-        log_navigation_event(self.logger, "server selection completed", selected_server=selected.display_name)
+        log_navigation_event(
+            self.logger,
+            "server selection completed",
+            selected_server=selected.display_name,
+        )
         return SelecaoServidorResult(
             username_ref=request.username_ref,
             requested_server=request.requested_server,
@@ -114,7 +148,9 @@ class ServerSelectionService:
         )
 
     @staticmethod
-    def _failed(request: ServerSelectionRequest, final_step: str, message: str) -> SelecaoServidorResult:
+    def _failed(
+        request: ServerSelectionRequest, final_step: str, message: str
+    ) -> SelecaoServidorResult:
         return SelecaoServidorResult(
             request.username_ref,
             request.requested_server,
@@ -124,7 +160,9 @@ class ServerSelectionService:
         )
 
     @staticmethod
-    def _partial(request: ServerSelectionRequest, final_step: str) -> SelecaoServidorResult:
+    def _partial(
+        request: ServerSelectionRequest, final_step: str
+    ) -> SelecaoServidorResult:
         return SelecaoServidorResult(
             request.username_ref,
             request.requested_server,
@@ -134,7 +172,9 @@ class ServerSelectionService:
         )
 
     @staticmethod
-    def _blocked(request: ServerSelectionRequest, final_step: str) -> SelecaoServidorResult:
+    def _blocked(
+        request: ServerSelectionRequest, final_step: str
+    ) -> SelecaoServidorResult:
         return SelecaoServidorResult(
             request.username_ref,
             request.requested_server,

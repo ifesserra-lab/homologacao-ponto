@@ -7,7 +7,9 @@ from dataclasses import dataclass
 
 def normalize_server_name(value: str) -> str:
     normalized = unicodedata.normalize("NFKD", value)
-    ascii_value = "".join(char for char in normalized if not unicodedata.combining(char))
+    ascii_value = "".join(
+        char for char in normalized if not unicodedata.combining(char)
+    )
     ascii_value = re.sub(r"[^\w\s]", " ", ascii_value)
     return re.sub(r"\s+", " ", ascii_value).strip().casefold()
 
@@ -49,6 +51,9 @@ class ServidorResultado:
 
     def matches(self, consulta: ServidorConsulta) -> bool:
         requested = consulta.normalized_name
-        if consulta.requested_identifier and consulta.requested_identifier not in self.row_text:
+        if (
+            consulta.requested_identifier
+            and consulta.requested_identifier not in self.row_text
+        ):
             return False
         return requested in self.normalized_row_text

@@ -15,7 +15,9 @@ CANONICAL_NAVIGATION_LABELS = [
 
 def normalize_navigation_label(label: str) -> str:
     normalized = unicodedata.normalize("NFKD", label)
-    ascii_label = "".join(char for char in normalized if not unicodedata.combining(char))
+    ascii_label = "".join(
+        char for char in normalized if not unicodedata.combining(char)
+    )
     return re.sub(r"\s+", " ", ascii_label).strip().casefold()
 
 
@@ -36,4 +38,6 @@ class NavigationPath:
             raise ValueError("max_step_wait_seconds must be 15")
 
     def matches(self, expected: str, actual: str) -> bool:
-        return normalize_navigation_label(expected) == normalize_navigation_label(actual)
+        return normalize_navigation_label(expected) == normalize_navigation_label(
+            actual
+        )
