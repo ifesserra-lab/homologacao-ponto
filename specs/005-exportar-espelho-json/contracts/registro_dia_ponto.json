@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "registro_dia_ponto",
+  "title": "RegistroDiaPonto",
+  "description": "Registro de um dia no espelho de ponto do SIGRH",
+  "type": "object",
+  "required": ["data"],
+  "properties": {
+    "data": {
+      "type": "string",
+      "description": "Data no formato YYYY-MM-DD",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "dia_semana": {
+      "type": ["string", "null"],
+      "description": "Nome do dia da semana (ex: Segunda, Terça, Sábado)"
+    },
+    "marcacoes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Horários registrados no relógio de ponto (formato HH:MM)"
+    },
+    "ocorrencias": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Ocorrências registradas para o dia"
+    },
+    "observacoes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Observações visíveis no dia"
+    },
+    "situacao": {
+      "type": ["string", "null"],
+      "description": "Situação do dia (ex: Afastamento, Férias)"
+    },
+    "textos_visiveis": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Demais textos visíveis na linha"
+    },
+    "hr": {
+      "type": ["string", "null"],
+      "description": "Horas Regulares (formato HH:MM ou null)"
+    },
+    "hc": {
+      "type": ["string", "null"],
+      "description": "Horas Complementares (formato HH:MM ou null)"
+    },
+    "he": {
+      "type": ["string", "null"],
+      "description": "Horas Extras (formato HH:MM ou null)"
+    },
+    "ha": {
+      "type": ["string", "null"],
+      "description": "Horas de Abono (formato HH:MM ou null)"
+    },
+    "hh": {
+      "type": ["string", "null"],
+      "description": "Horas de Homologação (formato HH:MM ou null)"
+    },
+    "credito": {
+      "type": ["string", "null"],
+      "description": "Crédito de horas do dia (formato HH:MM ou null)"
+    },
+    "debito": {
+      "type": ["string", "null"],
+      "description": "Débito de horas do dia (formato HH:MM ou null)"
+    },
+    "saldo_no_mes": {
+      "type": ["string", "null"],
+      "description": "Saldo acumulado no mês até este dia (formato HH:MM, pode ser negativo como -08:00)"
+    },
+    "credito_acumulado": {
+      "type": ["string", "null"],
+      "description": "Crédito acumulado homologado (formato HH:MM ou null)"
+    },
+    "dnc": {
+      "type": ["string", "null"],
+      "description": "Dias Não Computados (formato HH:MM ou null)"
+    }
+  }
+}

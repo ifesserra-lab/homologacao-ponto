@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.homologacao-ponto/schemas/espelho-ponto-export.schema.json",
+  "title": "EspelhoPontoExport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "captured_at",
+    "status",
+    "servidor",
+    "mensagens",
+    "registros",
+    "fonte"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "captured_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["completed", "empty"]
+    },
+    "servidor": {
+      "$ref": "#/$defs/servidor"
+    },
+    "periodo_referencia": {
+      "type": ["string", "null"]
+    },
+    "mensagens": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "registros": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/registroDia"
+      }
+    },
+    "fonte": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tipo", "pagina"],
+      "properties": {
+        "tipo": {
+          "type": "string",
+          "const": "sigrh-espelho-ponto-visivel"
+        },
+        "pagina": {
+          "type": ["string", "null"]
+        },
+        "rotulos_visiveis": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        }
+      }
+    }
+  },
+  "$defs": {
+    "servidor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nome"],
+      "properties": {
+        "nome": {
+          "type": "string",
+          "minLength": 1
+        },
+        "identificador": {
+          "type": ["string", "null"]
+        },
+        "texto_visivel": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "registroDia": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "data",
+        "marcacoes",
+        "ocorrencias",
+        "observacoes",
+        "textos_visiveis"
+      ],
+      "properties": {
+        "data": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dia_semana": {
+          "type": ["string", "null"]
+        },
+        "marcacoes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ocorrencias": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "observacoes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "situacao": {
+          "type": ["string", "null"]
+        },
+        "textos_visiveis": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

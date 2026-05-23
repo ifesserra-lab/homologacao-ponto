@@ -75,6 +75,14 @@
 - What happens when [boundary condition]?
 - How does system handle [error scenario]?
 
+### Testability Requirements
+
+- Each user story MUST include an independent test description that can be
+  implemented before production code.
+- Security-sensitive flows, external HTTP interactions, parsing, persistence,
+  and error handling MUST include negative-path acceptance scenarios when they
+  apply.
+
 ## Requirements *(mandatory)*
 
 <!--

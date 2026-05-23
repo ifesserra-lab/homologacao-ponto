@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://homologacao-ponto.local/contracts/selection-result.schema.json",
+  "title": "SelecaoServidorResult",
+  "type": "object",
+  "required": [
+    "run_id",
+    "completed_at",
+    "username_ref",
+    "requested_server",
+    "status",
+    "success",
+    "final_step"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "username_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requested_server": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selected_server": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selected_identifier": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["completed", "failed", "partial", "blocked"]
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "final_step": {
+      "type": "string",
+      "minLength": 1
+    },
+    "message": {
+      "type": ["string", "null"]
+    },
+    "output_path": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": { "const": "completed" }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "success": { "const": true },
+          "final_step": { "const": "Servidor Selecionado" }
+        },
+        "required": ["selected_server"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": { "enum": ["failed", "partial", "blocked"] }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": {
+          "success": { "const": false },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["message"]
+      }
+    }
+  ]
+}
