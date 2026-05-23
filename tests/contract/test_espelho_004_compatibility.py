@@ -48,7 +48,7 @@ def test_new_fields_additive_not_replacing():
     assert NEW_FIELDS.issubset(d.keys()), "new fields must also be present"
 
 
-def test_schema_version_unchanged():
+def test_schema_version_is_2_after_feature_009():
     servidor = ServidorSelecionado(nome="TESTE")
     registro = RegistroDiaPonto(data="2025-12-15", marcacoes=["10:00"])
     export = EspelhoPontoExport(
@@ -57,4 +57,4 @@ def test_schema_version_unchanged():
         servidor=servidor,
         registros=[registro],
     )
-    assert export.to_dict()["schema_version"] == 1
+    assert export.to_dict()["schema_version"] == 2

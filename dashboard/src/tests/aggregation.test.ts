@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { parseHHMM, formatMin, aggregateMonth } from "../lib/aggregation";
-import type { RegistroDia } from "../types/dashboard";
+import type { RegistroDia, ResumoHorasApuradas } from "../types/dashboard";
 
 describe("parseHHMM", () => {
   it("returns null for null input", () => {
@@ -105,5 +105,73 @@ describe("aggregateMonth", () => {
     ];
     const result = aggregateMonth(registros as RegistroDia[]);
     expect(result.dncFinalMin).toBeNull();
+  });
+});
+
+describe("aggregateMonth with resumo", () => {
+  const baseRegistro: RegistroDia = {
+    data: "2026-05-02",
+    dia_semana: "Sabado",
+    marcacoes: ["07:58", "17:00"],
+    ocorrencias: [],
+    observacoes: [],
+    situacao: null,
+    textos_visiveis: [],
+    hr: "08:00",
+    hc: null,
+    he: null,
+    ha: null,
+    hh: null,
+    credito: "00:02",
+    debito: null,
+    saldo_no_mes: null,
+    credito_acumulado: "-09:10",
+    dnc: null,
+  };
+
+  const resumo: ResumoHorasApuradas = {
+    carga_horaria_contratada: "160:00",
+    carga_horaria_esperada_mes: "160:00",
+    total_horas_registradas: "50:31",
+    total_horas_justificadas: "00:00",
+    total_horas_homologadas: "49:25",
+    saldo_mes_anterior_compensacao: "00:00",
+    total_horas_mes_anterior_compensadas: "00:00",
+    debito_mes_anterior_nao_compensado: "00:00",
+    debito_mes_atual_nao_autorizado: "-61:25",
+    outros_debitos_nao_compensados_vencidos: "00:00",
+    totalizacao_debito_nao_compensavel: "-61:25",
+    total_horas_pendentes_compensacao: "-09:10",
+    saldo_horas_mes: "-09:10",
+    saldo_horas_mes_compensar_proximo: "-09:10",
+    credito_horas_disponivel_mes: "00:00",
+    credito_em_horas: "00:00",
+  };
+
+  it("uses total_horas_homologadas as somaCreditoMin when resumo non-null", () => {
+    const result = aggregateMonth([baseRegistro], resumo);
+    expect(result.somaCreditoMin).toBe(49 * 60 + 25); // 49:25 = 2965
+  });
+
+  it("uses saldo_horas_mes as balanceMin when resumo non-null", () => {
+    const result = aggregateMonth([baseRegistro], resumo);
+    expect(result.balanceMin).toBe(-(9 * 60 + 10)); // -09:10 = -550
+  });
+
+  it("uses carga_horaria_esperada_mes as cargaEsperadaMin when resumo non-null", () => {
+    const result = aggregateMonth([baseRegistro], resumo);
+    expect(result.cargaEsperadaMin).toBe(160 * 60); // 160:00 = 9600
+  });
+
+  it("uses fallback calculation when resumo is null", () => {
+    const result = aggregateMonth([baseRegistro], null);
+    // Falls back to calculated values (not resumo)
+    expect(result.somaCreditoMin).toBe(2); // only "00:02" from registro
+  });
+
+  it("uses fallback calculation when resumo is absent (JSON v1 compat)", () => {
+    const result = aggregateMonth([baseRegistro]);
+    // No resumo arg → fallback
+    expect(result.somaCreditoMin).toBe(2);
   });
 });

@@ -23,7 +23,7 @@ if (!espelho) {
   return Astro.redirect(`/servidor/${slug}`, 302);
 }
 
-const agg = aggregateMonth(espelho.registros, espelho.captured_at);
+const agg = aggregateMonth(espelho.registros, espelho.resumo ?? null, espelho.captured_at);
 const incompleteDays = espelho.registros.filter(r => {
   if (!r.debito) return false;
   const [h, m] = r.debito.split(":").map(Number);

@@ -10,6 +10,7 @@ from homologacao_ponto.models.espelho_export_result import (
 from homologacao_ponto.models.espelho_ponto_export import (
     EspelhoPontoExport,
     RegistroDiaPonto,
+    ResumoHorasApuradas,
     ServidorSelecionado,
 )
 from homologacao_ponto.models.navigation_path import (
@@ -65,6 +66,7 @@ __all__ = [
     "NavigationStep",
     "NavigationStepStatus",
     "RegistroDiaPonto",
+    "ResumoHorasApuradas",
     "SelecaoServidorResult",
     "SelectionStatus",
     "ServidorSelecionado",

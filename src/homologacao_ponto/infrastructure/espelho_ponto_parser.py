@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import unicodedata
 from html.parser import HTMLParser
 from urllib.parse import urlparse
 
@@ -8,12 +9,131 @@ from homologacao_ponto.infrastructure.attendance_parser import SigrhPageSnapshot
 from homologacao_ponto.models import (
     EspelhoPontoExport,
     RegistroDiaPonto,
+    ResumoHorasApuradas,
     ServidorSelecionado,
     normalize_server_name,
 )
 
 
 _SIGRH_ROW_RE = re.compile(r"frequenciaForm:listagemPontos:\d+:")
+
+
+def _normalize_label(text: str) -> str:
+    nfkd = unicodedata.normalize("NFD", text)
+    ascii_only = "".join(c for c in nfkd if not unicodedata.combining(c))
+    return re.sub(r"\s+", " ", ascii_only.lower()).strip().rstrip(":")
+
+
+_RESUMO_LABEL_MAP: list[tuple[str, str]] = [
+    ("carga horaria contratada", "carga_horaria_contratada"),
+    ("carga horaria esperada", "carga_horaria_esperada_mes"),
+    ("total de horas registradas", "total_horas_registradas"),
+    ("total de horas justificadas", "total_horas_justificadas"),
+    ("total de horas homologadas", "total_horas_homologadas"),
+    ("saldo de horas do mes anterior", "saldo_mes_anterior_compensacao"),
+    (
+        "total de horas do mes anterior compensadas",
+        "total_horas_mes_anterior_compensadas",
+    ),
+    ("debito do mes anterior nao compensado", "debito_mes_anterior_nao_compensado"),
+    ("debito do mes atual nao autorizado", "debito_mes_atual_nao_autorizado"),
+    (
+        "outros debitos nao compensados vencidos",
+        "outros_debitos_nao_compensados_vencidos",
+    ),
+    ("totalizacao do debito nao compensavel", "totalizacao_debito_nao_compensavel"),
+    ("total de horas pendentes de compensacao", "total_horas_pendentes_compensacao"),
+    ("saldo de horas do mes a compensar", "saldo_horas_mes_compensar_proximo"),
+    ("saldo de horas do mes", "saldo_horas_mes"),
+    ("credito de horas disponivel", "credito_horas_disponivel_mes"),
+    ("credito em horas", "credito_em_horas"),
+]
+
+
+def _match_resumo_label(normalized: str) -> str | None:
+    for substring, field in _RESUMO_LABEL_MAP:
+        if substring in normalized:
+            return field
+    return None
+
+
+class _ResumoHTMLParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self._in_resumo_section = False
+        self._in_caption = False
+        self._td_depth = 0
+        self._cell_buf: list[str] = []
+        self._current_row_cells: list[str] = []
+        self._fields: dict[str, str | None] = {}
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag == "caption":
+            self._in_caption = True
+            self._cell_buf = []
+        elif tag == "tr" and self._in_resumo_section:
+            self._current_row_cells = []
+        elif tag == "td":
+            self._td_depth += 1
+            if self._in_resumo_section and self._td_depth == 1:
+                self._cell_buf = []
+
+    def handle_data(self, data: str) -> None:
+        if self._in_caption:
+            self._cell_buf.append(data)
+        elif self._in_resumo_section and self._td_depth > 0:
+            self._cell_buf.append(data)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "caption":
+            caption_text = " ".join(self._cell_buf).strip()
+            if "resumo das horas apuradas" in _normalize_label(caption_text):
+                self._in_resumo_section = True
+            self._in_caption = False
+            self._cell_buf = []
+        elif tag == "td":
+            if self._in_resumo_section and self._td_depth == 1:
+                cell_text = " ".join(p.strip() for p in self._cell_buf if p.strip())
+                self._current_row_cells.append(cell_text)
+                self._cell_buf = []
+            self._td_depth -= 1
+        elif tag == "tr" and self._in_resumo_section:
+            if len(self._current_row_cells) >= 2:
+                label = self._current_row_cells[0]
+                value = self._current_row_cells[1].strip()
+                field = _match_resumo_label(_normalize_label(label))
+                if field:
+                    self._fields[field] = value if value else None
+            self._current_row_cells = []
+        elif tag == "table" and self._in_resumo_section:
+            self._in_resumo_section = False
+
+    def build_resumo(self) -> ResumoHorasApuradas | None:
+        if not self._fields:
+            return None
+        return ResumoHorasApuradas(
+            **{
+                k: self._fields.get(k)
+                for k in [
+                    "carga_horaria_contratada",
+                    "carga_horaria_esperada_mes",
+                    "total_horas_registradas",
+                    "total_horas_justificadas",
+                    "total_horas_homologadas",
+                    "saldo_mes_anterior_compensacao",
+                    "total_horas_mes_anterior_compensadas",
+                    "debito_mes_anterior_nao_compensado",
+                    "debito_mes_atual_nao_autorizado",
+                    "outros_debitos_nao_compensados_vencidos",
+                    "totalizacao_debito_nao_compensavel",
+                    "total_horas_pendentes_compensacao",
+                    "saldo_horas_mes",
+                    "saldo_horas_mes_compensar_proximo",
+                    "credito_horas_disponivel_mes",
+                    "credito_em_horas",
+                ]
+            }
+        )
 
 
 def _cell_value(cells: list[str], date_idx: int, offset: int) -> str | None:
@@ -243,6 +363,9 @@ class EspelhoPontoParser:
     ) -> EspelhoPontoExport:
         parsed = _EspelhoHTMLParser()
         parsed.feed(snapshot.html)
+        resumo_parser = _ResumoHTMLParser()
+        resumo_parser.feed(snapshot.html)
+        resumo = resumo_parser.build_resumo()
         visible_text = " ".join(parsed.texts)
         normalized_text = normalize_server_name(visible_text)
         if "espelho" not in normalized_text or "ponto" not in normalized_text:
@@ -282,6 +405,7 @@ class EspelhoPontoParser:
             mensagens=mensagens,
             registros=registros,
             pagina=pagina,
+            resumo=resumo,
         )
 
     def _row_to_record(self, row: dict[str, list[str] | str]) -> RegistroDiaPonto:

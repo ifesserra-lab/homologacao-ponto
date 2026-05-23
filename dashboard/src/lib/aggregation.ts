@@ -1,4 +1,4 @@
-import type { RegistroDia } from "../types/dashboard";
+import type { RegistroDia, ResumoHorasApuradas } from "../types/dashboard";
 
 export const JORNADA_MIN = 480; // 8 horas
 
@@ -61,7 +61,7 @@ export function formatMin(minutes: number | null): string {
 }
 
 /** capturedAt: ISO date string (yyyy-mm-dd or full ISO). Used to exclude future weekdays from holiday detection. */
-export function aggregateMonth(registros: RegistroDia[], capturedAt?: string): MonthAggregate {
+export function aggregateMonth(registros: RegistroDia[], resumo?: ResumoHorasApuradas | null, capturedAt?: string): MonthAggregate {
   const empty = { daysWithMarcacoes: 0, somaCreditoMin: 0, somaHrMin: 0, somaDebitoMin: 0, somaHhMin: 0, cargaEsperadaMin: 0, dncFinalMin: null, balanceMin: null };
   if (registros.length === 0) return empty;
 
@@ -91,10 +91,28 @@ export function aggregateMonth(registros: RegistroDia[], capturedAt?: string): M
     weekdays++;
     if (r.data <= capturedDate && r.marcacoes.length === 0 && r.credito === "00:00") pastHolidays++;
   }
-  const cargaEsperadaMin = (weekdays - pastHolidays) * JORNADA_MIN;
 
   const lastRecord = registros[registros.length - 1];
   const dncFinalMin = parseHHMM(lastRecord.dnc);
+
+  if (resumo) {
+    const somaCreditoMinR = parseSignedHHMM(resumo.total_horas_homologadas);
+    const somaHrMinR = parseSignedHHMM(resumo.total_horas_registradas);
+    const cargaEsperadaMinR = parseSignedHHMM(resumo.carga_horaria_esperada_mes);
+    const balanceMinR = parseSignedHHMM(resumo.saldo_horas_mes);
+    return {
+      daysWithMarcacoes,
+      somaCreditoMin: somaCreditoMinR ?? somaCreditoMin,
+      somaHrMin: somaHrMinR ?? somaHrMin,
+      somaDebitoMin,
+      somaHhMin,
+      cargaEsperadaMin: cargaEsperadaMinR ?? (weekdays - pastHolidays) * JORNADA_MIN,
+      dncFinalMin,
+      balanceMin: balanceMinR !== undefined ? balanceMinR : null,
+    };
+  }
+
+  const cargaEsperadaMin = (weekdays - pastHolidays) * JORNADA_MIN;
 
   let balanceMin: number | null = null;
   for (let i = registros.length - 1; i >= 0; i--) {
