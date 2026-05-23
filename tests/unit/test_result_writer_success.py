@@ -34,7 +34,7 @@ def test_result_writer_writes_export_result_json(tmp_path) -> None:
 
     persisted = ResultWriter(tmp_path).write(result)
 
-    output = json.loads((tmp_path / "export-result-run-123.json").read_text(encoding="utf-8"))
-    assert persisted.output_path.endswith("export-result-run-123.json")
+    output = json.loads((tmp_path / "logging" / "export-result-run-123.json").read_text(encoding="utf-8"))
+    assert persisted.output_path.endswith("logging/export-result-run-123.json")
     assert output["export_path"] == "data/runs/espelho-ponto-run-123.json"
     assert output["status"] == "completed"

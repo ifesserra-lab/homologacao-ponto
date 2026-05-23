@@ -63,6 +63,10 @@ class ExportacaoEspelhoResult:
     def output_filename(self) -> str:
         return f"export-result-{self.run_id}.json"
 
+    @property
+    def output_subdir(self) -> str:
+        return "logging"
+
     def with_output_path(self, output_path: Path) -> ExportacaoEspelhoResult:
         return ExportacaoEspelhoResult(
             run_id=self.run_id,

@@ -12,6 +12,6 @@ def test_espelho_export_result_persistence(tmp_path) -> None:
         BrowserSession().authenticated("ctx"), request(tmp_path)
     )
 
-    data = json.loads((tmp_path / result.output_filename).read_text(encoding="utf-8"))
+    data = json.loads((tmp_path / "logging" / result.output_filename).read_text(encoding="utf-8"))
     assert data["success"] is True
     assert data["export_path"].endswith("espelho-maio-2026.json")

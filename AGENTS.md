@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/005-exportar-espelho-json/plan.md` and `.specify/memory/constitution.md`.
+`specs/007-batch-periodo-anos/plan.md` and `.specify/memory/constitution.md`.
 <!-- SPECKIT END -->
 
 ## Persona: Escrita Técnica

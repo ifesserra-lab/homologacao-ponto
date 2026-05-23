@@ -5,6 +5,7 @@ import datetime
 from homologacao_ponto.models.batch_config import BatchConfig
 from homologacao_ponto.models.batch_result import BatchEntryResult, BatchResult
 from homologacao_ponto.models.browser_session import BrowserSession
+from homologacao_ponto.services.periodo_expander import PeriodoExpander
 from homologacao_ponto.services.result_writer import ResultWriter
 
 
@@ -28,75 +29,103 @@ class BatchService:
         entries: list[BatchEntryResult] = []
 
         for entry in config.servidores:
-            mes = entry.mes or config.mes or today.month
-            ano = entry.ano or config.ano or today.year
-            try:
-                app_result = self._app._run_single_espelho(
-                    session,
-                    servidor=entry.nome,
-                    siape=entry.siape,
-                    mes=mes,
-                    ano=ano,
+            periodos = PeriodoExpander.expand(config, entry, today)
+            if not periodos:
+                # anos="All" — AdmissaoDetector (US2)
+                from homologacao_ponto.infrastructure.admissao_detector import (
+                    AdmissaoDetector,
+                    AdmissaoNaoDetectadaError,
                 )
-                if app_result.exit_code == 6:
-                    # sessão expirada — reautentica e retenta uma vez
-                    try:
-                        cred = self._app.credential_provider.load()
-                        login = self._app.auth_service.login(cred)
-                        if login.success and login.browser_session:
-                            session = login.browser_session
-                            app_result = self._app._run_single_espelho(
-                                session,
-                                servidor=entry.nome,
-                                siape=entry.siape,
-                                mes=mes,
-                                ano=ano,
-                            )
-                    except Exception:
-                        pass
 
-                if app_result.exit_code == 0 and app_result.result is not None:
-                    export_path = getattr(app_result.result, "output_path", None)
-                    status = (
-                        getattr(
-                            getattr(app_result.result, "status", None), "value", None
-                        )
-                        or "completed"
+                try:
+                    periodos = AdmissaoDetector().detect(
+                        self._app, session, entry, today
                     )
-                    entries.append(
-                        BatchEntryResult(
-                            nome=entry.nome,
-                            siape=entry.siape,
-                            status=status
-                            if status in ("completed", "empty")
-                            else "completed",
-                            export_path=str(export_path) if export_path else None,
-                        )
-                    )
-                else:
+                except AdmissaoNaoDetectadaError as exc:
                     entries.append(
                         BatchEntryResult(
                             nome=entry.nome,
                             siape=entry.siape,
                             status="failed",
-                            # app_result.message pode ser None ou um objeto de
-                            # erro não-string; a guarda isinstance garante que
-                            # apenas mensagens textuais legíveis sejam expostas.
-                            error=str(app_result.message)
-                            if isinstance(app_result.message, str)
-                            and app_result.message
-                            else f"exit_code={app_result.exit_code}",
+                            error=str(exc),
                         )
                     )
-            except Exception as exc:
-                entries.append(
-                    BatchEntryResult(
-                        nome=entry.nome,
+                    continue
+            for mes, ano in periodos:
+                try:
+                    app_result = self._app._run_single_espelho(
+                        session,
+                        servidor=entry.nome,
                         siape=entry.siape,
-                        status="failed",
-                        error=str(exc),
+                        mes=mes,
+                        ano=ano,
                     )
-                )
+                    if app_result.exit_code == 6:
+                        # sessão expirada — reautentica e retenta uma vez
+                        try:
+                            cred = self._app.credential_provider.load()
+                            login = self._app.auth_service.login(cred)
+                            if login.success and login.browser_session:
+                                session = login.browser_session
+                                app_result = self._app._run_single_espelho(
+                                    session,
+                                    servidor=entry.nome,
+                                    siape=entry.siape,
+                                    mes=mes,
+                                    ano=ano,
+                                )
+                        except Exception:
+                            pass
+
+                    if app_result.exit_code == 0 and app_result.result is not None:
+                        export_path = getattr(app_result.result, "output_path", None)
+                        status = (
+                            getattr(
+                                getattr(app_result.result, "status", None),
+                                "value",
+                                None,
+                            )
+                            or "completed"
+                        )
+                        entries.append(
+                            BatchEntryResult(
+                                nome=entry.nome,
+                                siape=entry.siape,
+                                status=status
+                                if status in ("completed", "empty")
+                                else "completed",
+                                export_path=str(export_path) if export_path else None,
+                                mes=mes,
+                                ano=ano,
+                            )
+                        )
+                    else:
+                        entries.append(
+                            BatchEntryResult(
+                                nome=entry.nome,
+                                siape=entry.siape,
+                                status="failed",
+                                # app_result.message pode ser None ou objeto não-string;
+                                # guarda isinstance evita TypeError no json.dumps.
+                                error=str(app_result.message)
+                                if isinstance(app_result.message, str)
+                                and app_result.message
+                                else f"exit_code={app_result.exit_code}",
+                                mes=mes,
+                                ano=ano,
+                            )
+                        )
+                except Exception as exc:
+                    entries.append(
+                        BatchEntryResult(
+                            nome=entry.nome,
+                            siape=entry.siape,
+                            status="failed",
+                            error=str(exc),
+                            mes=mes,
+                            ano=ano,
+                        )
+                    )
 
         finished_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
         succeeded = sum(1 for e in entries if e.status in ("completed", "empty"))

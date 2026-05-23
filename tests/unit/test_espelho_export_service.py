@@ -42,7 +42,7 @@ def test_export_service_writes_success_report_and_result(tmp_path) -> None:
     assert result.status == ExportStatus.COMPLETED
     assert result.success is True
     assert (tmp_path / "servidores" / "celio-proliciano-maioli" / "espelho-maio-2026.json").exists()
-    assert (tmp_path / "export-result-run-123.json").exists()
+    assert (tmp_path / "logging" / "export-result-run-123.json").exists()
 
 
 def test_export_service_writes_empty_report(tmp_path) -> None:

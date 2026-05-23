@@ -84,15 +84,12 @@ class ServerSelectionService:
                 request.reference_month is not None
                 or request.reference_year is not None
             ) and self._empty_query_matches_server(request):
-                selected_server = (
-                    self.browser.queried_server_name() or request.requested_server
-                )
                 return SelecaoServidorResult(
                     username_ref=request.username_ref,
                     requested_server=request.requested_server,
                     status=SelectionStatus.COMPLETED,
                     final_step="Servidor Selecionado",
-                    selected_server=selected_server.upper(),
+                    selected_server=request.requested_server.upper(),
                     message="servidor selecionado sem registros no periodo",
                 )
             return self._failed(

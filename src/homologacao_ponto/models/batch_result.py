@@ -10,25 +10,27 @@ class BatchEntryResult:
     status: str  # "completed" | "empty" | "failed" | "blocked"
     export_path: str | None = None
     error: str | None = None
+    mes: int | None = None
+    ano: int | None = None
 
     def to_dict(self) -> dict:
-        return {
+        d: dict = {
             "nome": self.nome,
             "siape": self.siape,
             "status": self.status,
             "export_path": self.export_path,
             "error": self.error,
         }
+        if self.mes is not None:
+            d["mes"] = self.mes
+        if self.ano is not None:
+            d["ano"] = self.ano
+        return d
 
 
 @dataclass(frozen=True)
 class BatchResult:
-    """Resultado imutável de uma execução de batch.
-
-    Não contém ``output_subdir`` porque a decisão de onde gravar pertence ao
-    ``ResultWriter``; este dataclass apenas carrega o caminho final já resolvido
-    via ``with_output_path``.
-    """
+    """Resultado imutável de uma execução de batch."""
 
     run_id: str
     started_at: str
@@ -47,6 +49,10 @@ class BatchResult:
         mesmo diretório de saída (e.g., resultados individuais por servidor).
         """
         return f"batch-result-{self.run_id}.json"
+
+    @property
+    def output_subdir(self) -> str:
+        return "logging"
 
     def with_output_path(self, path: Path) -> "BatchResult":
         return replace(self, output_path=str(path))

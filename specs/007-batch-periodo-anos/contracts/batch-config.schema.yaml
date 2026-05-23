@@ -1,0 +1,78 @@
+# Contrato: Arquivo YAML de entrada para subcomando batch (feature 007)
+# Adiciona campo `anos` (lista de inteiros ou literal "All") ao schema existente
+
+type: object
+required:
+  - servidores
+properties:
+  mes:
+    type: integer
+    minimum: 1
+    maximum: 12
+    description: "Mês padrão (ignorado quando 'anos' presente)"
+  ano:
+    type: integer
+    minimum: 2000
+    maximum: 2100
+    description: "Ano padrão (ignorado quando 'anos' presente)"
+  anos:
+    oneOf:
+      - type: array
+        items:
+          type: integer
+          minimum: 2000
+          maximum: 2100
+        minItems: 1
+        description: "Lista de anos para expansão completa (12 meses cada)"
+      - type: string
+        enum: ["All"]
+        description: "Baixar histórico completo desde admissão do servidor"
+    description: "Período de busca: lista de anos ou 'All' para histórico completo"
+  servidores:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required:
+        - nome
+        - siape
+      properties:
+        nome:
+          type: string
+          minLength: 1
+          description: "Nome completo do servidor em maiúsculas"
+        siape:
+          type: string
+          minLength: 1
+          description: "Matrícula SIAPE do servidor"
+        mes:
+          type: integer
+          minimum: 1
+          maximum: 12
+          description: "Override de mês (sem efeito quando 'anos' presente no config)"
+        ano:
+          type: integer
+          minimum: 2000
+          maximum: 2100
+          description: "Override de ano (sem efeito quando 'anos' presente no config)"
+
+# Exemplos válidos:
+#
+# Exemplo 1 — anos específicos:
+# anos: [2025, 2026]
+# servidores:
+#   - nome: "CELIO PROLICIANO MAIOLI"
+#     siape: "1534589"
+#
+# Exemplo 2 — histórico completo:
+# anos: All
+# servidores:
+#   - nome: "CELIO PROLICIANO MAIOLI"
+#     siape: "1534589"
+#
+# Exemplo 3 — legado (compatível com feature 006):
+# mes: 5
+# ano: 2026
+# servidores:
+#   - nome: "CELIO PROLICIANO MAIOLI"
+#     siape: "1534589"

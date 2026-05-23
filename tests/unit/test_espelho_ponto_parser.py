@@ -45,3 +45,38 @@ def test_parser_marks_empty_espelho_as_empty() -> None:
 def test_parser_rejects_invalid_page() -> None:
     with pytest.raises(EspelhoPontoParseError):
         EspelhoPontoParser().parse(snapshot(INVALID_PAGE_HTML), run_id="run-123", expected_server="Celio Proliciano Maioli")
+
+
+def test_parser_server_name_not_repeated_when_name_in_multiple_nodes() -> None:
+    # Regression: visible_text join caused regex to capture name N times concatenated
+    html = """<html><head><title>Espelho de Ponto</title></head><body>
+    <h1>Espelho de Ponto</h1>
+    <span>Servidor: </span><span>CELIO PROLICIANO MAIOLI</span>
+    <span>Servidor: </span><span>CELIO PROLICIANO MAIOLI</span>
+    <span>Servidor: </span><span>CELIO PROLICIANO MAIOLI</span>
+    <p>Nenhum registro de ponto de servidor(es) segundo os criterios de busca.</p>
+    </body></html>"""
+    export = EspelhoPontoParser().parse(
+        snapshot(html),
+        run_id="run-reg",
+        expected_server="Celio Proliciano Maioli",
+    )
+    assert export.servidor.nome == "CELIO PROLICIANO MAIOLI"
+
+
+def test_parser_server_name_not_repeated_when_jsf_concatenates_in_one_node() -> None:
+    # Regression: JSF renders adjacent output components without whitespace,
+    # producing one text node like "Servidor: NAMENAME NAME" (no spaces between reps).
+    # Expected: captured group starts with expected name → return expected only.
+    concatenated = "CELIO PROLICIANO MAIOLICELIOPROLICIANOMAIOLICELIOPROLICIANOMAIOLI"
+    html = f"""<html><head><title>Espelho de Ponto</title></head><body>
+    <h1>Espelho de Ponto</h1>
+    <div>Servidor: {concatenated}</div>
+    <p>Nenhum registro de ponto de servidor(es) segundo os criterios de busca.</p>
+    </body></html>"""
+    export = EspelhoPontoParser().parse(
+        snapshot(html),
+        run_id="run-reg2",
+        expected_server="Celio Proliciano Maioli",
+    )
+    assert export.servidor.nome == "CELIO PROLICIANO MAIOLI"

@@ -257,7 +257,7 @@ class EspelhoPontoParser:
             )
 
         servidor = ServidorSelecionado(
-            nome=self._server_name(visible_text, expected_server),
+            nome=self._server_name(parsed.texts, expected_server),
             identificador=self._identifier(visible_text) or expected_identifier,
             texto_visivel=self._server_label(parsed.texts),
         )
@@ -347,13 +347,23 @@ class EspelhoPontoParser:
         return match.group(1) if match else None
 
     @staticmethod
-    def _server_name(text: str, expected: str) -> str:
-        match = re.search(
+    def _server_name(texts: list[str], expected: str) -> str:
+        pattern = re.compile(
             r"Servidor\s*:\s*([A-ZÁÉÍÓÚÃÕÇ ]+?)(?:\s*-\s*SIAPE|\s+SIAPE|$)",
-            text,
             re.IGNORECASE,
         )
-        return " ".join(match.group(1).split()).upper() if match else expected.upper()
+        normalized_expected = " ".join(expected.upper().split())
+        for text in texts:
+            match = pattern.search(text)
+            if match:
+                captured = " ".join(match.group(1).split()).upper()
+                # JSF pages may render the name N times concatenated without
+                # whitespace between repetitions (adjacent output components).
+                # If captured starts with expected name, the extra tail is noise.
+                if captured.startswith(normalized_expected):
+                    return normalized_expected
+                return captured
+        return normalized_expected
 
     @staticmethod
     def _server_label(texts: list[str]) -> str | None:
