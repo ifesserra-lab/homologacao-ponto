@@ -22,9 +22,9 @@ def test_output_filename():
     assert r.output_filename == "batch-result-abc123.json"
 
 
-def test_no_output_subdir():
+def test_output_subdir_is_logging():
     r = _make_result()
-    assert not hasattr(r, "output_subdir") or r.output_subdir is None  # flat path no ResultWriter
+    assert r.output_subdir == "logging"
 
 
 def test_to_dict_top_level_keys():

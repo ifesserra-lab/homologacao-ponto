@@ -80,7 +80,7 @@ def test_batch_creates_json_per_server(tmp_path):
     assert result.total == 2
     assert result.succeeded == 2
     assert result.failed == 0
-    batch_file = tmp_path / "batch-result-batch-test.json"
+    batch_file = tmp_path / "logging" / "batch-result-batch-test.json"
     assert batch_file.exists()
     data = json.loads(batch_file.read_text())
     assert data["total"] == 2
@@ -96,7 +96,7 @@ def test_batch_result_file_written(tmp_path):
     )
     session = BrowserSession().authenticated("ctx")
     BatchService(app, writer).run(session, config, run_id="r99")
-    assert (tmp_path / "batch-result-r99.json").exists()
+    assert (tmp_path / "logging" / "batch-result-r99.json").exists()
 
 
 def test_batch_result_has_timestamps(tmp_path):
@@ -137,4 +137,4 @@ def test_batch_result_written_even_with_total_failure(tmp_path):
     assert result.total == 2
     assert result.failed == 2
     assert result.succeeded == 0
-    assert (tmp_path / "batch-result-all-fail.json").exists()
+    assert (tmp_path / "logging" / "batch-result-all-fail.json").exists()

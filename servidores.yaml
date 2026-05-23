@@ -1,0 +1,23 @@
+## Exemplos de uso:
+##
+## 1) Baixar mês corrente (padrão):
+# servidores:
+#   - nome: "CELIO PROLICIANO MAIOLI"
+#     siape: "1534589"
+##
+## 2) Anos específicos — baixa todos os 12 meses de cada ano:
+# anos: [2025, 2026]
+# servidores:
+#   - nome: "CELIO PROLICIANO MAIOLI"
+#     siape: "1534589"
+##
+## 3) Histórico completo — detecta desde a admissão até o mês atual:
+# anos: All
+# servidores:
+#   - nome: "CELIO PROLICIANO MAIOLI"
+#     siape: "1534589"
+
+anos: [2026]
+servidores:
+  - nome: "CELIO PROLICIANO MAIOLI"
+    siape: "1534589"

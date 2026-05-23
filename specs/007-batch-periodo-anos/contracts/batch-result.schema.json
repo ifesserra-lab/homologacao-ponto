@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BatchResult",
+  "description": "Relatório consolidado de lote de exportações — feature 007 adiciona mes/ano por entry",
+  "type": "object",
+  "required": ["run_id", "started_at", "finished_at", "total", "succeeded", "failed", "entries"],
+  "properties": {
+    "run_id": { "type": "string" },
+    "started_at": { "type": "string", "format": "date-time" },
+    "finished_at": { "type": "string", "format": "date-time" },
+    "total": { "type": "integer", "minimum": 0 },
+    "succeeded": { "type": "integer", "minimum": 0 },
+    "failed": { "type": "integer", "minimum": 0 },
+    "output_path": { "type": ["string", "null"] },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["nome", "siape", "status"],
+        "properties": {
+          "nome": { "type": "string" },
+          "siape": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["completed", "empty", "failed", "blocked"]
+          },
+          "mes": {
+            "type": ["integer", "null"],
+            "minimum": 1,
+            "maximum": 12,
+            "description": "Mês do período processado (null em relatórios legados)"
+          },
+          "ano": {
+            "type": ["integer", "null"],
+            "minimum": 2000,
+            "maximum": 2100,
+            "description": "Ano do período processado (null em relatórios legados)"
+          },
+          "export_path": { "type": ["string", "null"] },
+          "error": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}
