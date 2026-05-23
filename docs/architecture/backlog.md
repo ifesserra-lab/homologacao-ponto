@@ -11,10 +11,10 @@
 |------|----------|-------------|-------------|-------------|-------|
 | EPIC-1 · Acesso ao SIGRH | 1 | 3 | 1 | 0 | 0 |
 | EPIC-2 · Navegação e Seleção | 2 | 6 | 2 | 0 | 0 |
-| EPIC-3 · Exportação do Espelho | 3 | 9 | 3 | 0 | 0 |
+| EPIC-3 · Exportação do Espelho | 4 | 11 | 4 | 0 | 0 |
 | EPIC-4 · Batch Avançado | 1 | 3 | 1 | 0 | 0 |
 | EPIC-5 · Visualização | 1 | 4 | 1 | 0 | 0 |
-| **Total** | **8** | **25** | **8** | **0** | **0** |
+| **Total** | **9** | **27** | **9** | **0** | **0** |
 
 ---
 
@@ -48,6 +48,7 @@ Capturar os dados visíveis do espelho e salvar em JSON estruturado por servidor
 | 004 | [004-baixar-espelho-json](../../specs/004-baixar-espelho-json/) | Captura HTML do espelho após seleção do servidor e exporta campos básicos do dia em JSON | US1 (P1): Gerar JSON do espelho selecionado · US2 (P2): Tratar espelho vazio ou incompleto · US3 (P3): Registrar resultado da exportação | Implemented |
 | 005 | [005-exportar-espelho-json](../../specs/005-exportar-espelho-json/) | Captura todos os campos calculados da tabela (HR, HC, HE, HA, HH, Crédito, Débito, Saldo, DNC) e organiza arquivos em pasta por servidor | US1 (P1): Capturar campos calculados da tabela · US2 (P1): Organizar JSON em pasta por servidor · US3 (P2): Preservar compatibilidade com schema anterior | Implemented |
 | 006 | [006-batch-yaml-servidores](../../specs/006-batch-yaml-servidores/) | Lê arquivo YAML com lista de servidores e baixa espelho de ponto de cada um em sequência, com relatório consolidado | US1 (P1): Baixar lote via YAML · US2 (P2): Continuar após falha parcial · US3 (P3): Relatório consolidado | Implemented |
+| 009 | [009-resumo-horas-json](../../specs/009-resumo-horas-json/) | Captura os 16 campos da seção "Resumo das Horas Apuradas no Mês" do SIGRH e persiste no JSON; dashboard usa valores diretamente | US1 (P1): Capturar resumo completo · US2 (P2): Dashboard usa resumo | Implemented |
 
 ---
 
