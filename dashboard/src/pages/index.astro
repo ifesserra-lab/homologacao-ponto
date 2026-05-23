@@ -1,0 +1,63 @@
+---
+import { listServers } from "../lib/espelhoRepository";
+import ServerCard from "../components/ServerCard.astro";
+
+const dataDir = import.meta.env.DATA_DIR as string | undefined;
+const servidores = listServers(dataDir);
+const isEmpty = servidores.length === 0;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Espelhos de Ponto</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="page-header">
+        <h1 class="page-title">Espelhos de Ponto</h1>
+        <p class="page-meta">SIGRH · {servidores.length} {servidores.length === 1 ? "servidor" : "servidores"}</p>
+      </header>
+
+      {isEmpty ? (
+        <div class="empty-state">
+          <div class="empty-icon">📂</div>
+          <p class="empty-title">Nenhum espelho encontrado</p>
+          <p>Execute o batch para exportar espelhos.</p>
+          <code class="empty-hint">data/runs/servidores/</code>
+        </div>
+      ) : (
+        <>
+          <div class="filter-wrap">
+            <svg class="filter-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input id="filter-input" type="search" placeholder="Buscar servidor…" aria-label="Filtrar servidores" />
+          </div>
+          <div class="server-list">
+            {servidores.map((s) => <ServerCard servidor={s} />)}
+          </div>
+        </>
+      )}
+    </div>
+
+    <style>
+      .server-list { display: flex; flex-direction: column; gap: 6px; }
+    </style>
+
+    {!isEmpty && (
+      <script>
+        const input = document.getElementById("filter-input") as HTMLInputElement;
+        const items = document.querySelectorAll<HTMLElement>(".card-wrap");
+        input?.addEventListener("input", () => {
+          const q = input.value.toLowerCase();
+          items.forEach((item) => {
+            const name = (item.querySelector(".server-name")?.textContent ?? "").toLowerCase();
+            item.style.display = name.includes(q) ? "" : "none";
+          });
+        });
+      </script>
+    )}
+  </body>
+</html>

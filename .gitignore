@@ -25,3 +25,9 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Node.js / Astro (dashboard/)
+node_modules/
+dashboard/dist/
+dashboard/.astro/
+*.log
+

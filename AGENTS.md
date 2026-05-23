@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/007-batch-periodo-anos/plan.md` and `.specify/memory/constitution.md`.
+`specs/008-dashboard-espelho-ponto/plan.md` and `.specify/memory/constitution.md`.
 <!-- SPECKIT END -->
 
 ## Persona: Escrita Técnica

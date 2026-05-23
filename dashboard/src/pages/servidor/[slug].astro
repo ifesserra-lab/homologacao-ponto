@@ -1,0 +1,66 @@
+---
+import { listServers, serverDetail } from "../../lib/espelhoRepository";
+import MonthTable from "../../components/MonthTable.astro";
+
+export async function getStaticPaths() {
+  const dataDir = import.meta.env.DATA_DIR as string | undefined;
+  const servidores = listServers(dataDir);
+  return servidores.map((s) => ({ params: { slug: s.slug } }));
+}
+
+const { slug } = Astro.params;
+const dataDir = import.meta.env.DATA_DIR as string | undefined;
+const servidor = serverDetail(slug!, dataDir);
+
+if (!servidor) {
+  return Astro.redirect("/", 302);
+}
+
+const completedCount = servidor.meses.filter(m => m.status === "completed").length;
+const emptyCount = servidor.meses.filter(m => m.status === "empty").length;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{servidor.nome} — Espelhos de Ponto</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+  <body>
+    <div class="page">
+      <a class="back" href="/">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Servidores
+      </a>
+
+      <header class="page-header">
+        <h1 class="page-title">{servidor.nome}</h1>
+        <p class="page-meta">
+          {servidor.siape && <>SIAPE {servidor.siape} · </>}
+          {servidor.periodoRange}
+        </p>
+      </header>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Total</div>
+          <div class="stat-value">{servidor.totalMeses}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Completos</div>
+          <div class="stat-value">{completedCount}</div>
+        </div>
+        {emptyCount > 0 && (
+          <div class="stat">
+            <div class="stat-label">Sem registros</div>
+            <div class="stat-value warn">{emptyCount}</div>
+          </div>
+        )}
+      </div>
+
+      <MonthTable meses={servidor.meses} slug={slug!} />
+    </div>
+  </body>
+</html>
