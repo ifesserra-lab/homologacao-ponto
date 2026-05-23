@@ -105,6 +105,42 @@ const saldoPositivoMin = balanceMin !== null && balanceMin > 0 ? balanceMin : 0;
             </div>
           )}
 
+          {espelho.resumo && (
+            <details class="resumo-sigrh">
+              <summary class="resumo-sigrh-title">Resumo das Horas Apuradas no Mês <span class="resumo-badge">SIGRH</span></summary>
+              <div class="resumo-grid">
+                <div class="resumo-group">
+                  <div class="resumo-group-title">Carga e Registros</div>
+                  <div class="resumo-row"><span>Carga Contratada</span><span class="mono">{espelho.resumo.carga_horaria_contratada ?? "—"}</span></div>
+                  <div class="resumo-row"><span>Carga Esperada no Mês</span><span class="mono">{espelho.resumo.carga_horaria_esperada_mes ?? "—"}</span></div>
+                  <div class="resumo-row"><span>Horas Registradas</span><span class="mono">{espelho.resumo.total_horas_registradas ?? "—"}</span></div>
+                  <div class="resumo-row"><span>Horas Justificadas</span><span class="mono">{espelho.resumo.total_horas_justificadas ?? "—"}</span></div>
+                  <div class="resumo-row resumo-row-highlight"><span>Horas Homologadas</span><span class="mono">{espelho.resumo.total_horas_homologadas ?? "—"}</span></div>
+                </div>
+                <div class="resumo-group">
+                  <div class="resumo-group-title">Compensação Anterior</div>
+                  <div class="resumo-row"><span>Saldo Mês Anterior</span><span class="mono">{espelho.resumo.saldo_mes_anterior_compensacao ?? "—"}</span></div>
+                  <div class="resumo-row"><span>Horas Anteriores Compensadas</span><span class="mono">{espelho.resumo.total_horas_mes_anterior_compensadas ?? "—"}</span></div>
+                  <div class="resumo-row"><span>Débito Anterior Não Compensado</span><span class="mono">{espelho.resumo.debito_mes_anterior_nao_compensado ?? "—"}</span></div>
+                </div>
+                <div class="resumo-group">
+                  <div class="resumo-group-title">Débitos</div>
+                  <div class="resumo-row"><span>Débito Atual Não Autorizado</span><span class="mono resumo-neg">{espelho.resumo.debito_mes_atual_nao_autorizado ?? "—"}</span></div>
+                  <div class="resumo-row"><span>Outros Débitos Vencidos</span><span class="mono">{espelho.resumo.outros_debitos_nao_compensados_vencidos ?? "—"}</span></div>
+                  <div class="resumo-row"><span>Total Débito Não Compensável</span><span class="mono resumo-neg">{espelho.resumo.totalizacao_debito_nao_compensavel ?? "—"}</span></div>
+                </div>
+                <div class="resumo-group">
+                  <div class="resumo-group-title">Saldo Final</div>
+                  <div class="resumo-row"><span>Horas Pendentes Compensação</span><span class="mono resumo-neg">{espelho.resumo.total_horas_pendentes_compensacao ?? "—"}</span></div>
+                  <div class="resumo-row resumo-row-highlight"><span>Saldo do Mês</span><span class="mono resumo-neg">{espelho.resumo.saldo_horas_mes ?? "—"}</span></div>
+                  <div class="resumo-row"><span>Saldo a Compensar no Próximo Mês</span><span class="mono resumo-neg">{espelho.resumo.saldo_horas_mes_compensar_proximo ?? "—"}</span></div>
+                  <div class="resumo-row"><span>Crédito Disponível</span><span class="mono">{espelho.resumo.credito_horas_disponivel_mes ?? "—"}</span></div>
+                  <div class="resumo-row"><span>Crédito em Horas</span><span class="mono">{espelho.resumo.credito_em_horas ?? "—"}</span></div>
+                </div>
+              </div>
+            </details>
+          )}
+
           <DayTable registros={espelho.registros} />
         </>
       )}
