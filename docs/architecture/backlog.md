@@ -13,7 +13,8 @@
 | EPIC-2 · Navegação e Seleção | 2 | 6 | 2 | 0 | 0 |
 | EPIC-3 · Exportação do Espelho | 3 | 9 | 3 | 0 | 0 |
 | EPIC-4 · Batch Avançado | 1 | 3 | 1 | 0 | 0 |
-| **Total** | **7** | **21** | **7** | **0** | **0** |
+| EPIC-5 · Visualização | 1 | 4 | 1 | 0 | 0 |
+| **Total** | **8** | **25** | **8** | **0** | **0** |
 
 ---
 
@@ -57,6 +58,16 @@ Expansão do batch YAML para suportar períodos históricos por ano ou históric
 | # | Spec | Descrição | User Stories | Status |
 |---|------|-----------|-------------|--------|
 | 007 | [007-batch-periodo-anos](../../specs/007-batch-periodo-anos/) | Suporte a campo `anos` no YAML: lista de anos expande para 12 meses cada; `All` baixa histórico completo desde admissão | US1 (P1): Anos específicos · US2 (P2): All (histórico completo) · US3 (P3): Compatibilidade com formato anterior | Implemented |
+
+---
+
+## EPIC-5 · Visualização
+
+Dashboard local para visualizar e auditar os espelhos exportados sem abrir JSONs manualmente.
+
+| # | Spec | Descrição | User Stories | Status |
+|---|------|-----------|-------------|--------|
+| 008 | [008-dashboard-espelho-ponto](../../specs/008-dashboard-espelho-ponto/) | Dashboard local que lista servidores, resume métricas mensais e exibe tabela diária completa dos registros de ponto | US1 (P1): Visão consolidada por servidor · US2 (P1): Detalhamento mensal · US3 (P2): Detalhamento diário · US4 (P3): Filtros e busca | Implemented |
 
 ---
 

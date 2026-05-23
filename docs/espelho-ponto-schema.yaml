@@ -1,0 +1,156 @@
+# Estrutura do JSON exportado pelo homologacao-ponto
+# Arquivo: data/runs/servidores/<slug-nome>/espelho-<periodo>.json
+
+schema_version: 1
+
+campos_raiz:
+  schema_version:
+    tipo: inteiro
+    descricao: Versão do schema — incrementar em mudanças incompatíveis
+    exemplo: 1
+
+  run_id:
+    tipo: string
+    descricao: UUID hexadecimal que identifica unicamente esta exportação
+    exemplo: "d8359645b4cf45199a3f06508e5b9db1"
+
+  captured_at:
+    tipo: string (ISO 8601)
+    descricao: Instante em que o snapshot da página foi capturado (UTC)
+    exemplo: "2026-05-23T21:41:37.689246+00:00"
+
+  status:
+    tipo: enum
+    valores:
+      completed: Espelho com registros de ponto
+      empty: Espelho sem registros no período
+    exemplo: "completed"
+
+  periodo_referencia:
+    tipo: string | null
+    descricao: Mês e ano do espelho conforme exibido pelo SIGRH
+    formato: "<Mês>/<Ano>"
+    exemplo: "Março/2026"
+
+  mensagens:
+    tipo: lista de strings
+    descricao: Avisos ou mensagens exibidos pelo SIGRH na página do espelho
+    exemplo: ["Servidor possui designação remunerada..."]
+
+servidor:
+  descricao: Dados do servidor identificados na página do espelho
+  campos:
+    nome:
+      tipo: string
+      descricao: Nome completo em maiúsculas conforme SIGRH
+      exemplo: "CELIO PROLICIANO MAIOLI"
+    identificador:
+      tipo: string | null
+      descricao: Matrícula SIAPE extraída da página
+      exemplo: "1534589"
+    texto_visivel:
+      tipo: string | null
+      descricao: Primeiro texto do DOM que contém a palavra "servidor" — usado como fallback de identificação
+      exemplo: "Servidor possui designação remunerada..."
+
+registros:
+  descricao: Lista de linhas da tabela do espelho — uma entrada por dia
+  tipo: lista de RegistroDiaPonto
+
+  campos_registro:
+    data:
+      tipo: string (ISO 8601)
+      descricao: Data do registro
+      exemplo: "2026-03-10"
+
+    dia_semana:
+      tipo: string | null
+      descricao: Nome do dia da semana conforme SIGRH
+      exemplo: "Segunda"
+
+    marcacoes:
+      tipo: lista de strings
+      descricao: Horários de batida de ponto no formato HH:MM
+      exemplo: ["07:58", "12:00", "13:00", "17:03"]
+
+    ocorrencias:
+      tipo: lista de strings
+      descricao: Ocorrências lançadas no dia (afastamentos, PIT, feriados etc.)
+      exemplo: ["REGISTRO DO PIT - DOCENTE (02/03/2026)"]
+
+    observacoes:
+      tipo: lista de strings
+      descricao: Observações textuais da linha
+      exemplo: ["Servidor com designação remunerada."]
+
+    situacao:
+      tipo: string | null
+      descricao: Situação do dia conforme SIGRH (Homologado, Pendente etc.)
+      exemplo: "Homologado"
+
+    textos_visiveis:
+      tipo: lista de strings
+      descricao: Demais textos da célula não classificados nos campos acima
+      exemplo: []
+
+    # ── Colunas de horas ───────────────────────────────────────────────────
+    hr:
+      nome_completo: Horas Registradas
+      tipo: string HH:MM | null
+      descricao: Total de horas efetivamente marcadas no relógio no dia
+
+    hc:
+      nome_completo: Horas Contabilizadas
+      tipo: string HH:MM | null
+      descricao: Horas aceitas para cômputo da jornada após validação
+
+    he:
+      nome_completo: Horas Excedentes
+      tipo: string HH:MM | null
+      descricao: Horas trabalhadas além da jornada diária prevista
+
+    ha:
+      nome_completo: Horas Autorizadas
+      tipo: string HH:MM | null
+      descricao: Horas dispensadas ou autorizadas por chefia (abono, dispensa etc.)
+
+    hh:
+      nome_completo: Horas Homologadas
+      tipo: string HH:MM | null
+      descricao: Horas efetivamente homologadas pela chefia imediata
+
+    # ── Colunas de saldo ───────────────────────────────────────────────────
+    credito:
+      tipo: string HH:MM | null
+      descricao: Crédito gerado no dia (trabalhado > jornada prevista)
+
+    debito:
+      tipo: string HH:MM | null
+      descricao: Débito gerado no dia (trabalhado < jornada prevista ou ausência)
+
+    saldo_no_mes:
+      tipo: string HH:MM | null
+      descricao: Saldo acumulado de crédito/débito até este dia dentro do mês
+
+    credito_acumulado:
+      tipo: string HH:MM | null
+      descricao: Banco de horas total acumulado (todos os meses anteriores + atual)
+
+    dnc:
+      nome_completo: Débito Não Compensado
+      tipo: string HH:MM | null
+      descricao: Saldo negativo do dia que não foi compensado nem abonado
+
+fonte:
+  descricao: Metadados sobre a origem dos dados
+  campos:
+    tipo:
+      valor_fixo: "sigrh-espelho-ponto-visivel"
+      descricao: Indica que os dados foram extraídos via scraping da interface web do SIGRH
+    pagina:
+      tipo: string | null
+      descricao: Caminho da URL do espelho no momento da captura
+    rotulos_visiveis:
+      tipo: lista de strings
+      descricao: Rótulos visíveis na página confirmando que era um Espelho de Ponto
+      exemplo: ["Espelho de Ponto"]

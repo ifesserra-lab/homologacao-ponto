@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import argparse
+import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -32,6 +34,10 @@ def build_parser() -> argparse.ArgumentParser:
     batch.add_argument("--env-file", default=".env")
     batch.add_argument("--mes", type=int, choices=range(1, 13), metavar="{1..12}")
     batch.add_argument("--ano", type=int)
+    dashboard = subcommands.add_parser("dashboard", help="Inicia dashboard local de espelhos de ponto")
+    dashboard.add_argument("--data-dir", default="./data/runs", help="Diretório raiz com pasta servidores/")
+    dashboard.add_argument("--port", type=int, default=4321, help="Porta do servidor Astro (padrão: 4321)")
+    dashboard.add_argument("--dashboard-dir", default=None, help="Caminho para pasta dashboard/ (padrão: auto-detectado)")
     return parser
 
 
@@ -90,6 +96,20 @@ def main(argv: list[str] | None = None) -> int:
         result = app.run_batch(config)
         print(result.message)
         return result.exit_code
+    if args.command == "dashboard":
+        dashboard_dir = Path(args.dashboard_dir) if args.dashboard_dir else Path(__file__).parent.parent.parent.parent / "dashboard"
+        if not dashboard_dir.exists():
+            print(f"Erro: pasta dashboard/ não encontrada em {dashboard_dir}. Execute 'npm install' em dashboard/.", file=sys.stderr)
+            return 1
+        data_dir = str(Path(args.data_dir).resolve() / "servidores")
+        env = {**os.environ, "DATA_DIR": data_dir}
+        print(f"Dashboard em http://localhost:{args.port}")
+        result = subprocess.run(
+            ["npm", "run", "dev", "--", "--port", str(args.port)],
+            cwd=dashboard_dir,
+            env=env,
+        )
+        return 0 if result.returncode == 0 else 2
     return 1
 
 

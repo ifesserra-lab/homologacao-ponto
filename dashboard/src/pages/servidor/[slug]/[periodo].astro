@@ -1,0 +1,113 @@
+---
+import { listServers, monthDetail } from "../../../lib/espelhoRepository";
+import { aggregateMonth, formatMin } from "../../../lib/aggregation";
+import DayTable from "../../../components/DayTable.astro";
+
+export async function getStaticPaths() {
+  const dataDir = import.meta.env.DATA_DIR as string | undefined;
+  const servidores = listServers(dataDir);
+  const paths: { params: { slug: string; periodo: string } }[] = [];
+  for (const s of servidores) {
+    for (const mes of s.meses) {
+      paths.push({ params: { slug: s.slug, periodo: mes.periodoSlug } });
+    }
+  }
+  return paths;
+}
+
+const { slug, periodo } = Astro.params;
+const dataDir = import.meta.env.DATA_DIR as string | undefined;
+const espelho = monthDetail(slug!, periodo!, dataDir);
+
+if (!espelho) {
+  return Astro.redirect(`/servidor/${slug}`, 302);
+}
+
+const agg = aggregateMonth(espelho.registros, espelho.captured_at);
+const incompleteDays = espelho.registros.filter(r => {
+  if (!r.debito) return false;
+  const [h, m] = r.debito.split(":").map(Number);
+  return (h * 60 + m) > 0;
+}).length;
+
+const balanceMin = agg.balanceMin;
+const faltaMin = balanceMin !== null && balanceMin < 0 ? -balanceMin : 0;
+const saldoPositivoMin = balanceMin !== null && balanceMin > 0 ? balanceMin : 0;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{espelho.periodo_referencia} · {espelho.servidor.nome}</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+  <body>
+    <div class="page-wide">
+      <a class="back" href={`/servidor/${slug}`}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        {espelho.servidor.nome}
+      </a>
+
+      <header class="page-header">
+        <h1 class="page-title">{espelho.periodo_referencia}</h1>
+        <p class="page-meta">
+          {espelho.servidor.nome}
+          {espelho.servidor.identificador && <> · SIAPE {espelho.servidor.identificador}</>}
+        </p>
+      </header>
+
+      {espelho.status === "empty" ? (
+        <div class="notice">Este mês não possui registros de ponto.</div>
+      ) : (
+        <>
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-label">Carga Esperada</div>
+              <div class="stat-value mono">{formatMin(agg.cargaEsperadaMin)}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Horas Registradas</div>
+              <div class="stat-value mono">{formatMin(agg.somaHrMin)}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Horas Homologadas</div>
+              <div class="stat-value mono">{formatMin(agg.somaCreditoMin)}</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Dias com marcação</div>
+              <div class="stat-value">{agg.daysWithMarcacoes}</div>
+            </div>
+            {incompleteDays > 0 && (
+              <div class="stat">
+                <div class="stat-label">Jornada incompleta</div>
+                <div class="stat-value warn">{incompleteDays}</div>
+              </div>
+            )}
+            {faltaMin > 0 ? (
+              <div class="stat stat-falta">
+                <div class="stat-label">Falta compensar</div>
+                <div class="stat-value warn mono">{formatMin(faltaMin)}</div>
+              </div>
+            ) : (
+              <div class="stat stat-ok">
+                <div class="stat-label">Saldo do mês</div>
+                <div class="stat-value ok mono">+{formatMin(saldoPositivoMin)}</div>
+              </div>
+            )}
+          </div>
+
+          {incompleteDays > 0 && (
+            <div class="legend">
+              <span class="legend-dot"></span>
+              Dias com jornada incompleta (débito &gt; 0)
+            </div>
+          )}
+
+          <DayTable registros={espelho.registros} />
+        </>
+      )}
+    </div>
+  </body>
+</html>
