@@ -14,7 +14,8 @@ build/
 .env
 .env.*
 !.env.example
-data/runs/
+data/runs/logging/
+data/runs/selection-result-*.json
 logs/
 playwright-report/
 test-results/
