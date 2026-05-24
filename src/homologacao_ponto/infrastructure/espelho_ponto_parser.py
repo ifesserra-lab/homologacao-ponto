@@ -24,27 +24,33 @@ def _normalize_label(text: str) -> str:
     return re.sub(r"\s+", " ", ascii_only.lower()).strip().rstrip(":")
 
 
+# Substrings estáveis para matching — rótulos do SIGRH contêm mês/ano dinâmicos
+# (ex: "Saldo de Abril/2026 Para Compensação"), por isso não usamos o nome do mês.
+# Ordem importa: mais específico primeiro para evitar falsos positivos.
 _RESUMO_LABEL_MAP: list[tuple[str, str]] = [
     ("carga horaria contratada", "carga_horaria_contratada"),
     ("carga horaria esperada", "carga_horaria_esperada_mes"),
     ("total de horas registradas", "total_horas_registradas"),
     ("total de horas justificadas", "total_horas_justificadas"),
     ("total de horas homologadas", "total_horas_homologadas"),
-    ("saldo de horas do mes anterior", "saldo_mes_anterior_compensacao"),
-    (
-        "total de horas do mes anterior compensadas",
-        "total_horas_mes_anterior_compensadas",
-    ),
-    ("debito do mes anterior nao compensado", "debito_mes_anterior_nao_compensado"),
-    ("debito do mes atual nao autorizado", "debito_mes_atual_nao_autorizado"),
+    # "Saldo de [Mês] Para Compensação" — mês anterior variável
+    ("para compensacao", "saldo_mes_anterior_compensacao"),
+    # "Total de Horas de [Mês] Compensadas" — após matches acima, "compensadas" é único
+    ("compensadas", "total_horas_mes_anterior_compensadas"),
+    # "Débito de [Mês] Não Compensado em [Mês]" — "compensado em" distingue de "compensados vencidos"
+    ("compensado em", "debito_mes_anterior_nao_compensado"),
+    # "Débito de [Mês] Não Autorizado à Compensação"
+    ("nao autorizado", "debito_mes_atual_nao_autorizado"),
     (
         "outros debitos nao compensados vencidos",
         "outros_debitos_nao_compensados_vencidos",
     ),
     ("totalizacao do debito nao compensavel", "totalizacao_debito_nao_compensavel"),
     ("total de horas pendentes de compensacao", "total_horas_pendentes_compensacao"),
-    ("saldo de horas do mes a compensar", "saldo_horas_mes_compensar_proximo"),
-    ("saldo de horas do mes", "saldo_horas_mes"),
+    # "Saldo de Horas de [Mês] a compensar até [Mês]" — checar ANTES de "saldo de horas de"
+    ("a compensar", "saldo_horas_mes_compensar_proximo"),
+    # "Saldo de Horas de [Mês]:" — forma curta
+    ("saldo de horas de", "saldo_horas_mes"),
     ("credito de horas disponivel", "credito_horas_disponivel_mes"),
     ("credito em horas", "credito_em_horas"),
 ]
@@ -73,7 +79,7 @@ class _ResumoHTMLParser(HTMLParser):
             self._cell_buf = []
         elif tag == "tr" and self._in_resumo_section:
             self._current_row_cells = []
-        elif tag == "td":
+        elif tag in {"td", "th"}:
             self._td_depth += 1
             if self._in_resumo_section and self._td_depth == 1:
                 self._cell_buf = []
@@ -91,7 +97,7 @@ class _ResumoHTMLParser(HTMLParser):
                 self._in_resumo_section = True
             self._in_caption = False
             self._cell_buf = []
-        elif tag == "td":
+        elif tag in {"td", "th"}:
             if self._in_resumo_section and self._td_depth == 1:
                 cell_text = " ".join(p.strip() for p in self._cell_buf if p.strip())
                 self._current_row_cells.append(cell_text)

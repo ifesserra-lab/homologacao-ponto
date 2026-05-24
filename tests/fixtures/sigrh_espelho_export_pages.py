@@ -144,72 +144,74 @@ VALID_ESPELHO_WITH_RESUMO_HTML = """
         <td>---</td>
       </tr>
     </table>
-    <table>
+    <table class="visualizacao" style="width: 70%;">
       <caption>Resumo das Horas Apuradas no Mês</caption>
+      <tbody>
       <tr>
-        <td>Carga Horária Contratada:</td>
+        <th nowrap="nowrap">Carga Horária Contratada:</th>
         <td>160:00</td>
       </tr>
       <tr>
-        <td>Carga Horária Esperada no Mês:</td>
+        <th nowrap="nowrap">Carga Horária Esperada no Mês:</th>
         <td>160:00</td>
       </tr>
       <tr>
-        <td>Total de Horas Registradas:</td>
+        <th nowrap="nowrap">Total de Horas Registradas:</th>
         <td>50:31</td>
       </tr>
       <tr>
-        <td>Total de Horas Justificadas:</td>
+        <th nowrap="nowrap">Total de Horas Justificadas:</th>
         <td>00:00</td>
       </tr>
       <tr>
-        <td>Total de Horas Homologadas:</td>
+        <th nowrap="nowrap">Total de Horas Homologadas:</th>
         <td>49:25</td>
       </tr>
       <tr>
-        <td>Saldo de Horas do Mês Anterior Para Compensação:</td>
+        <th nowrap="nowrap">Saldo de Abril/2026 Para Compensação:</th>
         <td>00:00</td>
       </tr>
       <tr>
-        <td>Total de Horas do Mês Anterior Compensadas:</td>
+        <th nowrap="nowrap">Total de Horas de Abril/2026 Compensadas:</th>
         <td>00:00</td>
       </tr>
       <tr>
-        <td>Débito do Mês Anterior Não Compensado em Horas:</td>
+        <th nowrap="nowrap">Débito de Abril/2026 Não Compensado em Maio/2026:</th>
         <td>00:00</td>
       </tr>
       <tr>
-        <td>Débito do Mês Atual Não Autorizado:</td>
+        <th nowrap="nowrap">Débito de Maio/2026 Não Autorizado à Compensação:</th>
         <td>-61:25</td>
       </tr>
       <tr>
-        <td>Outros Débitos Não Compensados Vencidos:</td>
+        <th nowrap="nowrap">Outros Débitos Não Compensados Vencidos em Maio/2026:</th>
         <td>00:00</td>
       </tr>
       <tr>
-        <td>Totalização do Débito Não Compensável:</td>
+        <th nowrap="nowrap">Totalização do Débito Não Compensável:</th>
         <td>-61:25</td>
       </tr>
       <tr>
-        <td>Total de Horas Pendentes de Compensação:</td>
+        <th nowrap="nowrap">Total de Horas Pendentes de Compensação:</th>
         <td>-09:10</td>
       </tr>
       <tr>
-        <td>Saldo de Horas do Mês:</td>
+        <th nowrap="nowrap">Saldo de Horas de Maio/2026:</th>
         <td>-09:10</td>
       </tr>
       <tr>
-        <td>Saldo de Horas do Mês a compensar no próximo mês:</td>
+        <th nowrap="nowrap">Saldo de Horas de Maio/2026 a compensar até Junho/2026:</th>
         <td>-09:10</td>
       </tr>
       <tr>
-        <td>Crédito de Horas Disponível em Horas:</td>
+        <th nowrap="nowrap">Crédito de Horas Disponível em Maio/2026:</th>
         <td>00:00</td>
       </tr>
       <tr>
-        <td>Crédito em Horas:</td>
+        <th nowrap="nowrap">Crédito em Horas:</th>
         <td>00:00</td>
       </tr>
+      </tbody>
     </table>
   </body>
 </html>
