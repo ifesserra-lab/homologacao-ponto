@@ -1,98 +1,149 @@
 # Homologacao Ponto
 
-CLI Python para autenticar no SIGRH com Playwright e coletar apenas registros
-de ponto do usuário autenticado em um JSON local por execução. Também inclui um
-fluxo para navegar até a tela "Espelho do Ponto" após login. Quando informado
-um servidor, o fluxo busca e seleciona o resultado único, abre o espelho diário
-individual e exporta os dados visíveis para JSON.
+Ferramenta para exportar o Espelho de Ponto do SIGRH para JSON e visualizá-lo
+em um dashboard estático. Usa Playwright para navegar o SIGRH de forma headless,
+extrai os dados visíveis e os persiste em `data/runs/servidores/`.
 
 ## Setup
 
 ```bash
 python3.12 -m venv .venv
 . .venv/bin/activate
-python -m pip install -e ".[dev]"
-python -m playwright install chromium
+pip install -e ".[dev]"
+playwright install chromium
 ```
 
-Crie um `.env` local a partir de `.env.example` e preencha:
+Copie `.env.example` para `.env` e preencha:
+
+```bash
+cp .env.example .env
+```
 
 ```text
-SIGRH_USERNAME=<usuario>
+# Credenciais SIGRH (para o scraper)
+SIGRH_USERNAME=<matricula>
 SIGRH_PASSWORD=<senha>
+
+# Credenciais do dashboard (para a tela de login)
+DASHBOARD_USER=<usuario>
+DASHBOARD_PASSWORD=<senha>
 ```
 
-Credenciais, `.env`, cookies, traces, screenshots e HTML bruto não devem ser
-commitados ou persistidos por padrão.
-
-## Uso
+Para o dashboard, calcule os hashes SHA-256 e adicione ao `.env`:
 
 ```bash
-homologacao-ponto crawl --output-dir ./data/runs
+export DASHBOARD_USER=<usuario>
+export DASHBOARD_PASSWORD=<senha>
+export PUBLIC_DASHBOARD_USER_HASH=$(python3 -c "import hashlib,os; print(hashlib.sha256(os.environ['DASHBOARD_USER'].encode()).hexdigest())")
+export PUBLIC_DASHBOARD_PASSWORD_HASH=$(python3 -c "import hashlib,os; print(hashlib.sha256(os.environ['DASHBOARD_PASSWORD'].encode()).hexdigest())")
 ```
 
-Para navegar até a tela "Espelho do Ponto":
+## Uso rápido (Makefile)
 
 ```bash
-homologacao-ponto espelho-ponto --output-dir ./data/runs
+make export      # exporta espelho de todos os servidores em servidores.yaml
+make dashboard   # sobe o dashboard local em http://localhost:4321
+make test        # roda a suite de testes Python
 ```
 
-Para buscar e selecionar um servidor na tela "Espelho do Ponto" e exportar o
-espelho diário visível em JSON:
+## Exportar espelho
+
+### Batch (recomendado)
+
+Edite `servidores.yaml` com a lista de servidores e o período:
+
+```yaml
+anos: [2026]
+servidores:
+  - nome: "NOME COMPLETO EM MAIÚSCULAS"
+    siape: "1234567"
+```
+
+Execute:
 
 ```bash
-homologacao-ponto espelho-ponto --servidor "Celio Proliciano Maioli" --output-dir ./data/runs
+homologacao-ponto batch --file servidores.yaml --output-dir data/runs
 ```
 
-Esse comando gera, quando a seleção e exportação terminam com sucesso:
+Os JSONs são salvos em `data/runs/servidores/<slug-nome>/espelho-<periodo>.json`.
+
+### Servidor único
+
+```bash
+homologacao-ponto espelho-ponto --servidor "NOME DO SERVIDOR" --output-dir data/runs
+```
+
+## Dashboard
+
+```bash
+# Instalar dependências (primeira vez)
+cd dashboard && npm install
+
+# Subir em desenvolvimento
+make dashboard   # ou: cd dashboard && npm run dev
+```
+
+Acesse `http://localhost:4321`. Login com as credenciais definidas em `DASHBOARD_USER` / `DASHBOARD_PASSWORD`.
+
+### Build para produção
+
+```bash
+cd dashboard && npm run build
+```
+
+## GitHub Actions
+
+Dois workflows automáticos:
+
+| Workflow | Gatilho | O que faz |
+|---------|---------|-----------|
+| `export.yml` | Toda segunda-feira 08h UTC + `workflow_dispatch` | Roda `homologacao-ponto batch`, comita JSONs atualizados em `data/runs/servidores/` |
+| `deploy.yml` | Push em `main` (data ou dashboard alterados) + `workflow_dispatch` | Build Astro + deploy no GitHub Pages |
+
+### Configuração do repositório (uma vez)
+
+1. **Tornar público**: Settings → Danger Zone → Change visibility → Public
+2. **GitHub Pages**: Settings → Pages → Source → GitHub Actions
+3. **Secrets** (Settings → Secrets and variables → Actions):
+
+| Secret | Descrição |
+|--------|-----------|
+| `SIGRH_USERNAME` | Matrícula SIGRH para o scraper |
+| `SIGRH_PASSWORD` | Senha SIGRH para o scraper |
+| `DASHBOARD_USER` | Usuário para login no dashboard |
+| `DASHBOARD_PASSWORD` | Senha para login no dashboard |
+
+O workflow de deploy calcula os hashes automaticamente a partir de `DASHBOARD_USER` e `DASHBOARD_PASSWORD`.
+
+## Estrutura de dados
 
 ```text
-data/runs/selection-result-{run_id}.json
-data/runs/espelho-ponto-{run_id}.json
-data/runs/export-result-{run_id}.json
+data/runs/servidores/
+└── <slug-nome>/
+    ├── espelho-janeiro-2026.json
+    ├── espelho-fevereiro-2026.json
+    └── ...
 ```
 
-O arquivo `espelho-ponto-{run_id}.json` contém servidor, período visível,
-data/hora de captura, mensagens da página e registros por dia com `data`,
-`marcacoes`, `ocorrencias`, `observacoes` e `textos_visiveis` quando esses
-campos estiverem visíveis. HTML bruto, screenshots, cookies, senhas, tokens e
-traces não são persistidos por padrão.
-
-Para depuração local com navegador visível:
-
-```bash
-homologacao-ponto crawl --headed --output-dir ./data/runs
-homologacao-ponto espelho-ponto --headed --output-dir ./data/runs
-homologacao-ponto espelho-ponto --servidor "Celio Proliciano Maioli" --headed --output-dir ./data/runs
-```
-
-`--headed` é apenas debug; o padrão é headless.
-
-## Códigos De Saída
-
-- `0`: sucesso ou resultado vazio persistido.
-- `2`: falha de autenticação.
-- `3`: CAPTCHA/MFA no login, falha de navegação, página inválida ou erro
-  inesperado de exportação.
-- `4`: falha de escopo, limite operacional, parcial por limite de páginas ou
-  falha de navegação até "Espelho do Ponto", falha de seleção de servidor ou
-  divergência entre servidor solicitado e página do espelho.
-- `5`: falha ao escrever JSON local em fluxos existentes ou CAPTCHA/MFA durante
-  exportação.
-- `6`: falha ao escrever JSON local ou `BrowserSession` expirada durante crawl,
-  navegação ou seleção com JSON parcial.
-- `7`: navegador Playwright ausente ou não inicializado.
-
-O crawler não tenta contornar CAPTCHA, MFA ou bloqueios anti-automação.
+Schema completo em [`docs/espelho-ponto-schema.yaml`](docs/espelho-ponto-schema.yaml) (schema v2 com campo `resumo`).
 
 ## Testes
 
 ```bash
-pytest
+make test                    # suite Python completa
+cd dashboard && npm test     # testes TypeScript (vitest)
 ```
 
-Detalhes do fluxo planejado estão em
-`specs/001-login-sigrh/quickstart.md` e
-`specs/002-navegar-espelho-ponto/quickstart.md` e
-`specs/003-selecionar-servidor/quickstart.md` e
-`specs/004-baixar-espelho-json/quickstart.md`.
+## Códigos de saída do CLI
+
+| Código | Significado |
+|--------|------------|
+| `0` | Sucesso |
+| `2` | Falha de autenticação |
+| `3` | CAPTCHA/MFA, navegação inválida ou erro inesperado |
+| `4` | Falha de escopo, seleção ou divergência de servidor |
+| `5` | Falha de escrita JSON ou CAPTCHA durante exportação |
+| `6` | JSON parcial ou sessão expirada |
+| `7` | Playwright/Chromium ausente |
+
+O crawler não contorna CAPTCHA, MFA nem bloqueios anti-automação.
