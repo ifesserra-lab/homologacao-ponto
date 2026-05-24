@@ -1,0 +1,94 @@
+---
+const userHash = import.meta.env.PUBLIC_DASHBOARD_USER_HASH;
+const passHash = import.meta.env.PUBLIC_DASHBOARD_PASSWORD_HASH;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login · Homologação de Ponto</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+  <body>
+    <div class="login-page">
+      <div class="login-card">
+        <h1 class="login-title">Homologação de Ponto</h1>
+        <p class="login-subtitle">Acesso restrito</p>
+        <form class="login-form" id="login-form" autocomplete="off">
+          <div class="login-field">
+            <label for="user">Usuário</label>
+            <input id="user" name="user" type="text" autocomplete="username" required />
+          </div>
+          <div class="login-field">
+            <label for="password">Senha</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required />
+          </div>
+          <div class="login-error" id="login-error" hidden>
+            Usuário ou senha incorretos.
+          </div>
+          <button type="submit" class="login-btn">Entrar</button>
+        </form>
+      </div>
+    </div>
+
+    <script define:vars={{ userHash, passHash }}>
+      const form = document.getElementById("login-form");
+      const errorEl = document.getElementById("login-error");
+
+      async function sha256(text) {
+        const buf = await crypto.subtle.digest(
+          "SHA-256",
+          new TextEncoder().encode(text),
+        );
+        return Array.from(new Uint8Array(buf))
+          .map((b) => b.toString(16).padStart(2, "0"))
+          .join("");
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        errorEl.hidden = true;
+        const user = form.user.value;
+        const password = form.password.value;
+
+        if (!userHash || !passHash) {
+          errorEl.hidden = false;
+          return;
+        }
+
+        const [inputUserHash, inputPassHash] = await Promise.all([
+          sha256(user),
+          sha256(password),
+        ]);
+
+        if (inputUserHash === userHash && inputPassHash === passHash) {
+          const raw = sessionStorage.getItem("dashboard_auth");
+          let redirect = "/";
+          if (raw) {
+            try {
+              const session = JSON.parse(raw);
+              if (session.redirect) redirect = session.redirect;
+            } catch {}
+          }
+          sessionStorage.setItem(
+            "dashboard_auth",
+            JSON.stringify({ authenticated: true, redirect: null }),
+          );
+          window.location.href = redirect;
+        } else {
+          errorEl.hidden = false;
+        }
+      });
+
+      // If already authenticated, redirect home
+      const existing = sessionStorage.getItem("dashboard_auth");
+      if (existing) {
+        try {
+          if (JSON.parse(existing).authenticated) window.location.href = "/";
+        } catch {}
+      }
+    </script>
+  </body>
+</html>

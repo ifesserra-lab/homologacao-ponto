@@ -45,10 +45,13 @@ const saldoPositivoMin = balanceMin !== null && balanceMin > 0 ? balanceMin : 0;
   </head>
   <body>
     <div class="page-wide">
-      <a class="back" href={`/servidor/${slug}`}>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        {espelho.servidor.nome}
-      </a>
+      <div class="nav-row">
+        <a class="back" href={`/servidor/${slug}`}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          {espelho.servidor.nome}
+        </a>
+        <button class="logout-btn" data-action="logout" type="button">Sair</button>
+      </div>
 
       <header class="page-header">
         <h1 class="page-title">{espelho.periodo_referencia}</h1>
@@ -145,5 +148,35 @@ const saldoPositivoMin = balanceMin !== null && balanceMin > 0 ? balanceMin : 0;
         </>
       )}
     </div>
+    <script>
+      (function () {
+        const raw = sessionStorage.getItem("dashboard_auth");
+        if (!raw) {
+          sessionStorage.setItem(
+            "dashboard_auth",
+            JSON.stringify({ authenticated: false, redirect: window.location.pathname }),
+          );
+          window.location.href = "/login";
+          return;
+        }
+        try {
+          if (!JSON.parse(raw).authenticated) {
+            sessionStorage.setItem(
+              "dashboard_auth",
+              JSON.stringify({ authenticated: false, redirect: window.location.pathname }),
+            );
+            window.location.href = "/login";
+          }
+        } catch {
+          window.location.href = "/login";
+        }
+        document.querySelectorAll("[data-action='logout']").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            sessionStorage.removeItem("dashboard_auth");
+            window.location.href = "/login";
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
