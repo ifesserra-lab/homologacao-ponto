@@ -1,4 +1,6 @@
 ---
+import ThemeToggle from "../components/ThemeToggle.astro";
+
 const userHash = import.meta.env.PUBLIC_DASHBOARD_USER_HASH;
 const passHash = import.meta.env.PUBLIC_DASHBOARD_PASSWORD_HASH;
 ---
@@ -9,9 +11,18 @@ const passHash = import.meta.env.PUBLIC_DASHBOARD_PASSWORD_HASH;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login · Homologação de Ponto</title>
+    <script is:inline>
+      const theme = localStorage.getItem("dashboard_theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = theme === "dark" || theme === "light" ? theme : prefersDark ? "dark" : "light";
+    </script>
     <link rel="stylesheet" href="/styles/global.css" />
+    <script src="/scripts/theme.js" defer></script>
   </head>
   <body>
+    <div class="login-theme">
+      <ThemeToggle />
+    </div>
     <div class="login-page">
       <div class="login-card">
         <h1 class="login-title">Homologação de Ponto</h1>

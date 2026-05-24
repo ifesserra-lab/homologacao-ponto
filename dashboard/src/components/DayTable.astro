@@ -128,12 +128,12 @@ function displayDiaSemana(r: RegistroDia): string {
     text-transform: uppercase; letter-spacing: 0.07em;
     white-space: nowrap;
   }
-  .day-table td { padding: 9px 12px; border-bottom: 1px solid #f0f0f2; white-space: nowrap; }
+  .day-table td { padding: 9px 12px; border-bottom: 1px solid var(--table-border-soft); white-space: nowrap; }
   .day-table tbody tr:last-child td { border-bottom: none; }
-  .day-table tbody tr:hover td { background: #f9f9fb; }
+  .day-table tbody tr:hover td { background: var(--table-row-hover); }
 
-  .row-incomplete td { background: #fff5f2; }
-  .row-incomplete:hover td { background: #ffece8; }
+  .row-incomplete td { background: var(--row-incomplete); }
+  .row-incomplete:hover td { background: var(--row-incomplete-hover); }
 
   .num     { text-align: right; }
   .mono    { font-family: var(--mono); font-size: 11.5px; font-variant-numeric: tabular-nums; }

@@ -2,6 +2,7 @@
 import { listServers, serverDetail } from "../../lib/espelhoRepository";
 import MonthTable from "../../components/MonthTable.astro";
 import { formatMin, pctCarga } from "../../lib/aggregation";
+import ThemeToggle from "../../components/ThemeToggle.astro";
 
 export async function getStaticPaths() {
   const dataDir = import.meta.env.DATA_DIR as string | undefined;
@@ -35,7 +36,13 @@ const overallPct = totalCargaAllMonths > 0 ? Math.min(100, Math.round((totalHhAl
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{servidor.nome} — Espelhos de Ponto</title>
+    <script is:inline>
+      const theme = localStorage.getItem("dashboard_theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = theme === "dark" || theme === "light" ? theme : prefersDark ? "dark" : "light";
+    </script>
     <link rel="stylesheet" href="/styles/global.css" />
+    <script src="/scripts/theme.js" defer></script>
   </head>
   <body>
     <div class="page">
@@ -44,7 +51,10 @@ const overallPct = totalCargaAllMonths > 0 ? Math.min(100, Math.round((totalHhAl
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           Servidores
         </a>
-        <button class="logout-btn" data-action="logout" type="button">Sair</button>
+        <div class="nav-actions">
+          <ThemeToggle />
+          <button class="logout-btn" data-action="logout" type="button">Sair</button>
+        </div>
       </div>
 
       <header class="page-header">

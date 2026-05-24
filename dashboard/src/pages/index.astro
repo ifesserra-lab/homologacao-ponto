@@ -1,6 +1,7 @@
 ---
 import { listServers } from "../lib/espelhoRepository";
 import ServerCard from "../components/ServerCard.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
 
 const dataDir = import.meta.env.DATA_DIR as string | undefined;
 const servidores = listServers(dataDir);
@@ -13,7 +14,13 @@ const isEmpty = servidores.length === 0;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Espelhos de Ponto</title>
+    <script is:inline>
+      const theme = localStorage.getItem("dashboard_theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.dataset.theme = theme === "dark" || theme === "light" ? theme : prefersDark ? "dark" : "light";
+    </script>
     <link rel="stylesheet" href="/styles/global.css" />
+    <script src="/scripts/theme.js" defer></script>
   </head>
   <body>
     <div class="page">
@@ -23,7 +30,10 @@ const isEmpty = servidores.length === 0;
             <h1 class="page-title">Espelhos de Ponto</h1>
             <p class="page-meta">SIGRH · {servidores.length} {servidores.length === 1 ? "servidor" : "servidores"}</p>
           </div>
-          <button class="logout-btn" data-action="logout" type="button">Sair</button>
+          <div class="nav-actions">
+            <ThemeToggle />
+            <button class="logout-btn" data-action="logout" type="button">Sair</button>
+          </div>
         </div>
       </header>
 

@@ -79,3 +79,17 @@ test("T024 after logout direct URL access redirects to /login", async ({
   await page.goto("/");
   await expect(page).toHaveURL(/\/login/);
 });
+
+// T025: theme toggle persists preference in localStorage
+test("T025 theme toggle persists dark mode", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/login");
+  await page.click('[data-action="toggle-theme"]');
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await expect(page.locator('[data-action="toggle-theme"]')).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+});
