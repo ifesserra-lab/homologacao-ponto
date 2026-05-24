@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read
-`specs/009-resumo-horas-json/plan.md` and `.specify/memory/constitution.md`.
+`specs/010-dashboard-login-env/plan.md` and `.specify/memory/constitution.md`.
 <!-- SPECKIT END -->
 
 ## Persona: Escrita Técnica

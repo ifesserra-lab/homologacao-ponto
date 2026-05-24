@@ -13,8 +13,8 @@
 | EPIC-2 · Navegação e Seleção | 2 | 6 | 2 | 0 | 0 |
 | EPIC-3 · Exportação do Espelho | 4 | 11 | 4 | 0 | 0 |
 | EPIC-4 · Batch Avançado | 1 | 3 | 1 | 0 | 0 |
-| EPIC-5 · Visualização | 1 | 4 | 1 | 0 | 0 |
-| **Total** | **9** | **27** | **9** | **0** | **0** |
+| EPIC-5 · Visualização | 2 | 6 | 2 | 0 | 0 |
+| **Total** | **10** | **29** | **10** | **0** | **0** |
 
 ---
 
@@ -69,6 +69,7 @@ Dashboard local para visualizar e auditar os espelhos exportados sem abrir JSONs
 | # | Spec | Descrição | User Stories | Status |
 |---|------|-----------|-------------|--------|
 | 008 | [008-dashboard-espelho-ponto](../../specs/008-dashboard-espelho-ponto/) | Dashboard local que lista servidores, resume métricas mensais e exibe tabela diária completa dos registros de ponto | US1 (P1): Visão consolidada por servidor · US2 (P1): Detalhamento mensal · US3 (P2): Detalhamento diário · US4 (P3): Filtros e busca | Implemented |
+| 010 | [010-dashboard-login-env](../../specs/010-dashboard-login-env/) | Tela de login no dashboard com credenciais definidas via variáveis de ambiente; acesso bloqueado para não autenticados | US1 (P1): Acesso protegido ao dashboard · US2 (P2): Encerramento de sessão | Implemented |
 
 ---
 

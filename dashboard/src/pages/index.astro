@@ -18,8 +18,13 @@ const isEmpty = servidores.length === 0;
   <body>
     <div class="page">
       <header class="page-header">
-        <h1 class="page-title">Espelhos de Ponto</h1>
-        <p class="page-meta">SIGRH · {servidores.length} {servidores.length === 1 ? "servidor" : "servidores"}</p>
+        <div class="page-header-row">
+          <div>
+            <h1 class="page-title">Espelhos de Ponto</h1>
+            <p class="page-meta">SIGRH · {servidores.length} {servidores.length === 1 ? "servidor" : "servidores"}</p>
+          </div>
+          <button class="logout-btn" data-action="logout" type="button">Sair</button>
+        </div>
       </header>
 
       {isEmpty ? (
@@ -59,5 +64,35 @@ const isEmpty = servidores.length === 0;
         });
       </script>
     )}
+    <script>
+      (function () {
+        const raw = sessionStorage.getItem("dashboard_auth");
+        if (!raw) {
+          sessionStorage.setItem(
+            "dashboard_auth",
+            JSON.stringify({ authenticated: false, redirect: window.location.pathname }),
+          );
+          window.location.href = "/login";
+          return;
+        }
+        try {
+          if (!JSON.parse(raw).authenticated) {
+            sessionStorage.setItem(
+              "dashboard_auth",
+              JSON.stringify({ authenticated: false, redirect: window.location.pathname }),
+            );
+            window.location.href = "/login";
+          }
+        } catch {
+          window.location.href = "/login";
+        }
+        document.querySelectorAll("[data-action='logout']").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            sessionStorage.removeItem("dashboard_auth");
+            window.location.href = "/login";
+          });
+        });
+      })();
+    </script>
   </body>
 </html>
