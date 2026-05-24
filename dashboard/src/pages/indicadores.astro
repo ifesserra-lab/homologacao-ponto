@@ -1,0 +1,298 @@
+---
+import { listServers } from "../lib/espelhoRepository";
+import { formatMin, pctCarga, allPeriodos } from "../lib/aggregation";
+
+const dataDir = import.meta.env.DATA_DIR as string | undefined;
+const servidores = listServers(dataDir);
+
+// Gather all unique sorted periods
+const allMeses = allPeriodos(servidores.map((s) => s.meses));
+
+// Per-server latest completed month summary
+const serverLatest = servidores.map((s) => {
+  const completed = s.meses.filter((m) => m.status === "completed");
+  const latest = completed[completed.length - 1] ?? null;
+  return { servidor: s, latest };
+});
+
+// Sorted by saldo (ascending: most negative first = most at risk)
+const ranked = [...serverLatest].sort((a, b) => {
+  const ba = a.latest?.balanceMin ?? Infinity;
+  const bb = b.latest?.balanceMin ?? Infinity;
+  return ba - bb;
+});
+
+// Build heatmap: server → period → month data
+const heatmap = servidores.map((s) => {
+  const byPeriod = new Map(s.meses.map((m) => [m.periodoReferencia, m]));
+  return { servidor: s, byPeriod };
+});
+
+// Alerts
+const ALERT_THRESH_MIN = -480; // -8h
+const WARN_PCT = 60;
+
+const alerts: { serverName: string; slug: string; period: string | null; msg: string; level: "alert" | "warn" }[] = [];
+for (const { servidor, latest } of serverLatest) {
+  if (!latest) continue;
+  if (latest.balanceMin !== null && latest.balanceMin < ALERT_THRESH_MIN) {
+    alerts.push({
+      serverName: servidor.nome,
+      slug: servidor.slug,
+      period: latest.periodoReferencia,
+      msg: `Saldo ${formatMin(latest.balanceMin)} — abaixo de −08:00`,
+      level: "alert",
+    });
+  }
+  const pct = pctCarga(latest.somaCreditoMin, latest.cargaEsperadaMin);
+  if (pct !== null && pct < WARN_PCT) {
+    alerts.push({
+      serverName: servidor.nome,
+      slug: servidor.slug,
+      period: latest.periodoReferencia,
+      msg: `Apenas ${pct}% da carga horária cumprida em ${latest.periodoReferencia}`,
+      level: "warn",
+    });
+  }
+}
+
+function saldoClass(min: number | null): string {
+  if (min === null) return "hm-empty";
+  if (min === 0) return "hm-zero";
+  if (min > 0) return "hm-pos";
+  if (min >= -240) return "hm-neg-mild"; // up to -4h
+  return "hm-neg-severe";
+}
+
+function chipClass(min: number | null): string {
+  if (min === null || min === 0) return "zero";
+  if (min > 0) return "pos";
+  if (min >= -240) return "neg-mild";
+  return "neg-severe";
+}
+
+function rankBadgeClass(i: number): string {
+  if (i === 0) return "gold";
+  if (i === 1) return "silver";
+  if (i === 2) return "bronze";
+  return "";
+}
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Indicadores — Espelhos de Ponto</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+  </head>
+  <body>
+    <div class="page-wide">
+      <div class="nav-row">
+        <a class="back" href="/">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Servidores
+        </a>
+        <button class="logout-btn" data-action="logout" type="button">Sair</button>
+      </div>
+
+      <header class="page-header">
+        <h1 class="page-title">Indicadores</h1>
+        <p class="page-meta">Comparativo entre {servidores.length} servidores · {allMeses.length} períodos</p>
+      </header>
+
+      {/* ── Alertas ── */}
+      {alerts.length > 0 && (
+        <div class="section">
+          <div class="section-title">Alertas</div>
+          <div class="alert-list">
+            {alerts.map((a) => (
+              <div class={`alert-item ${a.level === "warn" ? "warn" : ""}`}>
+                <span class="alert-icon">{a.level === "alert" ? "⚠️" : "🔔"}</span>
+                <div class="alert-body">
+                  <strong><a href={`/servidor/${a.slug}`} style="color:inherit">{a.serverName}</a></strong>
+                  {a.msg}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── Ranking ── */}
+      <div class="section">
+        <div class="section-title">Ranking por saldo (período mais recente)</div>
+        <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);">
+          <table class="rank-table">
+            <thead>
+              <tr>
+                <th style="width:40px">#</th>
+                <th>Servidor</th>
+                <th>Período</th>
+                <th>Horas Homologadas</th>
+                <th>% Carga</th>
+                <th>Saldo do Mês</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ranked.map(({ servidor, latest }, i) => {
+                const pct = latest ? pctCarga(latest.somaCreditoMin, latest.cargaEsperadaMin) : null;
+                const balMin = latest?.balanceMin ?? null;
+                return (
+                  <tr>
+                    <td>
+                      <span class={`rank-badge ${rankBadgeClass(i)}`}>{i + 1}</span>
+                    </td>
+                    <td>
+                      <a href={`/servidor/${servidor.slug}`}>{servidor.nome}</a>
+                    </td>
+                    <td style="color: var(--muted); font-size: 12px;">{latest?.periodoReferencia ?? "—"}</td>
+                    <td class="mono">{latest ? formatMin(latest.somaCreditoMin) : "—"}</td>
+                    <td>
+                      {pct !== null ? (
+                        <div class="progress-bar-wrap">
+                          <div class="progress-bar-track">
+                            <div
+                              class={`progress-bar-fill ${pct < 60 ? "bad" : pct < 85 ? "warn" : ""}`}
+                              style={`width: ${pct}%`}
+                            ></div>
+                          </div>
+                          <span class="progress-pct">{pct}%</span>
+                        </div>
+                      ) : "—"}
+                    </td>
+                    <td>
+                      <span class={`saldo-chip ${chipClass(balMin)}`}>
+                        {balMin !== null ? (balMin >= 0 ? "+" : "") + formatMin(balMin) : "—"}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* ── Heatmap ── */}
+      {allMeses.length > 0 && (
+        <div class="section">
+          <div class="section-title">Saldo por servidor × mês</div>
+          <div class="heatmap-wrap" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+            <table class="heatmap-table">
+              <thead>
+                <tr>
+                  <th class="server-col" style="padding: 8px 10px;">Servidor</th>
+                  {allMeses.map((p) => (
+                    <th style="text-align:center; padding: 8px 10px; font-size: 11px;">
+                      {p.split("/")[0].slice(0, 3)}<br />
+                      <span style="color: var(--text); font-size: 10px;">{p.split("/")[1]}</span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {heatmap.map(({ servidor, byPeriod }) => (
+                  <tr>
+                    <td class="server-name-cell">
+                      <a href={`/servidor/${servidor.slug}`}>{servidor.nome.split(" ").slice(0, 2).join(" ")}</a>
+                    </td>
+                    {allMeses.map((p) => {
+                      const m = byPeriod.get(p);
+                      if (!m || m.status === "empty") return <td class="hm-empty" title={p}>—</td>;
+                      const bal = m.balanceMin;
+                      const cls = saldoClass(bal);
+                      const label = bal !== null ? (bal >= 0 ? "+" : "") + formatMin(bal) : "—";
+                      return (
+                        <td class={cls} title={`${servidor.nome} · ${p}`}>
+                          <a href={`/servidor/${servidor.slug}/${m.periodoSlug}`} style="color: inherit; text-decoration: none;">
+                            {label}
+                          </a>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ── Comparativo de % carga ── */}
+      <div class="section">
+        <div class="section-title">% de carga horária cumprida (todos os meses)</div>
+        <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);">
+          <table class="rank-table">
+            <thead>
+              <tr>
+                <th>Servidor</th>
+                {allMeses.map((p) => (
+                  <th style="text-align:center; font-size: 11px; white-space: nowrap;">{p.split("/")[0].slice(0,3)}/{p.split("/")[1]?.slice(2)}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {heatmap.map(({ servidor, byPeriod }) => (
+                <tr>
+                  <td><a href={`/servidor/${servidor.slug}`}>{servidor.nome.split(" ").slice(0, 2).join(" ")}</a></td>
+                  {allMeses.map((p) => {
+                    const m = byPeriod.get(p);
+                    if (!m || m.status === "empty") return <td style="text-align:center; color: var(--muted)">—</td>;
+                    const pct = pctCarga(m.somaCreditoMin, m.cargaEsperadaMin);
+                    if (pct === null) return <td style="text-align:center; color: var(--muted)">—</td>;
+                    return (
+                      <td style="text-align:center;">
+                        <div class="progress-bar-wrap" style="min-width: 80px;">
+                          <div class="progress-bar-track">
+                            <div
+                              class={`progress-bar-fill ${pct < 60 ? "bad" : pct < 85 ? "warn" : ""}`}
+                              style={`width: ${pct}%`}
+                            ></div>
+                          </div>
+                          <span class="progress-pct">{pct}%</span>
+                        </div>
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const raw = sessionStorage.getItem("dashboard_auth");
+        if (!raw) {
+          sessionStorage.setItem(
+            "dashboard_auth",
+            JSON.stringify({ authenticated: false, redirect: window.location.pathname }),
+          );
+          window.location.href = "/login";
+          return;
+        }
+        try {
+          if (!JSON.parse(raw).authenticated) {
+            sessionStorage.setItem(
+              "dashboard_auth",
+              JSON.stringify({ authenticated: false, redirect: window.location.pathname }),
+            );
+            window.location.href = "/login";
+          }
+        } catch {
+          window.location.href = "/login";
+        }
+        document.querySelectorAll("[data-action='logout']").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            sessionStorage.removeItem("dashboard_auth");
+            window.location.href = "/login";
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

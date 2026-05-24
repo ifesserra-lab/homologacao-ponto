@@ -1,4 +1,4 @@
-import type { RegistroDia, ResumoHorasApuradas } from "../types/dashboard";
+import type { RegistroDia, ResumoHorasApuradas, EspelhoMesResume } from "../types/dashboard";
 
 export const JORNADA_MIN = 480; // 8 horas
 
@@ -121,4 +121,40 @@ export function aggregateMonth(registros: RegistroDia[], resumo?: ResumoHorasApu
   }
 
   return { daysWithMarcacoes, somaCreditoMin, somaHrMin, somaDebitoMin, somaHhMin, cargaEsperadaMin, dncFinalMin, balanceMin };
+}
+
+/** Counts absent workdays (weekday, no punches, no credit/debit = holiday-like excluded). */
+export function countAbsentWorkdays(registros: RegistroDia[]): number {
+  return registros.filter(isAbsentWorkDay).length;
+}
+
+/** Groups occurrences by normalized type (strips date in parentheses). */
+export function countOcorrencias(registros: RegistroDia[]): { type: string; count: number }[] {
+  const counts: Record<string, number> = {};
+  for (const r of registros) {
+    for (const occ of r.ocorrencias ?? []) {
+      const type = occ.replace(/\s*\([^)]*\)/g, "").trim();
+      counts[type] = (counts[type] ?? 0) + 1;
+    }
+  }
+  return Object.entries(counts)
+    .map(([type, count]) => ({ type, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
+/** % of carga completed (0–100, capped at 100). Returns null if cargaEsperadaMin = 0. */
+export function pctCarga(somaCreditoMin: number, cargaEsperadaMin: number): number | null {
+  if (!cargaEsperadaMin) return null;
+  return Math.min(100, Math.round((somaCreditoMin / cargaEsperadaMin) * 100));
+}
+
+/** Collect all unique sorted periodo labels across servers. */
+export function allPeriodos(servers: EspelhoMesResume[][]): string[] {
+  const set = new Set<string>();
+  for (const meses of servers) for (const m of meses) if (m.periodoReferencia) set.add(m.periodoReferencia);
+  return Array.from(set).sort((a, b) => {
+    const [ma, ya] = a.split("/"); const [mb, yb] = b.split("/");
+    const MONTHS: Record<string,number> = { Janeiro:1,Fevereiro:2,"Março":3,Abril:4,Maio:5,Junho:6,Julho:7,Agosto:8,Setembro:9,Outubro:10,Novembro:11,Dezembro:12 };
+    return (+ya * 100 + (MONTHS[ma] ?? 0)) - (+yb * 100 + (MONTHS[mb] ?? 0));
+  });
 }

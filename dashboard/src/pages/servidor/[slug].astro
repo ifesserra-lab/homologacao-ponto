@@ -1,6 +1,7 @@
 ---
 import { listServers, serverDetail } from "../../lib/espelhoRepository";
 import MonthTable from "../../components/MonthTable.astro";
+import { formatMin, pctCarga } from "../../lib/aggregation";
 
 export async function getStaticPaths() {
   const dataDir = import.meta.env.DATA_DIR as string | undefined;
@@ -18,6 +19,14 @@ if (!servidor) {
 
 const completedCount = servidor.meses.filter(m => m.status === "completed").length;
 const emptyCount = servidor.meses.filter(m => m.status === "empty").length;
+const completedMeses = servidor.meses.filter(m => m.status === "completed");
+
+// Latest month summary
+const latest = completedMeses[completedMeses.length - 1] ?? null;
+const latestBalance = latest?.balanceMin ?? null;
+const totalHhAllMonths = completedMeses.reduce((s, m) => s + m.somaCreditoMin, 0);
+const totalCargaAllMonths = completedMeses.reduce((s, m) => s + m.cargaEsperadaMin, 0);
+const overallPct = totalCargaAllMonths > 0 ? Math.min(100, Math.round((totalHhAllMonths / totalCargaAllMonths) * 100)) : null;
 ---
 
 <!doctype html>
@@ -61,7 +70,77 @@ const emptyCount = servidor.meses.filter(m => m.status === "empty").length;
             <div class="stat-value warn">{emptyCount}</div>
           </div>
         )}
+        {latestBalance !== null && (
+          <div class={`stat ${latestBalance < -480 ? "stat-falta" : latestBalance >= 0 ? "stat-ok" : ""}`}>
+            <div class="stat-label">Saldo atual</div>
+            <div class={`stat-value mono ${latestBalance < 0 ? "warn" : "ok"}`}>
+              {latestBalance >= 0 ? "+" : ""}{formatMin(latestBalance)}
+            </div>
+          </div>
+        )}
+        {overallPct !== null && (
+          <div class="stat">
+            <div class="stat-label">% Carga cumprida</div>
+            <div class={`stat-value ${overallPct < 60 ? "warn" : overallPct >= 90 ? "ok" : ""}`}>{overallPct}%</div>
+          </div>
+        )}
       </div>
+
+      {completedMeses.length > 0 && (
+        <div class="section">
+          <div class="section-title">Série histórica</div>
+          <div style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);">
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>Período</th>
+                  <th>Horas Registradas</th>
+                  <th>Horas Homologadas</th>
+                  <th>Carga Esperada</th>
+                  <th>% Carga</th>
+                  <th>Saldo do Mês</th>
+                  <th>Dias com Marcação</th>
+                </tr>
+              </thead>
+              <tbody>
+                {completedMeses.map((m) => {
+                  const pct = pctCarga(m.somaCreditoMin, m.cargaEsperadaMin);
+                  const bal = m.balanceMin;
+                  return (
+                    <tr>
+                      <td><a href={`/servidor/${slug}/${m.periodoSlug}`}>{m.periodoReferencia}</a></td>
+                      <td class="mono">{formatMin(m.somaHrMin)}</td>
+                      <td class="mono">{formatMin(m.somaCreditoMin)}</td>
+                      <td class="mono">{formatMin(m.cargaEsperadaMin)}</td>
+                      <td>
+                        {pct !== null ? (
+                          <div class="progress-bar-wrap">
+                            <div class="progress-bar-track">
+                              <div
+                                class={`progress-bar-fill ${pct < 60 ? "bad" : pct < 85 ? "warn" : ""}`}
+                                style={`width: ${pct}%`}
+                              ></div>
+                            </div>
+                            <span class="progress-pct">{pct}%</span>
+                          </div>
+                        ) : "—"}
+                      </td>
+                      <td>
+                        {bal !== null ? (
+                          <span class={`saldo-chip ${bal > 0 ? "pos" : bal === 0 ? "zero" : bal >= -240 ? "neg-mild" : "neg-severe"}`}>
+                            {bal >= 0 ? "+" : ""}{formatMin(bal)}
+                          </span>
+                        ) : "—"}
+                      </td>
+                      <td>{m.daysWithMarcacoes}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       <MonthTable meses={servidor.meses} slug={slug!} />
     </div>

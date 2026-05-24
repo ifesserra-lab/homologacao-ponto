@@ -46,12 +46,15 @@ function deduplicate(raws: RawEspelho[]): RawEspelho[] {
 }
 
 function toMesResume(raw: RawEspelho): EspelhoMesResume {
-  const agg = raw.status === "completed" ? aggregateMonth(raw.registros) : {
+  const agg = raw.status === "completed" ? aggregateMonth(raw.registros, raw.resumo ?? null, raw.captured_at) : {
     daysWithMarcacoes: 0,
     somaCreditoMin: 0,
+    somaHrMin: 0,
     somaDebitoMin: 0,
     somaHhMin: 0,
+    cargaEsperadaMin: 0,
     dncFinalMin: null,
+    balanceMin: null,
   };
   const periodo = raw.periodo_referencia ?? null;
   return {

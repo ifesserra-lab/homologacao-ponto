@@ -5,9 +5,12 @@ export interface EspelhoMesResume {
   capturedAt: string;
   daysWithMarcacoes: number;
   somaCreditoMin: number;
+  somaHrMin: number;
   somaDebitoMin: number;
   somaHhMin: number;
+  cargaEsperadaMin: number;
   dncFinalMin: number | null;
+  balanceMin: number | null;
 }
 
 export interface ServidorResume {

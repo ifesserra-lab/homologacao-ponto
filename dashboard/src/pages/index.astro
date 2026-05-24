@@ -27,6 +27,13 @@ const isEmpty = servidores.length === 0;
         </div>
       </header>
 
+      {!isEmpty && (
+        <div class="tab-nav">
+          <span class="tab-btn active">Servidores</span>
+          <a class="tab-btn" href="/indicadores">Indicadores</a>
+        </div>
+      )}
+
       {isEmpty ? (
         <div class="empty-state">
           <div class="empty-icon">📂</div>
