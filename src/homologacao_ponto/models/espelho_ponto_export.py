@@ -7,6 +7,46 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
+@dataclass(frozen=True)
+class ResumoHorasApuradas:
+    carga_horaria_contratada: str | None = None
+    carga_horaria_esperada_mes: str | None = None
+    total_horas_registradas: str | None = None
+    total_horas_justificadas: str | None = None
+    total_horas_homologadas: str | None = None
+    saldo_mes_anterior_compensacao: str | None = None
+    total_horas_mes_anterior_compensadas: str | None = None
+    debito_mes_anterior_nao_compensado: str | None = None
+    debito_mes_atual_nao_autorizado: str | None = None
+    outros_debitos_nao_compensados_vencidos: str | None = None
+    totalizacao_debito_nao_compensavel: str | None = None
+    total_horas_pendentes_compensacao: str | None = None
+    saldo_horas_mes: str | None = None
+    saldo_horas_mes_compensar_proximo: str | None = None
+    credito_horas_disponivel_mes: str | None = None
+    credito_em_horas: str | None = None
+
+    def to_dict(self) -> dict[str, str | None]:
+        return {
+            "carga_horaria_contratada": self.carga_horaria_contratada,
+            "carga_horaria_esperada_mes": self.carga_horaria_esperada_mes,
+            "total_horas_registradas": self.total_horas_registradas,
+            "total_horas_justificadas": self.total_horas_justificadas,
+            "total_horas_homologadas": self.total_horas_homologadas,
+            "saldo_mes_anterior_compensacao": self.saldo_mes_anterior_compensacao,
+            "total_horas_mes_anterior_compensadas": self.total_horas_mes_anterior_compensadas,
+            "debito_mes_anterior_nao_compensado": self.debito_mes_anterior_nao_compensado,
+            "debito_mes_atual_nao_autorizado": self.debito_mes_atual_nao_autorizado,
+            "outros_debitos_nao_compensados_vencidos": self.outros_debitos_nao_compensados_vencidos,
+            "totalizacao_debito_nao_compensavel": self.totalizacao_debito_nao_compensavel,
+            "total_horas_pendentes_compensacao": self.total_horas_pendentes_compensacao,
+            "saldo_horas_mes": self.saldo_horas_mes,
+            "saldo_horas_mes_compensar_proximo": self.saldo_horas_mes_compensar_proximo,
+            "credito_horas_disponivel_mes": self.credito_horas_disponivel_mes,
+            "credito_em_horas": self.credito_em_horas,
+        }
+
+
 def _slug(name: str) -> str:
     nfkd = unicodedata.normalize("NFD", name)
     ascii_only = "".join(c for c in nfkd if not unicodedata.combining(c))
@@ -104,6 +144,7 @@ class EspelhoPontoExport:
     pagina: str | None = None
     rotulos_visiveis: list[str] = field(default_factory=lambda: ["Espelho de Ponto"])
     output_path: str | None = None
+    resumo: ResumoHorasApuradas | None = None
 
     def __post_init__(self) -> None:
         if not self.run_id:
@@ -156,17 +197,19 @@ class EspelhoPontoExport:
             pagina=self.pagina,
             rotulos_visiveis=self.rotulos_visiveis,
             output_path=str(output_path),
+            resumo=self.resumo,
         )
 
     def to_dict(self) -> dict[str, object]:
         return {
-            "schema_version": 1,
+            "schema_version": 2,
             "run_id": self.run_id,
             "captured_at": self.captured_at or datetime.now(timezone.utc).isoformat(),
             "status": self.status,
             "servidor": self.servidor.to_dict(),
             "periodo_referencia": self.periodo_referencia,
             "mensagens": self.mensagens,
+            "resumo": self.resumo.to_dict() if self.resumo else None,
             "registros": [registro.to_dict() for registro in self.registros],
             "fonte": {
                 "tipo": "sigrh-espelho-ponto-visivel",

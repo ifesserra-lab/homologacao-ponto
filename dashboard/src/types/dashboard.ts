@@ -40,6 +40,25 @@ export interface RegistroDia {
   dnc: string | null;
 }
 
+export interface ResumoHorasApuradas {
+  carga_horaria_contratada: string | null;
+  carga_horaria_esperada_mes: string | null;
+  total_horas_registradas: string | null;
+  total_horas_justificadas: string | null;
+  total_horas_homologadas: string | null;
+  saldo_mes_anterior_compensacao: string | null;
+  total_horas_mes_anterior_compensadas: string | null;
+  debito_mes_anterior_nao_compensado: string | null;
+  debito_mes_atual_nao_autorizado: string | null;
+  outros_debitos_nao_compensados_vencidos: string | null;
+  totalizacao_debito_nao_compensavel: string | null;
+  total_horas_pendentes_compensacao: string | null;
+  saldo_horas_mes: string | null;
+  saldo_horas_mes_compensar_proximo: string | null;
+  credito_horas_disponivel_mes: string | null;
+  credito_em_horas: string | null;
+}
+
 export interface RawEspelho {
   schema_version: number;
   run_id: string;
@@ -52,6 +71,7 @@ export interface RawEspelho {
     identificador: string | null;
     texto_visivel: string | null;
   };
+  resumo?: ResumoHorasApuradas | null;
   registros: RegistroDia[];
   fonte: {
     tipo: string;

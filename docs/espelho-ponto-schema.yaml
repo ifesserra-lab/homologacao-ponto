@@ -1,13 +1,13 @@
 # Estrutura do JSON exportado pelo homologacao-ponto
 # Arquivo: data/runs/servidores/<slug-nome>/espelho-<periodo>.json
 
-schema_version: 1
+schema_version: 2
 
 campos_raiz:
   schema_version:
     tipo: inteiro
-    descricao: Versão do schema — incrementar em mudanças incompatíveis
-    exemplo: 1
+    descricao: Versão do schema (1 = sem resumo; 2 = com campo resumo adicionado pela feature 009)
+    exemplo: 2
 
   run_id:
     tipo: string
@@ -140,6 +140,95 @@ registros:
       nome_completo: Débito Não Compensado
       tipo: string HH:MM | null
       descricao: Saldo negativo do dia que não foi compensado nem abonado
+
+resumo:
+  descricao: >
+    Dados da seção "Resumo das Horas Apuradas no Mês" do SIGRH.
+    null quando a seção não estava visível na página (meses sem processamento ou captura parcial).
+    Presente (com schema_version=2) a partir da feature 009.
+  tipo: objeto ResumoHorasApuradas | null
+  retro_compatibilidade: Consumidores devem tratar campo ausente (v1) como null.
+
+  campos:
+    carga_horaria_contratada:
+      tipo: string HH:MM | null
+      descricao: Carga horária contratada do servidor (ex. 40h semanais = 160:00 mensais)
+      exemplo: "160:00"
+
+    carga_horaria_esperada_mes:
+      tipo: string HH:MM | null
+      descricao: Carga horária esperada no mês (dias úteis × jornada diária, excluindo feriados)
+      exemplo: "160:00"
+
+    total_horas_registradas:
+      tipo: string HH:MM | null
+      descricao: Total de horas efetivamente registradas no relógio no mês
+      exemplo: "50:31"
+
+    total_horas_justificadas:
+      tipo: string HH:MM | null
+      descricao: Total de horas com justificativa (afastamentos legais, abonos etc.)
+      exemplo: "00:00"
+
+    total_horas_homologadas:
+      tipo: string HH:MM | null
+      descricao: Total de horas homologadas pela chefia — valor oficial do SIGRH
+      exemplo: "49:25"
+
+    saldo_mes_anterior_compensacao:
+      tipo: string HH:MM | null
+      descricao: Saldo de horas do mês anterior disponível para compensação
+      exemplo: "00:00"
+
+    total_horas_mes_anterior_compensadas:
+      tipo: string HH:MM | null
+      descricao: Total de horas do mês anterior efetivamente compensadas neste mês
+      exemplo: "00:00"
+
+    debito_mes_anterior_nao_compensado:
+      tipo: string HH:MM | null
+      descricao: Débito do mês anterior que não foi compensado
+      exemplo: "00:00"
+
+    debito_mes_atual_nao_autorizado:
+      tipo: string "-HH:MM" | null
+      descricao: Débito do mês atual não autorizado pela chefia (negativo)
+      exemplo: "-61:25"
+
+    outros_debitos_nao_compensados_vencidos:
+      tipo: string HH:MM | null
+      descricao: Outros débitos não compensados de meses vencidos
+      exemplo: "00:00"
+
+    totalizacao_debito_nao_compensavel:
+      tipo: string "-HH:MM" | null
+      descricao: Totalização de todos os débitos não compensáveis (negativo)
+      exemplo: "-61:25"
+
+    total_horas_pendentes_compensacao:
+      tipo: string "-HH:MM" | null
+      descricao: Total de horas pendentes de compensação — saldo efetivo do mês
+      exemplo: "-09:10"
+
+    saldo_horas_mes:
+      tipo: string "-HH:MM" | "HH:MM" | null
+      descricao: Saldo de horas do mês (negativo = falta; positivo = crédito)
+      exemplo: "-09:10"
+
+    saldo_horas_mes_compensar_proximo:
+      tipo: string "-HH:MM" | "HH:MM" | null
+      descricao: Saldo a ser compensado no próximo mês
+      exemplo: "-09:10"
+
+    credito_horas_disponivel_mes:
+      tipo: string HH:MM | null
+      descricao: Crédito de horas disponível para uso no mês
+      exemplo: "00:00"
+
+    credito_em_horas:
+      tipo: string HH:MM | null
+      descricao: Crédito em horas acumulado
+      exemplo: "00:00"
 
 fonte:
   descricao: Metadados sobre a origem dos dados
