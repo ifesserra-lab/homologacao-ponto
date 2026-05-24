@@ -1,11 +1,11 @@
 {
   "schema_version": 2,
-  "run_id": "90ad8f1f649c4bdeb85a56b1a6beec9c",
-  "captured_at": "2026-05-24T00:34:21.096637+00:00",
+  "run_id": "8cc5107ac9324610b11eef6d9160d9fc",
+  "captured_at": "2026-05-24T00:43:13.469665+00:00",
   "status": "completed",
   "servidor": {
-    "nome": "CELIO PROLICIANO MAIOLI",
-    "identificador": "1534589",
+    "nome": "RICHARD JUNIOR MANUEL GODINEZ TELLO",
+    "identificador": "2280760",
     "texto_visivel": "Servidor possui designação remunerada e não possui horário de trabalho condizente com a carga horária praticada."
   },
   "periodo_referencia": "Março/2026",
@@ -13,18 +13,18 @@
   "resumo": {
     "carga_horaria_contratada": "176:00",
     "carga_horaria_esperada_mes": "176:00",
-    "total_horas_registradas": "48:27",
-    "total_horas_justificadas": "124:57",
-    "total_horas_homologadas": "173:24",
+    "total_horas_registradas": "103:26",
+    "total_horas_justificadas": "84:08",
+    "total_horas_homologadas": "176:00",
     "saldo_mes_anterior_compensacao": "00:00",
     "total_horas_mes_anterior_compensadas": "00:00",
     "debito_mes_anterior_nao_compensado": "00:00",
     "debito_mes_atual_nao_autorizado": "00:00",
     "outros_debitos_nao_compensados_vencidos": "00:00",
     "totalizacao_debito_nao_compensavel": "00:00",
-    "total_horas_pendentes_compensacao": "-02:36",
-    "saldo_horas_mes": "-02:36",
-    "saldo_horas_mes_compensar_proximo": "-02:36",
+    "total_horas_pendentes_compensacao": "-15:36",
+    "saldo_horas_mes": "00:00",
+    "saldo_horas_mes_compensar_proximo": null,
     "credito_horas_disponivel_mes": "00:00",
     "credito_em_horas": "00:00"
   },
@@ -81,27 +81,6 @@
       "observacoes": [],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": "11:11",
-      "hc": "02:08",
-      "he": "08:00",
-      "ha": null,
-      "hh": null,
-      "credito": null,
-      "debito": "08:00",
-      "saldo_no_mes": null,
-      "credito_acumulado": null,
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-03-04",
-      "dia_semana": null,
-      "marcacoes": [],
-      "ocorrencias": [
-        "REGISTRO DO PIT - DOCENTE (04/03/2026)"
-      ],
-      "observacoes": [],
-      "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": "08:00",
@@ -114,6 +93,31 @@
       "dnc": "00:00"
     },
     {
+      "data": "2026-03-04",
+      "dia_semana": "Quarta",
+      "marcacoes": [
+        "07:23",
+        "17:53",
+        "07:23"
+      ],
+      "ocorrencias": [],
+      "observacoes": [
+        "Servidor com designação remunerada."
+      ],
+      "situacao": null,
+      "textos_visiveis": [],
+      "hr": "10:30",
+      "hc": "10:30",
+      "he": null,
+      "ha": "02:30",
+      "hh": null,
+      "credito": "08:00",
+      "debito": null,
+      "saldo_no_mes": null,
+      "credito_acumulado": "00:00",
+      "dnc": "00:00"
+    },
+    {
       "data": "2026-03-05",
       "dia_semana": null,
       "marcacoes": [],
@@ -123,8 +127,8 @@
       "observacoes": [],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": "18:49",
-      "hc": "03:18",
+      "hr": "17:38",
+      "hc": "04:21",
       "he": "08:00",
       "ha": null,
       "hh": null,
@@ -144,8 +148,8 @@
       "observacoes": [],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": "18:29",
-      "hc": "03:06",
+      "hr": "13:24",
+      "hc": "03:53",
       "he": "08:00",
       "ha": null,
       "hh": null,
@@ -228,8 +232,8 @@
       "observacoes": [],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
+      "hr": "13:12",
+      "hc": "03:59",
       "he": "08:00",
       "ha": null,
       "hh": null,
@@ -241,44 +245,55 @@
     },
     {
       "data": "2026-03-11",
-      "dia_semana": null,
-      "marcacoes": [],
-      "ocorrencias": [
-        "REGISTRO DO PIT - DOCENTE (11/03/2026)"
+      "dia_semana": "Quarta",
+      "marcacoes": [
+        "07:22",
+        "16:46",
+        "07:22"
       ],
-      "observacoes": [],
+      "ocorrencias": [],
+      "observacoes": [
+        "Servidor com designação remunerada."
+      ],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": "08:00",
-      "ha": null,
+      "hr": "09:24",
+      "hc": "09:24",
+      "he": null,
+      "ha": "01:24",
       "hh": null,
-      "credito": null,
-      "debito": "08:00",
+      "credito": "08:00",
+      "debito": null,
       "saldo_no_mes": null,
-      "credito_acumulado": null,
+      "credito_acumulado": "00:00",
       "dnc": "00:00"
     },
     {
       "data": "2026-03-12",
-      "dia_semana": null,
-      "marcacoes": [],
-      "ocorrencias": [
-        "REGISTRO DO PIT - DOCENTE (12/03/2026)"
+      "dia_semana": "Quinta",
+      "marcacoes": [
+        "10:16",
+        "12:20",
+        "10:16",
+        "13:25",
+        "22:00",
+        "13:25"
       ],
-      "observacoes": [],
+      "ocorrencias": [],
+      "observacoes": [
+        "Servidor com designação remunerada."
+      ],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": "18:41",
-      "hc": "03:05",
-      "he": "08:00",
-      "ha": null,
+      "hr": "10:39",
+      "hc": "10:39",
+      "he": null,
+      "ha": "02:39",
       "hh": null,
-      "credito": null,
-      "debito": "08:00",
+      "credito": "08:00",
+      "debito": null,
       "saldo_no_mes": null,
-      "credito_acumulado": null,
+      "credito_acumulado": "00:00",
       "dnc": "00:00"
     },
     {
@@ -291,8 +306,8 @@
       "observacoes": [],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": "18:15",
-      "hc": "03:50",
+      "hr": "11:09",
+      "hc": "00:46",
       "he": "08:00",
       "ha": null,
       "hh": null,
@@ -354,8 +369,8 @@
       "observacoes": [],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": "13:51",
-      "hc": "03:19",
+      "hr": "15:43",
+      "hc": "03:31",
       "he": "08:00",
       "ha": null,
       "hh": null,
@@ -375,16 +390,16 @@
       "observacoes": [],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": "Ocorrência:",
-      "ha": "17/03/2026",
-      "hh": "09:43",
+      "hr": "15:35",
+      "hc": "03:00",
+      "he": "08:00",
+      "ha": null,
+      "hh": null,
       "credito": null,
       "debito": "08:00",
       "saldo_no_mes": null,
       "credito_acumulado": null,
-      "dnc": null
+      "dnc": "00:00"
     },
     {
       "data": "2026-03-18",
@@ -396,8 +411,8 @@
       "observacoes": [],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": "10:02",
-      "hc": "05:34",
+      "hr": "07:15",
+      "hc": "05:48",
       "he": "08:00",
       "ha": null,
       "hh": null,
@@ -417,8 +432,8 @@
       "observacoes": [],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": "18:33",
-      "hc": "03:28",
+      "hr": "16:23",
+      "hc": "05:36",
       "he": "08:00",
       "ha": null,
       "hh": null,
@@ -433,7 +448,7 @@
       "dia_semana": null,
       "marcacoes": [],
       "ocorrencias": [
-        "ATIVIDADE EXTERNA (20/03/2026)"
+        "REGISTRO DO PIT - DOCENTE (20/03/2026)"
       ],
       "observacoes": [],
       "situacao": null,
@@ -501,8 +516,8 @@
       "observacoes": [],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": "09:01",
-      "hc": "04:54",
+      "hr": "09:46",
+      "hc": "07:36",
       "he": "08:00",
       "ha": null,
       "hh": null,
@@ -514,77 +529,11 @@
     },
     {
       "data": "2026-03-24",
-      "dia_semana": null,
-      "marcacoes": [],
-      "ocorrencias": [
-        "REGISTRO DO PIT - DOCENTE (24/03/2026)"
-      ],
-      "observacoes": [],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": "11:00",
-      "hc": "04:08",
-      "he": "08:00",
-      "ha": null,
-      "hh": null,
-      "credito": null,
-      "debito": "08:00",
-      "saldo_no_mes": null,
-      "credito_acumulado": null,
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-03-25",
-      "dia_semana": null,
-      "marcacoes": [],
-      "ocorrencias": [
-        "REGISTRO DO PIT - DOCENTE (25/03/2026)"
-      ],
-      "observacoes": [],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": "Ocorrência:",
-      "ha": "25/03/2026",
-      "hh": "08:55",
-      "credito": null,
-      "debito": "08:00",
-      "saldo_no_mes": null,
-      "credito_acumulado": null,
-      "dnc": null
-    },
-    {
-      "data": "2026-03-26",
-      "dia_semana": null,
-      "marcacoes": [],
-      "ocorrencias": [
-        "REGISTRO DO PIT - DOCENTE (26/03/2026)"
-      ],
-      "observacoes": [],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": "19:25",
-      "hc": "02:39",
-      "he": "08:00",
-      "ha": null,
-      "hh": null,
-      "credito": null,
-      "debito": "08:00",
-      "saldo_no_mes": null,
-      "credito_acumulado": null,
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-03-27",
-      "dia_semana": "Sexta",
+      "dia_semana": "Terça",
       "marcacoes": [
-        "09:54",
-        "12:19",
-        "09:54",
-        "19:01",
-        "22:00",
-        "19:01"
+        "10:35",
+        "19:05",
+        "10:35"
       ],
       "ocorrencias": [],
       "observacoes": [
@@ -592,15 +541,89 @@
       ],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": "05:24",
-      "hc": "05:24",
+      "hr": "08:30",
+      "hc": "08:30",
       "he": null,
+      "ha": "00:30",
+      "hh": null,
+      "credito": "08:00",
+      "debito": null,
+      "saldo_no_mes": null,
+      "credito_acumulado": "00:00",
+      "dnc": "00:00"
+    },
+    {
+      "data": "2026-03-25",
+      "dia_semana": "Quarta",
+      "marcacoes": [
+        "07:11",
+        "13:09",
+        "07:11",
+        "13:35",
+        "19:38",
+        "13:35"
+      ],
+      "ocorrencias": [],
+      "observacoes": [
+        "Servidor com designação remunerada."
+      ],
+      "situacao": null,
+      "textos_visiveis": [],
+      "hr": "12:01",
+      "hc": "12:01",
+      "he": null,
+      "ha": "04:01",
+      "hh": null,
+      "credito": "08:00",
+      "debito": null,
+      "saldo_no_mes": null,
+      "credito_acumulado": "00:00",
+      "dnc": "00:00"
+    },
+    {
+      "data": "2026-03-26",
+      "dia_semana": "Quinta",
+      "marcacoes": [
+        "13:29",
+        "21:59",
+        "13:29"
+      ],
+      "ocorrencias": [],
+      "observacoes": [
+        "Servidor com designação remunerada."
+      ],
+      "situacao": null,
+      "textos_visiveis": [],
+      "hr": "08:30",
+      "hc": "08:30",
+      "he": null,
+      "ha": "00:30",
+      "hh": null,
+      "credito": "08:00",
+      "debito": null,
+      "saldo_no_mes": null,
+      "credito_acumulado": "00:00",
+      "dnc": "00:00"
+    },
+    {
+      "data": "2026-03-27",
+      "dia_semana": null,
+      "marcacoes": [],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (27/03/2026)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "textos_visiveis": [],
+      "hr": null,
+      "hc": null,
+      "he": "08:00",
       "ha": null,
       "hh": null,
-      "credito": "05:24",
-      "debito": null,
-      "saldo_no_mes": "-02:36",
-      "credito_acumulado": "-02:36",
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
       "dnc": "00:00"
     },
     {
@@ -621,7 +644,7 @@
       "credito": "00:00",
       "debito": null,
       "saldo_no_mes": null,
-      "credito_acumulado": "-02:36",
+      "credito_acumulado": "00:00",
       "dnc": "00:00"
     },
     {
@@ -642,7 +665,7 @@
       "credito": "00:00",
       "debito": null,
       "saldo_no_mes": null,
-      "credito_acumulado": "-02:36",
+      "credito_acumulado": "00:00",
       "dnc": "00:00"
     },
     {
@@ -655,8 +678,8 @@
       "observacoes": [],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
+      "hr": "13:52",
+      "hc": "05:20",
       "he": "08:00",
       "ha": null,
       "hh": null,
@@ -664,7 +687,7 @@
       "debito": "08:00",
       "saldo_no_mes": null,
       "credito_acumulado": null,
-      "dnc": "-02:36"
+      "dnc": "00:00"
     },
     {
       "data": "2026-03-31",
@@ -676,8 +699,8 @@
       "observacoes": [],
       "situacao": null,
       "textos_visiveis": [],
-      "hr": "08:51",
-      "hc": "03:34",
+      "hr": "13:03",
+      "hc": "00:02",
       "he": "08:00",
       "ha": null,
       "hh": null,
@@ -685,7 +708,7 @@
       "debito": "08:00",
       "saldo_no_mes": null,
       "credito_acumulado": null,
-      "dnc": "-02:36"
+      "dnc": "00:00"
     }
   ],
   "fonte": {
