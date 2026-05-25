@@ -11,6 +11,8 @@ export interface EspelhoMesResume {
   cargaEsperadaMin: number;
   dncFinalMin: number | null;
   balanceMin: number | null;
+  ocorrenciaDias: { pit: number; abono: number; afastamento: number; recesso: number; sistema: number; };
+  pitJustificadoPct: number | null;
 }
 
 export interface ServidorResume {
@@ -60,6 +62,16 @@ export interface ResumoHorasApuradas {
   saldo_horas_mes_compensar_proximo: string | null;
   credito_horas_disponivel_mes: string | null;
   credito_em_horas: string | null;
+}
+
+export interface AfastamentoPeriodo {
+  serverSlug: string;
+  serverNome: string;
+  categoria: "afastamento" | "recesso" | "sistema";
+  texto: string;
+  dataInicio: string;
+  dataFim: string;
+  dias: number;
 }
 
 export interface RawEspelho {

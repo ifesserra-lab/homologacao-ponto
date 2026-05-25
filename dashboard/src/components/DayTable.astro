@@ -1,6 +1,7 @@
 ---
 import type { RegistroDia } from "../types/dashboard";
-import { formatMin, parseHHMM, isAbsentWorkDay, JORNADA_MIN } from "../lib/aggregation";
+import type { OcorrenciaCategoria } from "../lib/aggregation";
+import { formatMin, parseHHMM, isAbsentWorkDay, JORNADA_MIN, classifyOcorrencia, cleanOcorrenciaTexto } from "../lib/aggregation";
 
 interface Props {
   registros: RegistroDia[];
@@ -8,7 +9,7 @@ interface Props {
 
 const { registros } = Astro.props;
 
-type OcorrenciaCategoria = "pit" | "abono" | "afastamento" | "recesso" | "sistema" | null;
+// OcorrenciaCategoria is imported from aggregation
 
 interface BadgeInfo {
   symbol: string;
@@ -50,51 +51,13 @@ const BADGE: Record<NonNullable<OcorrenciaCategoria>, BadgeInfo> = {
   },
 };
 
-function categoriaOcorrencia(r: RegistroDia): OcorrenciaCategoria {
-  const ocorrs = r.ocorrencias ?? [];
-  if (ocorrs.length === 0) return null;
-  const joined = ocorrs.join(" ").toUpperCase();
-
-  if (
-    joined.includes("PIT") ||
-    joined.includes("PLANO DE TRABALHO - DOCENTE") ||
-    joined.includes("DIA SEM ATIVIDADES LETIVAS")
-  ) return "pit";
-
-  if (
-    joined.includes("ABONO DE HORAS") ||
-    joined.includes("HORÁRIO ESPECIAL") ||
-    joined.includes("ATIVIDADE EXTERNA")
-  ) return "abono";
-
-  if (
-    joined.includes("LICENÇA PARA TRATAMENTO") ||
-    joined.includes("LIC. PATERNIDADE") ||
-    joined.includes("LICENÇA PATERNIDADE") ||
-    joined.includes("PRORROGAÇÃO LICENÇA") ||
-    joined.includes("AFAS. ESTUDO") ||
-    joined.includes("FALTA JUSTIFICADA")
-  ) return "afastamento";
-
-  if (
-    joined.includes("RECESSO") ||
-    joined.includes("COMPENSAÇÃO DE RECESSO") ||
-    joined.includes("QUARTA-FEIRA DE CINZAS") ||
-    joined.includes("CINZAS")
-  ) return "recesso";
-
-  if (joined.includes("INDISPONIBILIDADE DO SISTEMA")) return "sistema";
-
-  return null;
+function categoriaOcorrencia(r: RegistroDia): OcorrenciaCategoria | null {
+  return classifyOcorrencia(r.ocorrencias ?? []);
 }
 
 /** Remove date ranges and verbosity from occurrence text for compact display. */
 function cleanOcorrencia(text: string): string {
-  return text
-    .replace(/\s*\(\d{2}\/\d{2}\/\d{4}(?:\s+a\s+\d{2}\/\d{2}\/\d{4})?\)/g, "")
-    .replace(/\s*Duração:.*/, "")
-    .replace(/\s*Período de Compensação:.*/, "")
-    .trim();
+  return cleanOcorrenciaTexto(text);
 }
 
 /** Full tooltip: all occurrences raw, for detail on hover. */

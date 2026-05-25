@@ -158,3 +158,41 @@ export function allPeriodos(servers: EspelhoMesResume[][]): string[] {
     return (+ya * 100 + (MONTHS[ma] ?? 0)) - (+yb * 100 + (MONTHS[mb] ?? 0));
   });
 }
+
+export type OcorrenciaCategoria = "pit" | "abono" | "afastamento" | "recesso" | "sistema";
+
+export interface OcorrenciaDias {
+  pit: number;
+  abono: number;
+  afastamento: number;
+  recesso: number;
+  sistema: number;
+}
+
+export function classifyOcorrencia(ocorrs: string[]): OcorrenciaCategoria | null {
+  if (!ocorrs.length) return null;
+  const joined = ocorrs.join(" ").toUpperCase();
+  if (joined.includes("PIT") || joined.includes("PLANO DE TRABALHO - DOCENTE") || joined.includes("DIA SEM ATIVIDADES LETIVAS")) return "pit";
+  if (joined.includes("ABONO DE HORAS") || joined.includes("HORÁRIO ESPECIAL") || joined.includes("ATIVIDADE EXTERNA")) return "abono";
+  if (joined.includes("LICENÇA PARA TRATAMENTO") || joined.includes("LIC. PATERNIDADE") || joined.includes("LICENÇA PATERNIDADE") || joined.includes("PRORROGAÇÃO LICENÇA") || joined.includes("AFAS. ESTUDO") || joined.includes("FALTA JUSTIFICADA")) return "afastamento";
+  if (joined.includes("RECESSO") || joined.includes("COMPENSAÇÃO DE RECESSO") || joined.includes("QUARTA-FEIRA DE CINZAS") || joined.includes("CINZAS")) return "recesso";
+  if (joined.includes("INDISPONIBILIDADE DO SISTEMA")) return "sistema";
+  return null;
+}
+
+export function countOcorrenciaCategorias(registros: RegistroDia[]): OcorrenciaDias {
+  const counts: OcorrenciaDias = { pit: 0, abono: 0, afastamento: 0, recesso: 0, sistema: 0 };
+  for (const r of registros) {
+    const cat = classifyOcorrencia(r.ocorrencias ?? []);
+    if (cat) counts[cat]++;
+  }
+  return counts;
+}
+
+export function cleanOcorrenciaTexto(text: string): string {
+  return text
+    .replace(/\s*\(\d{2}\/\d{2}\/\d{4}(?:\s+a\s+\d{2}\/\d{2}\/\d{4})?\)/g, "")
+    .replace(/\s*Duração:.*/, "")
+    .replace(/\s*Período de Compensação:.*/, "")
+    .trim();
+}

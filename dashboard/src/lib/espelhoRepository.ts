@@ -1,7 +1,8 @@
 import { readFileSync, readdirSync, existsSync, statSync } from "fs";
 import { join, resolve } from "path";
-import type { EspelhoMesResume, ServidorResume, RawEspelho } from "../types/dashboard";
-import { aggregateMonth } from "./aggregation";
+import type { EspelhoMesResume, ServidorResume, RawEspelho, AfastamentoPeriodo } from "../types/dashboard";
+import { aggregateMonth, countOcorrenciaCategorias, classifyOcorrencia, cleanOcorrenciaTexto, parseSignedHHMM } from "./aggregation";
+import type { RegistroDia } from "../types/dashboard";
 
 const DEFAULT_DATA_DIR = resolve(process.cwd(), "..", "data", "runs", "servidores");
 
@@ -56,6 +57,19 @@ function toMesResume(raw: RawEspelho): EspelhoMesResume {
     dncFinalMin: null,
     balanceMin: null,
   };
+
+  const ocorrenciaDias = raw.status === "completed"
+    ? countOcorrenciaCategorias(raw.registros)
+    : { pit: 0, abono: 0, afastamento: 0, recesso: 0, sistema: 0 };
+
+  const pitJustificadoPct: number | null = (() => {
+    if (!raw.resumo) return null;
+    const justMin = parseSignedHHMM(raw.resumo.total_horas_justificadas);
+    const homMin = parseSignedHHMM(raw.resumo.total_horas_homologadas);
+    if (justMin === null || homMin === null || homMin === 0) return null;
+    return Math.round((justMin / homMin) * 100);
+  })();
+
   const periodo = raw.periodo_referencia ?? null;
   return {
     periodoReferencia: periodo,
@@ -63,6 +77,8 @@ function toMesResume(raw: RawEspelho): EspelhoMesResume {
     status: raw.status,
     capturedAt: raw.captured_at,
     ...agg,
+    ocorrenciaDias,
+    pitJustificadoPct,
   };
 }
 
@@ -125,4 +141,61 @@ export function monthDetail(slug: string, periodoSlug: string, dataDir: string =
     const s = r.periodo_referencia ? periodoToSlug(r.periodo_referencia) : r.run_id;
     return s === periodoSlug;
   });
+}
+
+function extractAfastamentoPeriods(slug: string, nome: string, registros: RegistroDia[], _periodoRef: string | null): AfastamentoPeriodo[] {
+  const seen = new Set<string>();
+  const periods: AfastamentoPeriodo[] = [];
+
+  for (const r of registros) {
+    const ocorrs = r.ocorrencias ?? [];
+    if (!ocorrs.length) continue;
+    const cat = classifyOcorrencia(ocorrs);
+    if (!cat || cat === "pit" || cat === "abono") continue;
+
+    const raw = ocorrs[0];
+    const key = `${slug}::${raw}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    const rangeMatch = raw.match(/\((\d{2})\/(\d{2})\/(\d{4})\s+a\s+(\d{2})\/(\d{2})\/(\d{4})\)/);
+    let dataInicio: string, dataFim: string, dias: number;
+    if (rangeMatch) {
+      dataInicio = `${rangeMatch[3]}-${rangeMatch[2]}-${rangeMatch[1]}`;
+      dataFim = `${rangeMatch[6]}-${rangeMatch[5]}-${rangeMatch[4]}`;
+      const d1 = new Date(dataInicio + "T12:00:00Z");
+      const d2 = new Date(dataFim + "T12:00:00Z");
+      dias = Math.round((d2.getTime() - d1.getTime()) / 86400000) + 1;
+    } else {
+      dataInicio = r.data;
+      dataFim = r.data;
+      dias = 1;
+    }
+
+    const texto = cleanOcorrenciaTexto(raw);
+    periods.push({ serverSlug: slug, serverNome: nome, categoria: cat as "afastamento" | "recesso" | "sistema", texto, dataInicio, dataFim, dias });
+  }
+
+  return periods;
+}
+
+export function loadAllAfastamentos(dataDir: string = DEFAULT_DATA_DIR): AfastamentoPeriodo[] {
+  if (!existsSync(dataDir)) return [];
+  const slugs = readdirSync(dataDir).filter((e) => {
+    try { return statSync(join(dataDir, e)).isDirectory(); } catch { return false; }
+  });
+
+  const all: AfastamentoPeriodo[] = [];
+  for (const slug of slugs) {
+    const serverDir = join(dataDir, slug);
+    const files = readdirSync(serverDir).filter((f) => f.endsWith(".json"));
+    for (const f of files) {
+      const raw = loadEspelho(join(serverDir, f));
+      if (!raw || raw.status !== "completed") continue;
+      const nome = raw.servidor?.nome ?? slug.toUpperCase();
+      all.push(...extractAfastamentoPeriods(slug, nome, raw.registros, raw.periodo_referencia));
+    }
+  }
+
+  return all.sort((a, b) => a.dataInicio.localeCompare(b.dataInicio));
 }
