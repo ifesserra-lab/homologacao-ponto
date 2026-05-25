@@ -77,6 +77,85 @@ registros:
       tipo: lista de strings
       descricao: Ocorrências lançadas no dia (afastamentos, PIT, feriados etc.)
       exemplo: ["REGISTRO DO PIT - DOCENTE (02/03/2026)"]
+      # Catálogo de ocorrências observadas nos dados (frequência nos JSONs exportados):
+      valores_conhecidos:
+        # ── Docentes ──────────────────────────────────────────────────────────
+        - valor: "REGISTRO DO PIT - DOCENTE"
+          frequencia: 663
+          descricao: >
+            Registro de horas via Plano Individual de Trabalho para docentes.
+            Sem batida de relógio; horas contabilizadas no resumo mensal via justificativa.
+            SIGRH lança debito=08:00 por dia, mas dnc=00:00 indica que não há déficit real.
+
+        - valor: "PLANO DE TRABALHO - DOCENTES"
+          frequencia: 24
+          descricao: >
+            Variante do registro PIT para docentes. Mesmo comportamento de
+            REGISTRO DO PIT - DOCENTE (sem batida, horas justificadas no resumo).
+
+        - valor: "DIA SEM ATIVIDADES LETIVAS - DOCENTE - 2025"
+          frequencia: 1
+          descricao: Dia sem aula previsto no calendário acadêmico para docente.
+
+        # ── Abonos e autorizações ─────────────────────────────────────────────
+        - valor: "ABONO DE HORAS"
+          frequencia: 140
+          descricao: Horas abonadas pela chefia — dispensam o servidor da marcação no dia.
+
+        - valor: "HORÁRIO ESPECIAL DE FUNCIONAMENTO - JANEIRO DE 2025"
+          frequencia: 9
+          descricao: Regime especial de funcionamento no recesso de janeiro/2025.
+
+        - valor: "ATIVIDADE EXTERNA"
+          frequencia: 1
+          descricao: Servidor em atividade fora da unidade; dispensa batida presencial.
+
+        # ── Afastamentos ──────────────────────────────────────────────────────
+        - valor: "LICENÇA PARA TRATAMENTO DE SAÚDE"
+          frequencia: 10
+          descricao: Licença médica homologada; dias cobertos por justificativa no resumo mensal.
+
+        - valor: "LIC. PATERNIDADE - EST"
+          frequencia: 5
+          descricao: Licença-paternidade (período estendido) — Lei 13.257/2016.
+
+        - valor: "PRORROGAÇÃO LICENÇA PATERNIDADE"
+          frequencia: 15
+          descricao: Prorrogação da licença-paternidade estendida após o período inicial.
+
+        - valor: "AFAS. ESTUDO EXTERIOR C/ ÔNUS - ART. 21 DEC. 9.991/19 - EST"
+          frequencia: 9
+          descricao: Afastamento para estudo no exterior com ônus ao erário, conforme Dec. 9.991/2019 art. 21.
+
+        - valor: "FALTA JUSTIFICADA"
+          frequencia: 2
+          descricao: Ausência com justificativa aceita pela chefia; não gera débito definitivo.
+
+        # ── Recessos e compensações ───────────────────────────────────────────
+        - valor: "Recesso 2025"
+          frequencia: 20
+          descricao: >
+            Recesso institucional de final de 2025 (22/12–02/01/2026).
+            Dias com texto completo incluem Duração, Período de Compensação e Tempo Pendente.
+
+        - valor: "Recesso 2024"
+          frequencia: 3
+          descricao: Recesso institucional de final de 2024 (30/12/2024–03/01/2025); já compensado.
+
+        - valor: "COMPENSAÇÃO DE RECESSO DE FINAL DE ANO 2024 (PRESENCIAL)"
+          frequencia: 2
+          descricao: Dia de trabalho presencial usado para compensar horas do recesso de 2024.
+
+        - valor: "QUARTA-FEIRA DE CINZAS 2026 - A COMPENSAR"
+          frequencia: 1
+          descricao: Feriado de Quarta-feira de Cinzas 2026 a ser compensado posteriormente.
+
+        # ── Sistemas / técnico ────────────────────────────────────────────────
+        - valor: "INDISPONIBILIDADE DO SISTEMA"
+          frequencia: 7
+          descricao: >
+            SIGRH estava indisponível no dia; marcação não pôde ser registrada.
+            Geralmente resulta em crédito=00:00 sem débito (dia tratado como neutro).
 
     observacoes:
       tipo: lista de strings
