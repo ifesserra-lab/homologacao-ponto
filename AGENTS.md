@@ -4,6 +4,61 @@ shell commands, and other important information, read
 `specs/010-dashboard-login-env/plan.md` and `.specify/memory/constitution.md`.
 <!-- SPECKIT END -->
 
+## Stack Tecnológica
+
+Este projeto está migrando para app desktop com a seguinte stack:
+
+| Camada | Tecnologia | Observação |
+|--------|-----------|------------|
+| Shell desktop | **Tauri 2** (Rust) | Substitui deploy web; empacota webview + sidecar |
+| Frontend | **Vue 3** + Vite + TypeScript | Substitui Astro; `<script setup>` obrigatório |
+| Estado global | **Pinia** | Store para dados do crawler e progresso |
+| Crawler/ETL | **Node.js** + Playwright (TypeScript) | Substitui Python; executa como sidecar Tauri |
+| IPC | `@tauri-apps/api/core` `invoke()` + `listen()` | Frontend ↔ Rust ↔ sidecar Node.js |
+| Backend Rust | Tauri commands (`#[tauri::command]`) | Spawn sidecar, stream eventos ao frontend |
+
+### Skills disponíveis para esta stack
+
+| Skill | Trigger de uso |
+|-------|----------------|
+| `vue` | Escrever Vue SFCs, `defineProps`/`defineEmits`/`defineModel`, watchers |
+| `vue-best-practices` | **Usar em toda tarefa Vue** — Composition API, `<script setup>`, TypeScript |
+| `vue-pinia-best-practices` | Stores Pinia, estado global, reatividade |
+| `tauri` | IPC, comandos Rust, configuração `tauri.conf.json`, plugins, segurança |
+| `rust` | Código em `src-tauri/`, ownership, async Rust, Cargo |
+
+### Comandos de desenvolvimento — Desktop (Tauri + Vue)
+
+```bash
+# Desenvolvimento (hot-reload Vue + Tauri)
+npm run tauri dev
+
+# Build de produção
+npm run tauri build
+
+# Apenas frontend Vue
+npm run dev
+
+# Type check Vue
+vue-tsc --noEmit
+
+# Testes unitários (Vitest)
+npm run test
+```
+
+### Comandos de desenvolvimento — Crawler (Node.js)
+
+```bash
+# Executar crawler diretamente
+npx ts-node crawler/index.ts
+
+# Type check crawler
+tsc --noEmit -p crawler/tsconfig.json
+
+# Testes
+npm run test:crawler
+```
+
 ## Persona: Escrita Técnica
 
 Ao documentar este projeto, siga estas regras:

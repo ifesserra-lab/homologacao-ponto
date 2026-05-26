@@ -1,0 +1,42 @@
+{
+  "name": "tauri-app",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "crawl": "node src-crawler/cli.js",
+    "install-browsers": "npx playwright install chromium",
+    "bundle:crawler": "node scripts/bundle-crawler.mjs",
+    "build:full": "npm run bundle:crawler && npm run tauri build"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-fs": "^2.5.1",
+    "@tauri-apps/plugin-opener": "^2",
+    "js-yaml": "^4.1.0",
+    "pinia": "^3.0.4",
+    "playwright": "^1.44.0",
+    "vue": "^3.5.13",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "@types/js-yaml": "^4.0.9",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "esbuild": "^0.28.0",
+    "pkg": "^5.8.1",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.3",
+    "vue-tsc": "^2.1.10"
+  },
+  "pkg": {
+    "assets": [
+      "src-crawler/package.json",
+      "node_modules/playwright-core/package.json"
+    ]
+  }
+}
