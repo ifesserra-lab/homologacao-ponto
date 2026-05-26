@@ -1,13 +1,13 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
+import { invoke } from "@tauri-apps/api/core";
 import { listServers, serverDetail, monthDetail, loadAllAfastamentos } from "@/lib/espelhoRepository";
 import type { ServidorResume, RawEspelho, AfastamentoPeriodo } from "@/types/dashboard";
 
 const STORAGE_KEY = "ponto_data_dir";
-const ENV_DATA_DIR = import.meta.env.VITE_DATA_DIR as string | undefined;
 
 export const useServidoresStore = defineStore("servidores", () => {
-  const dataDir = ref<string>(localStorage.getItem(STORAGE_KEY) ?? ENV_DATA_DIR ?? "");
+  const dataDir = ref<string>(localStorage.getItem(STORAGE_KEY) ?? "");
   const servidores = ref<ServidorResume[]>([]);
   const afastamentos = ref<AfastamentoPeriodo[]>([]);
   const loading = ref(false);
@@ -23,6 +23,10 @@ export const useServidoresStore = defineStore("servidores", () => {
 
   async function load(dir?: string) {
     if (dir) setDataDir(dir);
+    if (!dataDir.value) {
+      const resolved = await invoke<string>("resolve_data_dir").catch(() => "");
+      if (resolved) setDataDir(resolved);
+    }
     if (!dataDir.value) return;
     loading.value = true;
     error.value = null;
