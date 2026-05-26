@@ -4,9 +4,10 @@ import { listServers, serverDetail, monthDetail, loadAllAfastamentos } from "@/l
 import type { ServidorResume, RawEspelho, AfastamentoPeriodo } from "@/types/dashboard";
 
 const STORAGE_KEY = "ponto_data_dir";
+const ENV_DATA_DIR = import.meta.env.VITE_DATA_DIR as string | undefined;
 
 export const useServidoresStore = defineStore("servidores", () => {
-  const dataDir = ref<string>(localStorage.getItem(STORAGE_KEY) ?? "");
+  const dataDir = ref<string>(localStorage.getItem(STORAGE_KEY) ?? ENV_DATA_DIR ?? "");
   const servidores = ref<ServidorResume[]>([]);
   const afastamentos = ref<AfastamentoPeriodo[]>([]);
   const loading = ref(false);
