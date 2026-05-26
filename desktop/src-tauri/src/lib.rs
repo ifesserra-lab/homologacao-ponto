@@ -1,4 +1,5 @@
 use std::path::PathBuf;
+use tauri::Manager;
 
 #[tauri::command]
 fn resolve_data_dir(app: tauri::AppHandle) -> String {
