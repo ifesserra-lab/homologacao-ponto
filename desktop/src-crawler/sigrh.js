@@ -17,13 +17,27 @@ export class SigrhBrowser {
   }
 
   async start() {
-    this._browser = await chromium.launch({ headless: !this.headed });
+    this._browser = await this._launchBrowser();
     this._ctx = await this._browser.newContext();
     // Track new pages opened by SIGRH (popups/new tabs)
     this._ctx.on("page", (newPage) => {
       this._page = newPage;
     });
     this._page = await this._ctx.newPage();
+  }
+
+  async _launchBrowser() {
+    const opts = { headless: !this.headed };
+    // Try system browsers first (no download needed), then fall back to bundled Chromium
+    const channels = process.platform === "win32"
+      ? ["msedge", "chrome"]
+      : ["chrome", "msedge"];
+    for (const channel of channels) {
+      try {
+        return await chromium.launch({ ...opts, channel });
+      } catch {}
+    }
+    return await chromium.launch(opts);
   }
 
   async login(username, password) {

@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useServidoresStore } from "@/stores/servidores";
 import { useAuthStore } from "@/stores/auth";
+import { crawlerRefreshKey } from "@/stores/crawler";
 import { aggregateMonth, formatMin, pctCarga, countOcorrencias } from "@/lib/aggregation";
 import DayTable from "@/components/DayTable.vue";
 import ThemeToggle from "@/components/ThemeToggle.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 import type { RawEspelho } from "@/types/dashboard";
 
 const route = useRoute();
@@ -27,15 +29,17 @@ onMounted(async () => {
   if (!e) { router.push(`/servidor/${slug}`); return; }
   espelho.value = e;
 });
+watch(crawlerRefreshKey, () => store.load());
 </script>
 
 <template>
   <div class="page-wide">
     <div class="nav-row">
-      <router-link class="back" :to="`/servidor/${slug}`">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        {{ espelho?.servidor?.nome ?? slug }}
-      </router-link>
+      <Breadcrumb :items="[
+        { label: 'Servidores', to: '/' },
+        { label: espelho?.servidor?.nome ?? slug, to: `/servidor/${slug}` },
+        { label: espelho?.periodo_referencia ?? periodo }
+      ]" />
       <div class="nav-actions">
         <ThemeToggle />
         <button class="logout-btn" type="button" @click="auth.logout(); $router.push('/login')">Sair</button>

@@ -1,0 +1,9 @@
+{
+  "name": "homologacao-ponto",
+  "private": true,
+  "pkg": {
+    "assets": [
+      "desktop/src-crawler/package.json"
+    ]
+  }
+}

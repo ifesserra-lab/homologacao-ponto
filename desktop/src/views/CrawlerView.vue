@@ -1,68 +1,20 @@
 <script setup lang="ts">
-import { ref, onUnmounted, nextTick } from "vue";
-import { invoke } from "@tauri-apps/api/core";
-import { listen } from "@tauri-apps/api/event";
+import { ref, watch, nextTick } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useCrawlerStore } from "@/stores/crawler";
 import ThemeToggle from "@/components/ThemeToggle.vue";
+import TabNav from "@/components/TabNav.vue";
 
 const auth = useAuthStore();
-const running = ref(false);
-const logs = ref<string[]>([]);
-const exitCode = ref<number | null>(null);
+const crawler = useCrawlerStore();
 const termEl = ref<HTMLElement | null>(null);
-
-let unlistenLog: (() => void) | null = null;
-let unlistenDone: (() => void) | null = null;
 
 async function scrollBottom() {
   await nextTick();
   if (termEl.value) termEl.value.scrollTop = termEl.value.scrollHeight;
 }
 
-async function startBatch() {
-  if (running.value) return;
-  running.value = true;
-  exitCode.value = null;
-  logs.value = ["Iniciando crawler…"];
-
-  unlistenLog = await listen<string>("crawler-log", (e) => {
-    logs.value.push(e.payload);
-    scrollBottom();
-  });
-
-  unlistenDone = await listen<number>("crawler-done", (e) => {
-    exitCode.value = e.payload;
-    const ok = e.payload === 0;
-    logs.value.push(ok ? "✓ Concluído com sucesso" : `✗ Encerrado com código ${e.payload}`);
-    running.value = false;
-    scrollBottom();
-    unlistenLog?.();
-    unlistenDone?.();
-    unlistenLog = null;
-    unlistenDone = null;
-  });
-
-  try {
-    await invoke("run_crawler", { extraArgs: [] });
-  } catch (e) {
-    logs.value.push(`Erro: ${e}`);
-    running.value = false;
-    unlistenLog?.();
-    unlistenDone?.();
-  }
-}
-
-function clearLogs() {
-  if (!running.value) {
-    logs.value = [];
-    exitCode.value = null;
-  }
-}
-
-onUnmounted(() => {
-  unlistenLog?.();
-  unlistenDone?.();
-});
+watch(() => crawler.logs.length, () => scrollBottom());
 </script>
 
 <template>
@@ -80,80 +32,102 @@ onUnmounted(() => {
       </div>
     </header>
 
-    <div class="tab-nav">
-      <router-link class="tab-btn" to="/" exact>Servidores</router-link>
-      <router-link class="tab-btn" to="/indicadores">Indicadores</router-link>
-      <router-link class="tab-btn" to="/crawler" active-class="active">Crawler</router-link>
-    </div>
+    <TabNav />
 
-    <div class="crawler-card">
-      <div class="crawler-header">
-        <div>
-          <p class="crawler-hint">
-            Lê <code>servidores.yaml</code> e baixa espelhos para <code>data/runs/servidores/</code>.
-            Requer credenciais em <code>desktop/.env</code>:
-          </p>
-          <pre class="env-example">SIGRH_USERNAME=seu.login
-SIGRH_PASSWORD=sua.senha</pre>
+    <div class="crawler-layout">
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <span class="terminal-label">OUTPUT</span>
+          <span v-if="crawler.running" class="status-running"><span class="dot-pulse"></span> Executando</span>
+          <span v-else-if="crawler.exitCode === 0" class="status-ok">● Sucesso</span>
+          <span v-else-if="crawler.exitCode !== null" class="status-fail">● Falha (exit {{ crawler.exitCode }})</span>
         </div>
-        <div class="actions">
-          <button
-            v-if="!running"
-            class="btn-run"
-            :disabled="running"
-            @click="startBatch"
-          >
-            ▶ Executar Batch
-          </button>
+        <div class="toolbar-right">
+          <button v-if="crawler.logs.length > 0 && !crawler.running" class="btn-clear" @click="crawler.clearLogs()">Limpar</button>
+          <button v-if="!crawler.running" class="btn-run" @click="crawler.startBatch()">▶ Executar Batch</button>
           <button v-else class="btn-run btn-run--running" disabled>
             <span class="spinner"></span> Executando…
           </button>
-          <button v-if="logs.length > 0 && !running" class="btn-clear" @click="clearLogs">Limpar</button>
         </div>
       </div>
 
-      <div
-        v-if="logs.length > 0"
-        ref="termEl"
-        class="terminal"
-      >
-        <div
-          v-for="(line, i) in logs"
-          :key="i"
-          :class="['log-line', line.startsWith('[err]') ? 'log-err' : line.startsWith('✓') ? 'log-ok' : line.startsWith('✗') ? 'log-fail' : '']"
-        >{{ line }}</div>
+      <!-- Barra de progresso -->
+      <div v-if="crawler.running || crawler.progressTotal > 0" class="progress-wrap">
+        <div class="progress-track">
+          <div class="progress-fill" :style="{ width: crawler.progressPct + '%' }"></div>
+        </div>
+        <span class="progress-label">
+          <template v-if="crawler.progressTotal > 0">{{ crawler.progressDone }}/{{ crawler.progressTotal }} ({{ crawler.progressPct }}%)</template>
+          <template v-else>Aguardando…</template>
+        </span>
       </div>
 
-      <div v-if="exitCode !== null" :class="['exit-badge', exitCode === 0 ? 'exit-ok' : 'exit-fail']">
-        Exit {{ exitCode }} · {{ exitCode === 0 ? "Sucesso" : "Com falhas" }}
+      <!-- Terminal sempre visível -->
+      <div ref="termEl" class="terminal">
+        <template v-if="crawler.logs.length === 0">
+          <span class="term-placeholder">Clique em "Executar Batch" para iniciar o crawler.<br/>Lê servidores.yaml · grava em data/runs/servidores/</span>
+        </template>
+        <template v-else>
+          <div
+            v-for="(line, i) in crawler.logs"
+            :key="i"
+            :class="['log-line',
+              line.startsWith('[err]') ? 'log-err' :
+              line.startsWith('✓') ? 'log-ok' :
+              line.startsWith('✗') ? 'log-fail' :
+              line.startsWith('$') ? 'log-cmd' :
+              line.startsWith('  ✓') ? 'log-ok' :
+              line.startsWith('  ✗') ? 'log-err' :
+              line.startsWith('→') ? 'log-info' : ''
+            ]"
+          >{{ line }}</div>
+          <span v-if="crawler.running" class="cursor">▌</span>
+        </template>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.crawler-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-.crawler-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; margin-bottom: 16px; flex-wrap: wrap; }
-.crawler-hint { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-.crawler-hint code { font-family: var(--mono); font-size: 12px; background: var(--surface-2); padding: 1px 5px; border-radius: 3px; }
-.env-example { font-family: var(--mono); font-size: 12px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 4px; padding: 8px 12px; color: var(--text); margin: 0; }
-.actions { display: flex; gap: 8px; align-items: flex-start; flex-shrink: 0; }
-.btn-run { padding: 8px 18px; background: var(--blue); color: var(--on-accent); border: none; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+.crawler-layout { display: flex; flex-direction: column; gap: 0; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+
+.toolbar { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; background: var(--surface-2); border-bottom: 1px solid var(--border); gap: 12px; }
+.toolbar-left { display: flex; align-items: center; gap: 10px; }
+.toolbar-right { display: flex; align-items: center; gap: 8px; }
+.terminal-label { font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+
+.status-running { font-size: 11px; color: var(--amber); display: flex; align-items: center; gap: 5px; }
+.status-ok { font-size: 11px; color: var(--green); font-weight: 500; }
+.status-fail { font-size: 11px; color: var(--red); font-weight: 500; }
+
+.btn-run { padding: 5px 14px; background: var(--blue); color: var(--on-accent); border: none; border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; }
 .btn-run:disabled { opacity: 0.7; cursor: default; }
-.btn-run--running { background: var(--muted); }
-.btn-clear { padding: 8px 12px; background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; }
-.btn-clear:hover { color: var(--text); border-color: var(--text); }
-.terminal { background: #1a1a1a; color: #d4d4d4; font-family: var(--mono); font-size: 12px; line-height: 1.6; border-radius: 6px; padding: 12px 16px; max-height: 420px; overflow-y: auto; margin-top: 4px; }
+.btn-run--running { background: #444; color: #ccc; }
+.btn-clear { padding: 5px 10px; background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 12px; cursor: pointer; }
+.btn-clear:hover { color: var(--text); }
+
+.terminal { background: #111; color: #d4d4d4; font-family: var(--mono); font-size: 12px; line-height: 1.65; padding: 16px 18px; min-height: 380px; max-height: calc(100vh - 260px); overflow-y: auto; position: relative; }
+.term-placeholder { color: #555; font-style: italic; }
+
 .log-line { white-space: pre-wrap; word-break: break-all; }
-.log-err { color: #f87171; }
-.log-ok { color: #4ade80; font-weight: 500; }
+.log-cmd  { color: #7dd3fc; }
+.log-info { color: #a3a3a3; }
+.log-ok   { color: #4ade80; font-weight: 500; }
 .log-fail { color: #f87171; font-weight: 500; }
-.exit-badge { display: inline-block; margin-top: 12px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
-.exit-ok { background: var(--green-light); color: var(--green); }
-.exit-fail { background: var(--amber-light); color: var(--amber); }
-.spinner { width: 12px; height: 12px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
+.log-err  { color: #f87171; }
+
+.cursor { display: inline-block; animation: blink 1s step-end infinite; color: #d4d4d4; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.dot-pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); display: inline-block; animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.spinner { width: 11px; height: 11px; border: 2px solid rgba(255,255,255,0.25); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.tab-nav { display: flex; gap: 4px; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
-.tab-btn { padding: 8px 20px; font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s; }
-.tab-btn:hover, .tab-btn.active, .router-link-active { color: var(--text); border-bottom-color: var(--blue); font-weight: 600; }
+
+.progress-wrap { display: flex; align-items: center; gap: 10px; padding: 8px 14px; background: #0d0d0d; border-bottom: 1px solid #222; }
+.progress-track { flex: 1; height: 6px; background: #2a2a2a; border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--blue, #3b82f6); border-radius: 3px; transition: width 0.3s ease; }
+.progress-label { font-size: 11px; color: #888; font-family: var(--mono); white-space: nowrap; min-width: 110px; text-align: right; }
 </style>

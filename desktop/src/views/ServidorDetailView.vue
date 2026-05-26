@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useServidoresStore } from "@/stores/servidores";
 import { useAuthStore } from "@/stores/auth";
+import { crawlerRefreshKey } from "@/stores/crawler";
 import { formatMin, pctCarga } from "@/lib/aggregation";
 import MonthTable from "@/components/MonthTable.vue";
 import ThemeToggle from "@/components/ThemeToggle.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 import type { ServidorResume } from "@/types/dashboard";
 
 const route = useRoute();
@@ -58,15 +60,13 @@ onMounted(async () => {
   if (!s) { router.push("/"); return; }
   servidor.value = s;
 });
+watch(crawlerRefreshKey, () => store.load());
 </script>
 
 <template>
   <div class="page">
     <div class="nav-row">
-      <router-link class="back" to="/">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Servidores
-      </router-link>
+      <Breadcrumb :items="[{ label: 'Servidores', to: '/' }, { label: servidor?.nome ?? slug }]" />
       <div class="nav-actions">
         <ThemeToggle />
         <button class="logout-btn" type="button" @click="auth.logout(); $router.push('/login')">Sair</button>

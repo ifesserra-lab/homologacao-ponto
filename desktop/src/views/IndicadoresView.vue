@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { useServidoresStore } from "@/stores/servidores";
 import { useAuthStore } from "@/stores/auth";
+import { crawlerRefreshKey } from "@/stores/crawler";
 import { formatMin, pctCarga, allPeriodos } from "@/lib/aggregation";
 import ThemeToggle from "@/components/ThemeToggle.vue";
+import TabNav from "@/components/TabNav.vue";
 
 const store = useServidoresStore();
 const auth = useAuthStore();
@@ -72,6 +74,7 @@ function heatCell(mes: ReturnType<typeof heatmap.value[0]["byPeriod"]["get"]>) {
 onMounted(() => {
   if (store.servidores.length === 0) store.load();
 });
+watch(crawlerRefreshKey, () => store.load());
 </script>
 
 <template>
@@ -89,10 +92,7 @@ onMounted(() => {
       </div>
     </header>
 
-    <div class="tab-nav">
-      <router-link class="tab-btn" to="/" active-class="active" exact>Servidores</router-link>
-      <router-link class="tab-btn" to="/indicadores" active-class="active">Indicadores</router-link>
-    </div>
+    <TabNav />
 
     <!-- Alertas -->
     <div v-if="alerts.length > 0" class="section">
@@ -221,9 +221,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.tab-nav { display: flex; gap: 4px; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
-.tab-btn { padding: 8px 20px; font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s; }
-.tab-btn:hover, .tab-btn.active { color: var(--text); border-bottom-color: var(--blue); font-weight: 600; }
 .section { margin-bottom: 2rem; }
 .section-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
 .table-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); }

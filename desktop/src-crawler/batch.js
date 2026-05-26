@@ -26,6 +26,10 @@ function expandPeriodos(config) {
 export async function runBatch({ browser, config, outputDir, onProgress = null }) {
   const entries = [];
   const periodos = expandPeriodos(config);
+  const total = config.servidores.length * periodos.length;
+  let done = 0;
+
+  onProgress?.(`[batch:start] total=${total}`);
 
   for (const servidor of config.servidores) {
     for (const { mes, ano } of periodos) {
@@ -40,6 +44,8 @@ export async function runBatch({ browser, config, outputDir, onProgress = null }
         const rows = await browser.findServerRows();
         const match = rows.find(r => r.hasSelect);
         if (!match) {
+          done++;
+          onProgress?.(`[batch:progress] ${done}/${total}`);
           entries.push({ nome: servidor.nome, siape: servidor.siape, mes, ano, status: "failed", error: "Servidor não encontrado nos resultados" });
           continue;
         }
@@ -49,10 +55,14 @@ export async function runBatch({ browser, config, outputDir, onProgress = null }
         const url = await browser.getUrl();
         const espelho = parseEspelho({ html, url, capturedAt, runId, serverName: servidor.nome, identifier: servidor.siape ?? null });
         const path = writeEspelho(espelho, outputDir);
+        done++;
         onProgress?.(`  ✓ ${path}`);
+        onProgress?.(`[batch:progress] ${done}/${total}`);
         entries.push({ nome: servidor.nome, siape: servidor.siape, mes, ano, status: espelho.status, path });
       } catch (err) {
+        done++;
         onProgress?.(`  ✗ ${err.message}`);
+        onProgress?.(`[batch:progress] ${done}/${total}`);
         entries.push({ nome: servidor.nome, siape: servidor.siape, mes, ano, status: "failed", error: err.message });
       }
     }
