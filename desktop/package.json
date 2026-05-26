@@ -7,10 +7,14 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "crawl": "node src-crawler/cli.js",
+    "install-browsers": "npx playwright install chromium"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",
+    "js-yaml": "^4.1.0",
+    "playwright": "^1.44.0",
     "@tauri-apps/plugin-fs": "^2.5.1",
     "@tauri-apps/plugin-opener": "^2",
     "pinia": "^3.0.4",

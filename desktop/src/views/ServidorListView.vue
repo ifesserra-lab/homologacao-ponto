@@ -35,9 +35,10 @@ onMounted(() => {
       </div>
     </header>
 
-    <div v-if="!store.isEmpty" class="tab-nav">
+    <div class="tab-nav">
       <router-link class="tab-btn" to="/" active-class="active" exact>Servidores</router-link>
       <router-link class="tab-btn" to="/indicadores" active-class="active">Indicadores</router-link>
+      <router-link class="tab-btn" to="/crawler" active-class="active">Crawler</router-link>
     </div>
 
     <div v-if="store.loading" class="empty-state">
