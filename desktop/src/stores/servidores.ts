@@ -1,30 +1,31 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { homeDir, join } from "@tauri-apps/api/path";
 import { listServers, serverDetail, monthDetail, loadAllAfastamentos } from "@/lib/espelhoRepository";
 import type { ServidorResume, RawEspelho, AfastamentoPeriodo } from "@/types/dashboard";
 
-const DEFAULT_SUBPATH = "data/runs/servidores";
+const STORAGE_KEY = "ponto_data_dir";
 
 export const useServidoresStore = defineStore("servidores", () => {
-  const dataDir = ref<string>("");
+  const dataDir = ref<string>(localStorage.getItem(STORAGE_KEY) ?? "");
   const servidores = ref<ServidorResume[]>([]);
   const afastamentos = ref<AfastamentoPeriodo[]>([]);
   const loading = ref(false);
   const error = ref<string | null>(null);
 
   const isEmpty = computed(() => servidores.value.length === 0);
+  const hasDir = computed(() => dataDir.value.trim().length > 0);
 
-  async function resolveDefaultDataDir(): Promise<string> {
-    const home = await homeDir();
-    return join(home, DEFAULT_SUBPATH);
+  function setDataDir(dir: string) {
+    dataDir.value = dir.trim();
+    localStorage.setItem(STORAGE_KEY, dataDir.value);
   }
 
   async function load(dir?: string) {
+    if (dir) setDataDir(dir);
+    if (!dataDir.value) return;
     loading.value = true;
     error.value = null;
     try {
-      dataDir.value = dir ?? await resolveDefaultDataDir();
       const [srvs, afas] = await Promise.all([
         listServers(dataDir.value),
         loadAllAfastamentos(dataDir.value),
@@ -48,5 +49,5 @@ export const useServidoresStore = defineStore("servidores", () => {
     return monthDetail(slug, periodo, dataDir.value);
   }
 
-  return { dataDir, servidores, afastamentos, loading, error, isEmpty, load, getServidor, getMes };
+  return { dataDir, servidores, afastamentos, loading, error, isEmpty, hasDir, load, setDataDir, getServidor, getMes };
 });

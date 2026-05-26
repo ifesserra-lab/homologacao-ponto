@@ -8,6 +8,7 @@ import ThemeToggle from "@/components/ThemeToggle.vue";
 const store = useServidoresStore();
 const auth = useAuthStore();
 const query = ref("");
+const dirInput = ref(store.dataDir);
 
 const filtered = computed(() =>
   query.value
@@ -15,8 +16,12 @@ const filtered = computed(() =>
     : store.servidores
 );
 
+async function applyDir() {
+  await store.load(dirInput.value);
+}
+
 onMounted(() => {
-  if (store.servidores.length === 0) store.load();
+  if (store.hasDir && store.servidores.length === 0) store.load();
 });
 </script>
 
@@ -40,18 +45,35 @@ onMounted(() => {
       <router-link class="tab-btn" to="/indicadores" active-class="active">Indicadores</router-link>
     </div>
 
-    <div v-if="store.loading" class="empty-state">
+    <div v-if="!store.hasDir" class="empty-state">
+      <div class="empty-icon">📁</div>
+      <p class="empty-title">Configure o diretório de dados</p>
+      <p style="margin-bottom: 12px; font-size: 13px;">Caminho para a pasta <code style="font-family:var(--mono);font-size:12px">data/runs/servidores</code></p>
+      <div class="dir-input-row">
+        <input v-model="dirInput" type="text" placeholder="/caminho/para/data/runs/servidores" class="dir-input" @keyup.enter="applyDir" />
+        <button class="btn-primary" @click="applyDir">Carregar</button>
+      </div>
+    </div>
+    <div v-else-if="store.loading" class="empty-state">
       <p>Carregando…</p>
     </div>
     <div v-else-if="store.error" class="empty-state">
       <p class="empty-title" style="color: var(--red)">Erro ao carregar dados</p>
-      <p>{{ store.error }}</p>
+      <p style="font-size:12px; font-family:var(--mono); margin-bottom:12px">{{ store.error }}</p>
+      <div class="dir-input-row">
+        <input v-model="dirInput" type="text" class="dir-input" @keyup.enter="applyDir" />
+        <button class="btn-primary" @click="applyDir">Tentar novamente</button>
+      </div>
     </div>
     <div v-else-if="store.isEmpty" class="empty-state">
       <div class="empty-icon">📂</div>
       <p class="empty-title">Nenhum espelho encontrado</p>
       <p>Execute o batch para exportar espelhos.</p>
-      <code class="empty-hint">data/runs/servidores/</code>
+      <code class="empty-hint">{{ store.dataDir }}</code>
+      <div class="dir-input-row" style="margin-top:16px">
+        <input v-model="dirInput" type="text" class="dir-input" @keyup.enter="applyDir" />
+        <button class="btn-primary" @click="applyDir">Alterar</button>
+      </div>
     </div>
     <template v-else>
       <div class="filter-wrap">
@@ -78,4 +100,9 @@ onMounted(() => {
 .empty-icon { font-size: 2rem; margin-bottom: 0.5rem; }
 .empty-title { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
 .empty-hint { font-size: 12px; font-family: var(--mono); background: var(--surface-2); padding: 3px 8px; border-radius: 4px; margin-top: 8px; display: inline-block; }
+.dir-input-row { display: flex; gap: 8px; max-width: 480px; margin: 0 auto; }
+.dir-input { flex: 1; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-size: 13px; font-family: var(--mono); outline: none; }
+.dir-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--focus-ring); }
+.btn-primary { padding: 8px 16px; background: var(--blue); color: var(--on-accent); border: none; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+.btn-primary:hover { opacity: 0.88; }
 </style>
