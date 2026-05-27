@@ -86,12 +86,13 @@ function close() {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.45);
   z-index: 1000;
-  display: flex; align-items: flex-end; justify-content: center;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding-top: 60px;
 }
 
 .cl-drawer {
   width: 100%; max-width: 780px;
-  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  border-radius: var(--radius-xl);
   overflow: hidden;
   display: flex; flex-direction: column;
   box-shadow: 0 -8px 40px rgba(0,0,0,0.4);
@@ -149,5 +150,5 @@ function close() {
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
 .drawer-enter-active, .drawer-leave-active { transition: opacity 0.2s, transform 0.25s; }
-.drawer-enter-from, .drawer-leave-to { opacity: 0; transform: translateY(60px); }
+.drawer-enter-from, .drawer-leave-to { opacity: 0; transform: translateY(-20px); }
 </style>
