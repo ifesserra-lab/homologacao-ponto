@@ -30,10 +30,6 @@ jobs:
         working-directory: desktop
         run: npm ci
 
-      - name: Instalar dependências do crawler
-        working-directory: desktop/src-crawler
-        run: npm ci
-
       - name: Build binários do crawler (todos os targets)
         working-directory: desktop
         run: node scripts/bundle-crawler.mjs
@@ -111,13 +107,10 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VITE_DATA_DIR: ''
-          VITE_USER_HASH: ${{ secrets.VITE_USER_HASH }}
-          VITE_PASSWORD_HASH: ${{ secrets.VITE_PASSWORD_HASH }}
         with:
           projectPath: desktop
           tagName: ${{ github.ref_name || inputs.tag }}
-          releaseName: 'Espelhos de Ponto ${{ github.ref_name || inputs.tag }}'
+          releaseName: 'Gestor de Ponto ${{ github.ref_name || inputs.tag }}'
           releaseBody: |
             ## Instaladores
 
@@ -129,8 +122,11 @@ jobs:
 
             ## Configuração após instalar
 
-            1. Crie o arquivo `.env` na pasta do app com `SIGRH_USERNAME` e `SIGRH_PASSWORD`
-            2. Configure os servidores em `servidores.yaml`
-            3. Execute o Crawler na aba correspondente
+            1. Abra o app e vá em **Configurações**
+            2. Preencha as credenciais do SIGRH
+            3. Defina a pasta onde os espelhos serão salvos
+            4. Configure login do app (usuário/senha de acesso)
+            5. Adicione os servidores na aba **Servidores**
+            6. Execute o Crawler
           releaseDraft: true
           args: ${{ matrix.args }}
