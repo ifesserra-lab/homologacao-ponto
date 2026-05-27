@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="300" viewBox="0 0 920 300">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+    <style>
+      text{font-family:Arial,sans-serif;font-size:14px;fill:#0f172a}
+      .box{fill:#f8fafc;stroke:#334155;stroke-width:1.5;rx:8}
+      .arrow{stroke:#334155;stroke-width:1.7;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect class="box" x="30" y="120" width="130" height="44"/>
+  <text x="95" y="146" text-anchor="middle">Captura</text>
+  <rect class="box" x="200" y="120" width="140" height="44"/>
+  <text x="270" y="146" text-anchor="middle">Espelho Mensal</text>
+  <rect class="box" x="390" y="40" width="150" height="44"/>
+  <text x="465" y="66" text-anchor="middle">Ocorrencias</text>
+  <rect class="box" x="390" y="120" width="150" height="44"/>
+  <text x="465" y="146" text-anchor="middle">Horas e Banco</text>
+  <rect class="box" x="390" y="200" width="150" height="44"/>
+  <text x="465" y="226" text-anchor="middle">Recesso</text>
+  <rect class="box" x="610" y="120" width="150" height="44"/>
+  <text x="685" y="146" text-anchor="middle">Ponto Eletronico</text>
+  <rect class="box" x="610" y="40" width="150" height="44"/>
+  <text x="685" y="66" text-anchor="middle">PIT Docente</text>
+  <rect class="box" x="790" y="120" width="110" height="44"/>
+  <text x="845" y="146" text-anchor="middle">Frequencia</text>
+  <rect class="box" x="790" y="220" width="110" height="44"/>
+  <text x="845" y="246" text-anchor="middle">Auditoria</text>
+  <path class="arrow" d="M160 142 H200"/>
+  <path class="arrow" d="M340 142 H390"/>
+  <path class="arrow" d="M340 142 C360 142 360 62 390 62"/>
+  <path class="arrow" d="M340 142 C360 142 360 222 390 222"/>
+  <path class="arrow" d="M540 62 C570 62 570 142 610 142"/>
+  <path class="arrow" d="M540 142 H610"/>
+  <path class="arrow" d="M540 222 C570 222 570 142 610 142"/>
+  <path class="arrow" d="M760 142 H790"/>
+  <path class="arrow" d="M845 164 V220"/>
+</svg>

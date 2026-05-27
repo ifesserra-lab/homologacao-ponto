@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="120" viewBox="0 0 920 120">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+    <style>
+      text{font-family:Arial,sans-serif;font-size:13px;fill:#0f172a}
+      .box{fill:#f8fafc;stroke:#334155;stroke-width:1.5;rx:8}
+      .arrow{stroke:#334155;stroke-width:1.7;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect class="box" x="20" y="36" width="170" height="48"/>
+  <text x="105" y="56" text-anchor="middle">Registrar ponto</text>
+  <text x="105" y="73" text-anchor="middle">ou ajuste</text>
+  <rect class="box" x="230" y="36" width="170" height="48"/>
+  <text x="315" y="56" text-anchor="middle">Homologar</text>
+  <text x="315" y="73" text-anchor="middle">ocorrencias</text>
+  <rect class="box" x="440" y="36" width="170" height="48"/>
+  <text x="525" y="56" text-anchor="middle">Revisar horas</text>
+  <text x="525" y="73" text-anchor="middle">e justificativas</text>
+  <rect class="box" x="650" y="36" width="120" height="48"/>
+  <text x="710" y="64" text-anchor="middle">Ponto</text>
+  <rect class="box" x="810" y="36" width="90" height="48"/>
+  <text x="855" y="64" text-anchor="middle">Frequencia</text>
+  <path class="arrow" d="M190 60 H230"/>
+  <path class="arrow" d="M400 60 H440"/>
+  <path class="arrow" d="M610 60 H650"/>
+  <path class="arrow" d="M770 60 H810"/>
+</svg>

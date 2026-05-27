@@ -2,13 +2,14 @@
 import { ref, computed, onMounted, watch } from "vue";
 import { useServidoresStore } from "@/stores/servidores";
 import { useAuthStore } from "@/stores/auth";
-import { crawlerRefreshKey } from "@/stores/crawler";
+import { crawlerRefreshKey, useCrawlerStore } from "@/stores/crawler";
 import ServerCard from "@/components/ServerCard.vue";
 import ThemeToggle from "@/components/ThemeToggle.vue";
 import TabNav from "@/components/TabNav.vue";
 
 const store = useServidoresStore();
 const auth = useAuthStore();
+const crawler = useCrawlerStore();
 const query = ref("");
 
 const filtered = computed(() =>
@@ -32,6 +33,16 @@ watch(crawlerRefreshKey, () => store.load());
           <p class="page-meta">SIGRH · {{ store.servidores.length }} {{ store.servidores.length === 1 ? "servidor" : "servidores" }}</p>
         </div>
         <div class="nav-actions">
+          <button
+            class="sync-btn"
+            type="button"
+            :disabled="crawler.running"
+            @click="crawler.startDescobrir()"
+            :title="crawler.running ? 'Aguarde…' : 'Descobrir servidores da unidade'"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            {{ crawler.running ? "…" : "Sincronizar" }}
+          </button>
           <ThemeToggle />
           <button class="logout-btn" type="button" @click="auth.logout(); $router.push('/login')">Sair</button>
         </div>
@@ -86,4 +97,14 @@ watch(crawlerRefreshKey, () => store.load());
 .empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
 .empty-title { font-size: 15px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
 .empty-hint { font-size: 12px; font-family: var(--mono); background: var(--surface-2); padding: 3px 8px; border-radius: var(--radius-sm); margin-top: 8px; display: inline-block; border: 1px solid var(--border); }
+.sync-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 12px; border-radius: var(--radius-lg);
+  border: 1px solid var(--border-mid);
+  background: var(--surface); color: var(--text);
+  font-size: 12px; font-family: var(--font); font-weight: 500;
+  cursor: pointer; transition: background 0.15s, opacity 0.15s;
+}
+.sync-btn:hover:not(:disabled) { background: var(--surface-2); }
+.sync-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 </style>

@@ -57,8 +57,16 @@ export class SigrhBrowser {
   }
 
   async _dismissPontoPopup() {
-    // SIGRH shows a popup asking to register attendance — click "Entrar sem bater ponto"
+    // Handle JS dialog (alert/confirm) first
+    const dialogHandler = dialog => dialog.accept().catch(() => {});
+    this._page.once("dialog", dialogHandler);
+
+    // SIGRH ponto page: click "Continuar Acessando o Sistema" or "Entrar sem bater ponto"
     const selectors = [
+      "a:has-text('Continuar Acessando o Sistema')",
+      "a:has-text('Continuar acessando')",
+      "button:has-text('Continuar Acessando')",
+      "input[value*='Continuar Acessando']",
       "a:has-text('Entrar sem bater ponto')",
       "button:has-text('Entrar sem bater ponto')",
       "input[value*='sem bater']",
@@ -71,11 +79,26 @@ export class SigrhBrowser {
         if ((await loc.count()) > 0) {
           await loc.first().click({ force: true });
           await this._page.waitForLoadState("domcontentloaded").catch(() => {});
-          await this._safeTimeout(500);
+          await this._safeTimeout(800);
+          // Handle any subsequent JS dialog (e.g. "Ok" confirmation)
+          await this._dismissJsDialog();
           return;
         }
       } catch {}
     }
+
+    // Remove unused handler
+    try { this._page.off("dialog", dialogHandler); } catch {}
+  }
+
+  async _dismissJsDialog() {
+    // Accept any pending JS dialog within 2s
+    await Promise.race([
+      new Promise(resolve => {
+        this._page.once("dialog", dialog => { dialog.accept().catch(() => {}); resolve(); });
+        setTimeout(resolve, 2000);
+      }),
+    ]).catch(() => {});
   }
 
   async navigateToEspelho() {

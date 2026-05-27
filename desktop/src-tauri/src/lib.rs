@@ -14,6 +14,16 @@ struct AppConfig {
     sigrh: SigrhConfig,
     #[serde(default)]
     app: AppLoginConfig,
+    #[serde(default)]
+    homologacao: HomologacaoConfig,
+    #[serde(default)]
+    chefia: ChefiaConfig,
+}
+
+#[derive(Serialize, Deserialize, Default, Clone)]
+struct ChefiaConfig {
+    #[serde(default)]
+    setor: String,
 }
 
 #[derive(Serialize, Deserialize, Default, Clone)]
@@ -36,6 +46,17 @@ struct AppLoginConfig {
     usuario_hash: String,
     #[serde(default)]
     senha_hash: String,
+}
+
+fn default_politica_he() -> String { "manual".to_string() }
+
+#[derive(Serialize, Deserialize, Clone)]
+struct HomologacaoConfig {
+    #[serde(default = "default_politica_he")]
+    politica_he: String,
+}
+impl Default for HomologacaoConfig {
+    fn default() -> Self { Self { politica_he: default_politica_he() } }
 }
 
 fn config_path() -> PathBuf {
@@ -158,12 +179,11 @@ async fn run_crawler(app: AppHandle, command: Option<String>, extra_args: Vec<St
         (node, vec![cli.to_string_lossy().to_string()])
     };
 
-    if extra_args.is_empty() {
-        let cmd = command.as_deref().unwrap_or("batch");
-        args.push(cmd.to_string());
-        args.extend(["--file".to_string(), yaml.to_string_lossy().to_string()]);
-        args.extend(["--output-dir".to_string(), output_dir.to_string_lossy().to_string()]);
-    } else {
+    let cmd = command.as_deref().unwrap_or("batch");
+    args.push(cmd.to_string());
+    args.extend(["--file".to_string(), yaml.to_string_lossy().to_string()]);
+    args.extend(["--output-dir".to_string(), output_dir.to_string_lossy().to_string()]);
+    if !extra_args.is_empty() {
         args.extend(extra_args);
     }
 
@@ -177,6 +197,8 @@ async fn run_crawler(app: AppHandle, command: Option<String>, extra_args: Vec<St
         .env("PATH", &expanded_path)
         .env("SIGRH_USERNAME", &cfg.sigrh.usuario)
         .env("SIGRH_PASSWORD", &cfg.sigrh.senha)
+        .env("POLITICA_HE", &cfg.homologacao.politica_he)
+        .env("CHEFIA_SETOR", &cfg.chefia.setor)
         .stdout(std::process::Stdio::piped())
         .stderr(std::process::Stdio::piped())
         .spawn()

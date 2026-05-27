@@ -5,12 +5,14 @@ import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import yaml from "js-yaml";
 import { useAuthStore } from "@/stores/auth";
 import { useServidoresStore } from "@/stores/servidores";
+import { useCrawlerStore } from "@/stores/crawler";
 import TabNav from "@/components/TabNav.vue";
 import ThemeToggle from "@/components/ThemeToggle.vue";
 
 const auth = useAuthStore();
 const servidoresStore = useServidoresStore();
-const activeTab = ref<"sigrh" | "dados" | "app" | "servidores">("sigrh");
+const crawler = useCrawlerStore();
+const activeTab = ref<"sigrh" | "dados" | "app" | "servidores" | "homologacao">("sigrh");
 
 const configPath = ref("");
 const servidoresPath = ref("");
@@ -51,6 +53,7 @@ async function sha256(text: string): Promise<string> {
 const sigrh_usuario = ref("");
 const sigrh_senha = ref("");
 const showSigrhPass = ref(false);
+const sigrh_setor = ref("");
 const sigrhSaving = ref(false);
 const sigrhMsg = ref<{ ok: boolean; text: string } | null>(null);
 
@@ -58,12 +61,13 @@ async function loadSigrh() {
   const cfg = await loadConfig();
   sigrh_usuario.value = cfg?.sigrh?.usuario ?? "";
   sigrh_senha.value = cfg?.sigrh?.senha ?? "";
+  sigrh_setor.value = cfg?.chefia?.setor ?? "";
 }
 
 async function saveSigrh() {
   sigrhSaving.value = true; sigrhMsg.value = null;
   try {
-    await saveConfig({ sigrh: { usuario: sigrh_usuario.value.trim(), senha: sigrh_senha.value } });
+    await saveConfig({ sigrh: { usuario: sigrh_usuario.value.trim(), senha: sigrh_senha.value }, chefia: { setor: sigrh_setor.value.trim() } });
     sigrhMsg.value = { ok: true, text: "✓ Credenciais salvas" };
   } catch (e) { sigrhMsg.value = { ok: false, text: `Erro: ${e}` }; }
   finally { sigrhSaving.value = false; }
@@ -92,6 +96,25 @@ async function saveDataDir() {
     dataDirMsg.value = { ok: true, text: "✓ Pasta salva e dados recarregados" };
   } catch (e) { dataDirMsg.value = { ok: false, text: `Erro: ${e}` }; }
   finally { dataDirSaving.value = false; }
+}
+
+// ── Homologação ───────────────────────────────────────────────
+const politicaHe = ref<"manual" | "autorizar" | "zerar">("manual");
+const homologSaving = ref(false);
+const homologMsg = ref<{ ok: boolean; text: string } | null>(null);
+
+async function loadHomologacao() {
+  const cfg = await loadConfig();
+  politicaHe.value = cfg?.homologacao?.politica_he ?? "manual";
+}
+
+async function saveHomologacao() {
+  homologSaving.value = true; homologMsg.value = null;
+  try {
+    await saveConfig({ homologacao: { politica_he: politicaHe.value } });
+    homologMsg.value = { ok: true, text: "✓ Política salva" };
+  } catch (e) { homologMsg.value = { ok: false, text: `Erro: ${e}` }; }
+  finally { homologSaving.value = false; }
 }
 
 // ── Login do app ──────────────────────────────────────────────
@@ -176,7 +199,7 @@ onMounted(async () => {
   const paths = await invoke<{ config_path: string; servidores_path: string }>("get_config_paths");
   configPath.value = paths.config_path;
   servidoresPath.value = paths.servidores_path;
-  await Promise.all([loadSigrh(), loadDataDir(), loadServidores()]);
+  await Promise.all([loadSigrh(), loadDataDir(), loadServidores(), loadHomologacao()]);
 });
 </script>
 
@@ -210,6 +233,9 @@ onMounted(async () => {
       <button :class="['ctab', activeTab === 'servidores' && 'ctab--active']" @click="activeTab = 'servidores'">
         Servidores ({{ servidores.length }})
       </button>
+      <button :class="['ctab', activeTab === 'homologacao' && 'ctab--active']" @click="activeTab = 'homologacao'">
+        Homologação
+      </button>
     </div>
 
     <!-- ── Credenciais SIGRH ── -->
@@ -227,6 +253,16 @@ onMounted(async () => {
             {{ showSigrhPass ? 'Ocultar' : 'Mostrar' }}
           </button>
         </div>
+      </div>
+      <div class="field">
+        <label>Setor / Unidade (SIGRH)</label>
+        <input
+          v-model="sigrh_setor"
+          type="text"
+          autocomplete="off"
+          placeholder="Ex: COORDENAÇÃO DE GESTÃO DE PESSOAS"
+        />
+        <span class="field-sublabel">Nome exato da unidade como aparece na tela de homologação do SIGRH</span>
       </div>
       <div class="actions">
         <button class="btn-save" :disabled="sigrhSaving" @click="saveSigrh">
@@ -290,6 +326,40 @@ onMounted(async () => {
       <p class="card-path">{{ configPath }}</p>
     </div>
 
+    <!-- ── Homologação ── -->
+    <div v-if="activeTab === 'homologacao'" class="card">
+      <p class="card-hint">Define como o sistema trata Horas Excedentes (HE) na homologação automática.</p>
+
+      <div class="field">
+        <label>Política de HE</label>
+        <div class="politica-group">
+          <label :class="['politica-opt', politicaHe === 'manual' && 'politica-opt--active']">
+            <input type="radio" v-model="politicaHe" value="manual" />
+            <span class="politica-title">Manual</span>
+            <span class="politica-desc">HE não autorizado bloqueia a homologação — chefia decide caso a caso</span>
+          </label>
+          <label :class="['politica-opt', politicaHe === 'autorizar' && 'politica-opt--active']">
+            <input type="radio" v-model="politicaHe" value="autorizar" />
+            <span class="politica-title">Autorizar automaticamente</span>
+            <span class="politica-desc">HE é autorizado antes de homologar — HA recebe o mesmo valor de HE</span>
+          </label>
+          <label :class="['politica-opt', politicaHe === 'zerar' && 'politica-opt--active']">
+            <input type="radio" v-model="politicaHe" value="zerar" />
+            <span class="politica-title">Zerar HE</span>
+            <span class="politica-desc">HA é zerado antes de homologar — horas excedentes desconsideradas</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-save" :disabled="homologSaving" @click="saveHomologacao">
+          {{ homologSaving ? 'Salvando…' : 'Salvar política' }}
+        </button>
+        <span v-if="homologMsg" :class="['msg', homologMsg.ok ? 'msg--ok' : 'msg--err']">{{ homologMsg.text }}</span>
+      </div>
+      <p class="card-path">{{ configPath }}</p>
+    </div>
+
     <!-- ── Servidores ── -->
     <div v-if="activeTab === 'servidores'" class="card">
       <p class="card-hint">Lista de servidores que o crawler vai buscar no SIGRH.</p>
@@ -314,6 +384,10 @@ onMounted(async () => {
       <div class="actions">
         <button class="btn-save" :disabled="servSaving" @click="saveServidores">
           {{ servSaving ? 'Salvando…' : 'Salvar servidores.yaml' }}
+        </button>
+        <button class="btn-descobrir" :disabled="crawler.running" @click="crawler.startDescobrir()" :title="crawler.running ? 'Aguarde…' : 'Buscar servidores da unidade no SIGRH'">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          {{ crawler.running ? '…' : 'Descobrir servidores' }}
         </button>
         <span v-if="servMsg" :class="['msg', servMsg.ok ? 'msg--ok' : 'msg--err']">{{ servMsg.text }}</span>
       </div>
@@ -373,4 +447,16 @@ onMounted(async () => {
 .add-siape:focus { outline: none; border-color: var(--blue); }
 .btn-add { padding: 7px 14px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; color: var(--text); white-space: nowrap; }
 .btn-add:hover { border-color: var(--blue); color: var(--blue); }
+.btn-descobrir { display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; color: var(--text); white-space: nowrap; }
+.btn-descobrir:hover:not(:disabled) { border-color: var(--blue); color: var(--blue); }
+.btn-descobrir:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.politica-group { display: flex; flex-direction: column; gap: 8px; }
+.politica-opt { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+.politica-opt input[type="radio"] { margin-top: 2px; accent-color: var(--blue); flex-shrink: 0; }
+.politica-opt--active { border-color: var(--blue); background: var(--blue-light, #e8f2fc); }
+.politica-opt:hover:not(.politica-opt--active) { border-color: var(--blue); }
+.politica-title { font-size: 13px; font-weight: 600; color: var(--text); white-space: nowrap; }
+.politica-desc { font-size: 11px; color: var(--muted); line-height: 1.4; flex: 1; }
+.field-sublabel { font-size: 11px; color: var(--muted); }
 </style>

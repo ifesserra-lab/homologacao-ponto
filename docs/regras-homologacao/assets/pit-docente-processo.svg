@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="120" viewBox="0 0 920 120">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker></defs>
+  <style>text{font-family:Arial,sans-serif;font-size:13px;fill:#0f172a}.b{fill:#f8fafc;stroke:#334155;stroke-width:1.5;rx:8}.l{stroke:#334155;stroke-width:1.7;fill:none;marker-end:url(#a)}</style>
+  <rect class="b" x="20" y="36" width="140" height="48"/><text x="90" y="64" text-anchor="middle">Abrir espelho</text>
+  <rect class="b" x="200" y="36" width="150" height="48"/><text x="275" y="56" text-anchor="middle">Incluir PIT</text><text x="275" y="73" text-anchor="middle">Docente</text>
+  <rect class="b" x="390" y="36" width="150" height="48"/><text x="465" y="56" text-anchor="middle">SIGRH calcula</text><text x="465" y="73" text-anchor="middle">tempo restante</text>
+  <rect class="b" x="580" y="36" width="140" height="48"/><text x="650" y="56" text-anchor="middle">Observacao</text><text x="650" y="73" text-anchor="middle">facultativa</text>
+  <rect class="b" x="760" y="36" width="140" height="48"/><text x="830" y="64" text-anchor="middle">Resumo mensal</text>
+  <path class="l" d="M160 60H200"/><path class="l" d="M350 60H390"/><path class="l" d="M540 60H580"/><path class="l" d="M720 60H760"/>
+</svg>
