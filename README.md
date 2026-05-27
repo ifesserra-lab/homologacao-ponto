@@ -1,149 +1,155 @@
-# Homologacao Ponto
+# Espelhos de Ponto — IFES
 
-Ferramenta para exportar o Espelho de Ponto do SIGRH para JSON e visualizá-lo
-em um dashboard estático. Usa Playwright para navegar o SIGRH de forma headless,
-extrai os dados visíveis e os persiste em `data/runs/servidores/`.
+Aplicativo desktop para extrair e visualizar os espelhos de ponto dos servidores diretamente do [SIGRH do IFES](https://sigrh.ifes.edu.br). Os dados ficam armazenados localmente em JSON; não é necessária conexão para consultar registros já extraídos.
 
-## Setup
+## Stack
+
+| Camada | Tecnologia |
+|--------|-----------|
+| Shell desktop | [Tauri 2](https://tauri.app) (Rust) |
+| Frontend | Vue 3 + Vite + TypeScript |
+| Estado | Pinia |
+| Crawler | Node.js + [Playwright](https://playwright.dev) |
+| Dados | JSON em disco |
+
+## Pré-requisitos
+
+- [Node.js](https://nodejs.org) ≥ 18
+- [Rust + Cargo](https://rustup.rs) ≥ 1.77
+
+## Instalação
 
 ```bash
-python3.12 -m venv .venv
-. .venv/bin/activate
-pip install -e ".[dev]"
-playwright install chromium
+git clone https://github.com/ifesserra-lab/homologacao-ponto.git
+cd homologacao-ponto/desktop
+
+# Dependências do frontend e do crawler
+npm install
+cd src-crawler && npm install && cd ..
 ```
 
-Copie `.env.example` para `.env` e preencha:
+## Configuração
+
+Copie o arquivo de exemplo e preencha:
 
 ```bash
 cp .env.example .env
 ```
 
-```text
-# Credenciais SIGRH (para o scraper)
-SIGRH_USERNAME=<matricula>
-SIGRH_PASSWORD=<senha>
+```env
+# Caminho absoluto para os dados (ajuste ao seu sistema)
+VITE_DATA_DIR=/Users/seu-usuario/homologacao-ponto/data/runs/servidores
 
-# Credenciais do dashboard (para a tela de login)
-DASHBOARD_USER=<usuario>
-DASHBOARD_PASSWORD=<senha>
+# Credenciais SIGRH usadas pelo crawler
+SIGRH_USERNAME=seu.login
+SIGRH_PASSWORD=sua.senha
+
+# Login do aplicativo — hashes SHA-256 do usuário e senha desejados
+VITE_USER_HASH=<sha256 do usuario>
+VITE_PASSWORD_HASH=<sha256 da senha>
 ```
 
-Para o dashboard, calcule os hashes SHA-256 e adicione ao `.env`:
+Para gerar os hashes:
 
 ```bash
-export DASHBOARD_USER=<usuario>
-export DASHBOARD_PASSWORD=<senha>
-export PUBLIC_DASHBOARD_USER_HASH=$(python3 -c "import hashlib,os; print(hashlib.sha256(os.environ['DASHBOARD_USER'].encode()).hexdigest())")
-export PUBLIC_DASHBOARD_PASSWORD_HASH=$(python3 -c "import hashlib,os; print(hashlib.sha256(os.environ['DASHBOARD_PASSWORD'].encode()).hexdigest())")
+echo -n "meu-usuario" | shasum -a 256
+echo -n "minha-senha"  | shasum -a 256
 ```
 
-## Uso rápido (Makefile)
+## Executando em desenvolvimento
 
 ```bash
-make export      # exporta espelho de todos os servidores em servidores.yaml
-make dashboard   # sobe o dashboard local em http://localhost:4321
-make test        # roda a suite de testes Python
+cd desktop
+npm run tauri dev
 ```
 
-## Exportar espelho
+## Servidores monitorados
 
-### Batch (recomendado)
-
-Edite `servidores.yaml` com a lista de servidores e o período:
+Edite `servidores.yaml` na raiz do repositório para definir quais servidores e anos extrair:
 
 ```yaml
-anos: [2026]
+anos:
+  - 2025
+  - 2026
 servidores:
-  - nome: "NOME COMPLETO EM MAIÚSCULAS"
-    siape: "1234567"
+  - nome: CELIO PROLICIANO MAIOLI
+    siape: '1534589'
+  - nome: GUSTAVO MAIA DE ALMEIDA
+    siape: '2701647'
 ```
 
-Execute:
+O campo `nome` deve ser exatamente como aparece no SIGRH (maiúsculas).
 
-```bash
-homologacao-ponto batch --file servidores.yaml --output-dir data/runs
+## Usando o Crawler
+
+1. Certifique-se que `SIGRH_USERNAME` e `SIGRH_PASSWORD` estão preenchidos
+2. No app, clique na aba **Crawler**
+3. Clique em **Executar Crawler**
+4. Acompanhe o progresso — ao concluir, todas as telas são atualizadas automaticamente
+
+O crawler extrai todos os espelhos de `servidores × anos × 12 meses` e salva em:
+
 ```
-
-Os JSONs são salvos em `data/runs/servidores/<slug-nome>/espelho-<periodo>.json`.
-
-### Servidor único
-
-```bash
-homologacao-ponto espelho-ponto --servidor "NOME DO SERVIDOR" --output-dir data/runs
-```
-
-## Dashboard
-
-```bash
-# Instalar dependências (primeira vez)
-cd dashboard && npm install
-
-# Subir em desenvolvimento
-make dashboard   # ou: cd dashboard && npm run dev
-```
-
-Acesse `http://localhost:4321`. Login com as credenciais definidas em `DASHBOARD_USER` / `DASHBOARD_PASSWORD`.
-
-### Build para produção
-
-```bash
-cd dashboard && npm run build
-```
-
-## GitHub Actions
-
-Dois workflows automáticos:
-
-| Workflow | Gatilho | O que faz |
-|---------|---------|-----------|
-| `export.yml` | Toda segunda-feira 08h UTC + `workflow_dispatch` | Roda `homologacao-ponto batch`, comita JSONs atualizados em `data/runs/servidores/` |
-| `deploy.yml` | Push em `main` (data ou dashboard alterados) + `workflow_dispatch` | Build Astro + deploy no GitHub Pages |
-
-### Configuração do repositório (uma vez)
-
-1. **Tornar público**: Settings → Danger Zone → Change visibility → Public
-2. **GitHub Pages**: Settings → Pages → Source → GitHub Actions
-3. **Secrets** (Settings → Secrets and variables → Actions):
-
-| Secret | Descrição |
-|--------|-----------|
-| `SIGRH_USERNAME` | Matrícula SIGRH para o scraper |
-| `SIGRH_PASSWORD` | Senha SIGRH para o scraper |
-| `DASHBOARD_USER` | Usuário para login no dashboard |
-| `DASHBOARD_PASSWORD` | Senha para login no dashboard |
-
-O workflow de deploy calcula os hashes automaticamente a partir de `DASHBOARD_USER` e `DASHBOARD_PASSWORD`.
-
-## Estrutura de dados
-
-```text
 data/runs/servidores/
-└── <slug-nome>/
-    ├── espelho-janeiro-2026.json
-    ├── espelho-fevereiro-2026.json
+└── celio-proliciano-maioli/
+│   ├── espelho-janeiro-2025.json
+│   ├── espelho-fevereiro-2025.json
+│   └── ...
+└── gustavo-maia-de-almeida/
     └── ...
 ```
 
-Schema completo em [`docs/espelho-ponto-schema.yaml`](docs/espelho-ponto-schema.yaml) (schema v2 com campo `resumo`).
-
-## Testes
+### Execução via linha de comando (sem o app)
 
 ```bash
-make test                    # suite Python completa
-cd dashboard && npm test     # testes TypeScript (vitest)
+# Batch completo (usa servidores.yaml)
+node desktop/src-crawler/cli.js batch \
+  --file servidores.yaml \
+  --output-dir data/runs \
+  --env-file desktop/.env
+
+# Servidor e mês específicos
+node desktop/src-crawler/cli.js espelho \
+  --servidor "NOME DO SERVIDOR" \
+  --siape 1234567 \
+  --mes 5 \
+  --ano 2025 \
+  --output-dir data/runs \
+  --env-file desktop/.env
+
+# Modo headed (exibe o browser — útil para depurar)
+node desktop/src-crawler/cli.js batch --file servidores.yaml --headed
 ```
 
-## Códigos de saída do CLI
+## Build para distribuição
 
-| Código | Significado |
-|--------|------------|
-| `0` | Sucesso |
-| `2` | Falha de autenticação |
-| `3` | CAPTCHA/MFA, navegação inválida ou erro inesperado |
-| `4` | Falha de escopo, seleção ou divergência de servidor |
-| `5` | Falha de escrita JSON ou CAPTCHA durante exportação |
-| `6` | JSON parcial ou sessão expirada |
-| `7` | Playwright/Chromium ausente |
+```bash
+cd desktop
+npm run tauri build
+```
 
-O crawler não contorna CAPTCHA, MFA nem bloqueios anti-automação.
+O instalador é gerado em `desktop/src-tauri/target/release/bundle/`.
+
+> **Nota:** o binário empacotado do crawler (`src-tauri/binaries/crawler-*`) precisa ser gerado separadamente com `node scripts/bundle-crawler.mjs` antes do build de release. Veja [docs/TECHNICAL.md](docs/TECHNICAL.md) para detalhes.
+
+## Documentação
+
+| Documento | Conteúdo |
+|-----------|---------|
+| [docs/TECHNICAL.md](docs/TECHNICAL.md) | Arquitetura, fluxo de dados, comandos Tauri, decisões de design |
+| [docs/USUARIO.md](docs/USUARIO.md) | Guia completo de uso do aplicativo |
+| [docs/espelho-ponto-schema.yaml](docs/espelho-ponto-schema.yaml) | Schema dos arquivos JSON de espelho |
+
+## Estrutura do repositório
+
+```
+homologacao-ponto/
+├── desktop/              # App Tauri (Vue 3 + Rust + Node.js crawler)
+│   ├── src/              # Frontend Vue 3
+│   ├── src-tauri/        # Backend Rust (comandos, eventos)
+│   └── src-crawler/      # Crawler Node.js + Playwright
+├── data/runs/servidores/ # Espelhos extraídos (JSON por servidor/mês)
+├── docs/                 # Documentação técnica e de usuário
+├── specs/                # Especificações de features
+└── servidores.yaml       # Lista de servidores e anos a extrair
+```
