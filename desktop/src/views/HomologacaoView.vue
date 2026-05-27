@@ -192,7 +192,7 @@ const showLegenda = ref(false);
 const selectedSlugs = ref<Set<string>>(new Set());
 
 const selectableSlugs = computed(() =>
-  grouped.value.filter((g) => g.liberados.length > 0 && counts.loading === 0).map((g) => g.slug)
+  grouped.value.filter((g) => g.liberados.length > 0 && counts.value.loading === 0).map((g) => g.slug)
 );
 
 const allSelected = computed(() =>
