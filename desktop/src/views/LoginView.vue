@@ -31,7 +31,7 @@ async function submit() {
 <template>
   <div class="login-page">
     <div class="login-card">
-      <h1 class="login-title">Espelhos de Ponto</h1>
+      <h1 class="login-title">Gestor de Ponto</h1>
       <p class="login-sub">SIGRH · Acesso restrito</p>
       <form class="login-form" @submit.prevent="submit">
         <div class="field">

@@ -1,5 +1,5 @@
 {
-  "name": "tauri-app",
+  "name": "gestor-de-ponto",
   "private": true,
   "version": "0.1.0",
   "type": "module",
