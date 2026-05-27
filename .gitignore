@@ -26,9 +26,14 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Node.js / Astro (dashboard/)
+# Node.js
 node_modules/
-dashboard/dist/
-dashboard/.astro/
 *.log
+
+# Crawler build artifacts
+desktop/crawler-bundle.cjs
+desktop/src-crawler/crawler-bundle.cjs
+desktop/src-crawler/dist/
+desktop/src-crawler/pkg-build/
+desktop/src-tauri/binaries/
 
