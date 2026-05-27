@@ -1,0 +1,334 @@
+{
+  "schema_version": 2,
+  "run_id": "a088576ed93a434fb42617f264b859c2",
+  "captured_at": "2026-05-26T21:48:37.850Z",
+  "status": "completed",
+  "servidor": {
+    "nome": "JULIA DE MARCHI MANTOVANI",
+    "identificador": "2140388",
+    "texto_visivel": null
+  },
+  "periodo_referencia": "Maio/2026",
+  "mensagens": [],
+  "resumo": {
+    "carga_horaria_contratada": "160:00",
+    "carga_horaria_esperada_mes": "160:00",
+    "total_horas_registradas": "59:34",
+    "total_horas_justificadas": "00:00",
+    "total_horas_homologadas": "59:34",
+    "saldo_mes_anterior_compensacao": "00:00",
+    "total_horas_mes_anterior_compensadas": "00:00",
+    "debito_mes_anterior_nao_compensado": "00:00",
+    "debito_mes_atual_nao_autorizado": "-67:16",
+    "outros_debitos_nao_compensados_vencidos": "00:00",
+    "totalizacao_debito_nao_compensavel": "-67:16",
+    "total_horas_pendentes_compensacao": "-09:10",
+    "saldo_horas_mes": "-09:10",
+    "saldo_horas_mes_compensar_proximo": "-09:10",
+    "credito_horas_disponivel_mes": "00:00",
+    "credito_em_horas": "00:00"
+  },
+  "registros": [
+    {
+      "data": "2026-05-04",
+      "dia_semana": null,
+      "marcacoes": [],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": null,
+      "ha": "04/05/2026Dia",
+      "hh": null,
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": null
+    },
+    {
+      "data": "2026-05-05",
+      "dia_semana": null,
+      "marcacoes": [
+        "04:50"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "04:50",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "04:50",
+      "credito": null,
+      "debito": "-01:10",
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-02:00"
+    },
+    {
+      "data": "2026-05-06",
+      "dia_semana": null,
+      "marcacoes": [
+        "05:10"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "05:10",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "05:10",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-02:50"
+    },
+    {
+      "data": "2026-05-07",
+      "dia_semana": null,
+      "marcacoes": [
+        "04:56"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "04:56",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "04:56",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-03:04"
+    },
+    {
+      "data": "2026-05-08",
+      "dia_semana": null,
+      "marcacoes": [
+        "04:38"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "04:38",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "04:38",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-03:22"
+    },
+    {
+      "data": "2026-05-11",
+      "dia_semana": null,
+      "marcacoes": [
+        "05:11"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "05:11",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "05:11",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-02:49"
+    },
+    {
+      "data": "2026-05-12",
+      "dia_semana": null,
+      "marcacoes": [
+        "04:57"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "04:57",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "04:57",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-03:03"
+    },
+    {
+      "data": "2026-05-13",
+      "dia_semana": null,
+      "marcacoes": [],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": null,
+      "ha": "13/05/2026Dia",
+      "hh": null,
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": null
+    },
+    {
+      "data": "2026-05-14",
+      "dia_semana": null,
+      "marcacoes": [
+        "04:58"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "04:58",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "04:58",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-03:02"
+    },
+    {
+      "data": "2026-05-15",
+      "dia_semana": null,
+      "marcacoes": [
+        "05:13"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "05:13",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "05:13",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-02:47"
+    },
+    {
+      "data": "2026-05-19",
+      "dia_semana": null,
+      "marcacoes": [
+        "05:02"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "05:02",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "05:02",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-02:58"
+    },
+    {
+      "data": "2026-05-20",
+      "dia_semana": null,
+      "marcacoes": [
+        "04:32"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "04:32",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "04:32",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-03:28"
+    },
+    {
+      "data": "2026-05-22",
+      "dia_semana": null,
+      "marcacoes": [
+        "05:00"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "05:00",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "05:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-03:00"
+    },
+    {
+      "data": "2026-05-25",
+      "dia_semana": null,
+      "marcacoes": [],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": null,
+      "ha": "25/05/2026Dia",
+      "hh": null,
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": null
+    },
+    {
+      "data": "2026-05-26",
+      "dia_semana": null,
+      "marcacoes": [
+        "05:03"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "05:03",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "05:03",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-02:57"
+    }
+  ],
+  "fonte": {
+    "tipo": "sigrh-espelho-ponto-visivel",
+    "pagina": "/sigrh/frequencia/ponto_eletronico/consulta/consulta_ponto_eletronico.jsf",
+    "rotulos_visiveis": [
+      "Espelho de Ponto"
+    ]
+  }
+}

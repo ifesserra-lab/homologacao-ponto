@@ -24,7 +24,7 @@ watch(crawlerRefreshKey, () => store.load());
 </script>
 
 <template>
-  <div class="page">
+  <div class="page-wide">
     <header class="page-header">
       <div class="page-header-row">
         <div>

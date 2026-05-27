@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "run_id": "a9db90496d7441f8a5b4530d7b0b19f0",
+  "captured_at": "2026-05-26T22:13:35.734Z",
+  "status": "empty",
+  "servidor": {
+    "nome": "CELIO PROLICIANO MAIOLI",
+    "identificador": "1534589",
+    "texto_visivel": null
+  },
+  "periodo_referencia": "Novembro/2026",
+  "mensagens": [
+    "Espelho sem registros"
+  ],
+  "resumo": null,
+  "registros": [],
+  "fonte": {
+    "tipo": "sigrh-espelho-ponto-visivel",
+    "pagina": "/sigrh/frequencia/ponto_eletronico/consulta/consulta_ponto_eletronico.jsf",
+    "rotulos_visiveis": [
+      "Espelho de Ponto"
+    ]
+  }
+}

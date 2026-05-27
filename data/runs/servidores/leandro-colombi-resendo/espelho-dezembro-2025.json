@@ -1,12 +1,12 @@
 {
   "schema_version": 2,
-  "run_id": "36c202f2e03f41fbb76f318c59e27ed9",
-  "captured_at": "2026-05-24T22:00:33.966715+00:00",
+  "run_id": "667e6009d38a4565b1c67956a66618b5",
+  "captured_at": "2026-05-26T21:52:56.174Z",
   "status": "completed",
   "servidor": {
     "nome": "LEANDRO COLOMBI RESENDO",
     "identificador": "1687072",
-    "texto_visivel": "Servidor possui designação remunerada e não possui horário de trabalho condizente com a carga horária praticada."
+    "texto_visivel": null
   },
   "periodo_referencia": "Dezembro/2025",
   "mensagens": [],
@@ -31,67 +31,58 @@
   "registros": [
     {
       "data": "2025-12-01",
-      "dia_semana": "Segunda",
+      "dia_semana": null,
       "marcacoes": [
-        "07:34",
-        "19:30",
-        "07:34"
+        "11:56"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "11:56",
-      "hc": "11:56",
-      "he": null,
-      "ha": "03:56",
-      "hh": null,
-      "credito": "08:00",
+      "hc": null,
+      "he": "03:56Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2025-12-02",
-      "dia_semana": "Terça",
+      "dia_semana": null,
       "marcacoes": [
-        "08:32",
-        "21:40",
-        "08:32"
+        "13:08"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "13:08",
-      "hc": "13:08",
-      "he": null,
-      "ha": "05:08",
-      "hh": null,
-      "credito": "08:00",
+      "hc": null,
+      "he": "05:08Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2025-12-03",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "03/12/2025Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (03/12/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -109,14 +100,13 @@
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": "Ocorrência:",
-      "ha": "04/12/2025",
+      "ha": "04/12/2025Dia",
       "hh": "08:40",
       "credito": null,
-      "debito": "08:00",
+      "debito": "08:00Horas",
       "saldo_no_mes": null,
       "credito_acumulado": null,
       "dnc": null
@@ -130,261 +120,131 @@
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": "Ocorrência:",
-      "ha": "05/12/2025",
+      "ha": "05/12/2025Dia",
       "hh": "07:26",
       "credito": null,
-      "debito": "08:00",
+      "debito": "08:00Horas",
       "saldo_no_mes": null,
       "credito_acumulado": null,
       "dnc": null
     },
     {
-      "data": "2025-12-06",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-12-07",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-12-08",
-      "dia_semana": "Segunda",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
       "data": "2025-12-09",
-      "dia_semana": "Terça",
+      "dia_semana": null,
       "marcacoes": [
-        "07:49",
-        "22:31",
-        "07:49"
+        "14:42"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "14:42",
-      "hc": "14:42",
-      "he": null,
-      "ha": "06:42",
-      "hh": null,
-      "credito": "08:00",
+      "hc": null,
+      "he": "06:42Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2025-12-10",
-      "dia_semana": "Quarta",
+      "dia_semana": null,
       "marcacoes": [
-        "08:20",
-        "18:51",
-        "08:20"
+        "10:31"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "10:31",
-      "hc": "10:31",
-      "he": null,
-      "ha": "02:31",
-      "hh": null,
-      "credito": "08:00",
+      "hc": null,
+      "he": "02:31Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2025-12-11",
-      "dia_semana": "Quinta",
+      "dia_semana": null,
       "marcacoes": [
-        "08:04",
-        "19:11",
-        "08:04"
+        "11:07"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "11:07",
-      "hc": "11:07",
-      "he": null,
-      "ha": "03:07",
-      "hh": null,
-      "credito": "08:00",
+      "hc": null,
+      "he": "03:07Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2025-12-12",
-      "dia_semana": "Sexta",
+      "dia_semana": null,
       "marcacoes": [
-        "08:20",
-        "20:20",
-        "08:20"
+        "12:00"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "12:00",
-      "hc": "12:00",
-      "he": null,
-      "ha": "04:00",
-      "hh": null,
-      "credito": "08:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-12-13",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
       "hc": null,
-      "he": null,
+      "he": "04:00Total",
       "ha": null,
-      "hh": null,
-      "credito": "00:00",
+      "hh": "08:00",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-12-14",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2025-12-15",
-      "dia_semana": "Segunda",
+      "dia_semana": null,
       "marcacoes": [
-        "07:52",
-        "16:43",
-        "07:52"
+        "08:51"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "08:51",
-      "hc": "08:51",
-      "he": null,
-      "ha": "00:51",
-      "hh": null,
-      "credito": "08:00",
+      "hc": null,
+      "he": "00:51Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2025-12-16",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "16/12/2025Dia da Semana: Terça Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (16/12/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "09:24",
       "hc": "03:14",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -396,16 +256,17 @@
     {
       "data": "2025-12-17",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "17/12/2025Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "ABONO DE HORAS (17/12/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "17:02",
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -417,16 +278,17 @@
     {
       "data": "2025-12-18",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "18/12/2025Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (18/12/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "13:49",
       "hc": "04:26",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -438,16 +300,17 @@
     {
       "data": "2025-12-19",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "19/12/2025Dia da Semana: Sexta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (19/12/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -457,57 +320,16 @@
       "dnc": "00:00"
     },
     {
-      "data": "2025-12-20",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-12-21",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
       "data": "2025-12-22",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "22/12/2025Dia da Semana: Segunda Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
-        "Recesso 2025 (22/12/2025 a 26/12/2025) Duração: 24:00 Período de Compensação: 01/10/2025 a 31/05/2026 Tempo Autorizado à Compensação: 24:00 Tempo Compensado: 00:00 Tempo Pendente de Compensação: 24:00"
+        "Recesso 2025 (22/12/2025 a 26/12/2025) Duração: 24:00 Período de Compensação: 01/10/2025 a 31/05/2026 Tempo Autorizado à Compensação: 24:00 Tempo Compensado: 00:00 Tempo Pendente de Compensação: 24:00 //"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
@@ -522,13 +344,14 @@
     {
       "data": "2025-12-22",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "23/12/2025Dia da Semana: Terça Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
-        "Recesso 2025 (22/12/2025 a 26/12/2025) Duração: 24:00 Período de Compensação: 01/10/2025 a 31/05/2026 Tempo Autorizado à Compensação: 24:00 Tempo Compensado: 00:00 Tempo Pendente de Compensação: 24:00"
+        "Recesso 2025 (22/12/2025 a 26/12/2025) Duração: 24:00 Período de Compensação: 01/10/2025 a 31/05/2026 Tempo Autorizado à Compensação: 24:00 Tempo Compensado: 00:00 Tempo Pendente de Compensação: 24:00 //"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
@@ -543,13 +366,14 @@
     {
       "data": "2025-12-22",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "24/12/2025Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
-        "Recesso 2025 (22/12/2025 a 26/12/2025) Duração: 24:00 Período de Compensação: 01/10/2025 a 31/05/2026 Tempo Autorizado à Compensação: 24:00 Tempo Compensado: 00:00 Tempo Pendente de Compensação: 24:00"
+        "Recesso 2025 (22/12/2025 a 26/12/2025) Duração: 24:00 Período de Compensação: 01/10/2025 a 31/05/2026 Tempo Autorizado à Compensação: 24:00 Tempo Compensado: 00:00 Tempo Pendente de Compensação: 24:00 //"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
@@ -564,13 +388,14 @@
     {
       "data": "2025-12-22",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "25/12/2025Dia da Semana: Quinta Feriado(s): Natal - Portaria Ministerial nº 9.783 , de 27 de dezembro 2024. Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
-        "Recesso 2025 (22/12/2025 a 26/12/2025) Duração: 24:00 Período de Compensação: 01/10/2025 a 31/05/2026 Tempo Autorizado à Compensação: 24:00 Tempo Compensado: 00:00 Tempo Pendente de Compensação: 24:00"
+        "Recesso 2025 (22/12/2025 a 26/12/2025) Duração: 24:00 Período de Compensação: 01/10/2025 a 31/05/2026 Tempo Autorizado à Compensação: 24:00 Tempo Compensado: 00:00 Tempo Pendente de Compensação: 24:00 //"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
@@ -585,13 +410,14 @@
     {
       "data": "2025-12-22",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "26/12/2025Dia da Semana: Sexta Feriado(s): 26 de dezembro - Dia do Serrano - Feriado Municipal - Lei Municipal nº 228/1967 Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
-        "Recesso 2025 (22/12/2025 a 26/12/2025) Duração: 24:00 Período de Compensação: 01/10/2025 a 31/05/2026 Tempo Autorizado à Compensação: 24:00 Tempo Compensado: 00:00 Tempo Pendente de Compensação: 24:00"
+        "Recesso 2025 (22/12/2025 a 26/12/2025) Duração: 24:00 Período de Compensação: 01/10/2025 a 31/05/2026 Tempo Autorizado à Compensação: 24:00 Tempo Compensado: 00:00 Tempo Pendente de Compensação: 24:00 //"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
@@ -601,111 +427,6 @@
       "debito": "00:00",
       "saldo_no_mes": null,
       "credito_acumulado": null,
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-12-27",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-12-28",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-12-29",
-      "dia_semana": "Segunda",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-12-30",
-      "dia_semana": "Terça",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-12-31",
-      "dia_semana": "Quarta",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
       "dnc": "00:00"
     }
   ],

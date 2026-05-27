@@ -1,19 +1,511 @@
 {
   "schema_version": 2,
-  "run_id": "dfbcd98d467c49359ee937e0de98d66d",
-  "captured_at": "2026-05-24T21:33:40.537777+00:00",
-  "status": "empty",
+  "run_id": "75027f29dad34ea68f9c170fca0fa0fb",
+  "captured_at": "2026-05-26T22:10:44.230Z",
+  "status": "completed",
   "servidor": {
     "nome": "CELIO PROLICIANO MAIOLI",
-    "identificador": null,
-    "texto_visivel": "Nenhum registro de ponto de servidor(es) segundo os critérios de busca."
+    "identificador": "1534589",
+    "texto_visivel": null
   },
   "periodo_referencia": "Outubro/2025",
-  "mensagens": [
-    "Espelho sem registros"
+  "mensagens": [],
+  "resumo": {
+    "carga_horaria_contratada": "176:00",
+    "carga_horaria_esperada_mes": "176:00",
+    "total_horas_registradas": "46:22",
+    "total_horas_justificadas": "133:33",
+    "total_horas_homologadas": "176:00",
+    "saldo_mes_anterior_compensacao": "00:00",
+    "total_horas_mes_anterior_compensadas": "00:00",
+    "debito_mes_anterior_nao_compensado": "00:00",
+    "debito_mes_atual_nao_autorizado": "00:00",
+    "outros_debitos_nao_compensados_vencidos": "00:00",
+    "totalizacao_debito_nao_compensavel": "00:00",
+    "total_horas_pendentes_compensacao": "00:00",
+    "saldo_horas_mes": "00:00",
+    "saldo_horas_mes_compensar_proximo": null,
+    "credito_horas_disponivel_mes": "00:00",
+    "credito_em_horas": "00:00"
+  },
+  "registros": [
+    {
+      "data": "2025-10-01",
+      "dia_semana": null,
+      "marcacoes": [
+        "01/10/2025Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (01/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "18:32",
+      "hc": "02:47",
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-02",
+      "dia_semana": null,
+      "marcacoes": [
+        "02/10/2025Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (02/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "18:52",
+      "hc": "03:05",
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-03",
+      "dia_semana": null,
+      "marcacoes": [],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (03/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "Ocorrência:",
+      "ha": "03/10/2025Dia",
+      "hh": "09:47",
+      "credito": null,
+      "debito": "08:00Horas",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": null
+    },
+    {
+      "data": "2025-10-06",
+      "dia_semana": null,
+      "marcacoes": [
+        "06/10/2025Dia da Semana: Segunda Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (06/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "10:57",
+      "hc": "08:10",
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-07",
+      "dia_semana": null,
+      "marcacoes": [
+        "08:55"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:00Horas",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:00",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-10-08",
+      "dia_semana": null,
+      "marcacoes": [
+        "08/10/2025Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (08/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "18:35",
+      "hc": "03:20",
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-09",
+      "dia_semana": null,
+      "marcacoes": [
+        "09/10/2025Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (09/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "18:54",
+      "hc": "03:03",
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-10",
+      "dia_semana": null,
+      "marcacoes": [
+        "10/10/2025Dia da Semana: Sexta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (10/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "09:57",
+      "hc": "07:43",
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-13",
+      "dia_semana": null,
+      "marcacoes": [
+        "13/10/2025Dia da Semana: Segunda Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (13/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-14",
+      "dia_semana": null,
+      "marcacoes": [
+        "14/10/2025Dia da Semana: Terça Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (14/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-15",
+      "dia_semana": null,
+      "marcacoes": [
+        "15/10/2025Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (15/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-16",
+      "dia_semana": null,
+      "marcacoes": [
+        "16/10/2025Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (16/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "19:03",
+      "hc": "02:52",
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-17",
+      "dia_semana": null,
+      "marcacoes": [
+        "17/10/2025Dia da Semana: Sexta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (17/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-20",
+      "dia_semana": null,
+      "marcacoes": [],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (20/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "Ocorrência:",
+      "ha": "20/10/2025Dia",
+      "hh": "09:44",
+      "credito": null,
+      "debito": "08:00Horas",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": null
+    },
+    {
+      "data": "2025-10-21",
+      "dia_semana": null,
+      "marcacoes": [
+        "21/10/2025Dia da Semana: Terça Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (21/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "09:43",
+      "hc": "06:27",
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-22",
+      "dia_semana": null,
+      "marcacoes": [
+        "22/10/2025Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (22/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-23",
+      "dia_semana": null,
+      "marcacoes": [
+        "23/10/2025Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (23/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-24",
+      "dia_semana": null,
+      "marcacoes": [
+        "24/10/2025Dia da Semana: Sexta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (24/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-28",
+      "dia_semana": null,
+      "marcacoes": [
+        "28/10/2025Dia da Semana: Terça Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (28/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-29",
+      "dia_semana": null,
+      "marcacoes": [
+        "29/10/2025Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (29/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-10-30",
+      "dia_semana": null,
+      "marcacoes": [],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (30/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "Ocorrência:",
+      "ha": "30/10/2025Dia",
+      "hh": "08:35",
+      "credito": null,
+      "debito": "08:00Horas",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": null
+    },
+    {
+      "data": "2025-10-31",
+      "dia_semana": null,
+      "marcacoes": [
+        "31/10/2025Dia da Semana: Sexta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "REGISTRO DO PIT - DOCENTE (31/10/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    }
   ],
-  "resumo": null,
-  "registros": [],
   "fonte": {
     "tipo": "sigrh-espelho-ponto-visivel",
     "pagina": "/sigrh/frequencia/ponto_eletronico/consulta/consulta_ponto_eletronico.jsf",

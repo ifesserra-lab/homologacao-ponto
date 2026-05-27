@@ -1,0 +1,362 @@
+{
+  "schema_version": 2,
+  "run_id": "c63889a500c5492fb932b31b5f7961b5",
+  "captured_at": "2026-05-26T21:47:19.573Z",
+  "status": "completed",
+  "servidor": {
+    "nome": "JULIA DE MARCHI MANTOVANI",
+    "identificador": "2140388",
+    "texto_visivel": null
+  },
+  "periodo_referencia": "Novembro/2025",
+  "mensagens": [],
+  "resumo": {
+    "carga_horaria_contratada": "144:00",
+    "carga_horaria_esperada_mes": "144:00",
+    "total_horas_registradas": "120:13",
+    "total_horas_justificadas": "10:57",
+    "total_horas_homologadas": "131:04",
+    "saldo_mes_anterior_compensacao": "-08:00",
+    "total_horas_mes_anterior_compensadas": "01:11",
+    "debito_mes_anterior_nao_compensado": "-06:49",
+    "debito_mes_atual_nao_autorizado": "-04:02",
+    "outros_debitos_nao_compensados_vencidos": "00:00",
+    "totalizacao_debito_nao_compensavel": "-10:51",
+    "total_horas_pendentes_compensacao": "-10:05",
+    "saldo_horas_mes": "-10:05",
+    "saldo_horas_mes_compensar_proximo": "-10:05",
+    "credito_horas_disponivel_mes": "00:00",
+    "credito_em_horas": "00:00"
+  },
+  "registros": [
+    {
+      "data": "2025-11-03",
+      "dia_semana": null,
+      "marcacoes": [
+        "08:20"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:20",
+      "hc": null,
+      "he": "00:20Total",
+      "ha": "00:20//",
+      "hh": "08:20",
+      "credito": "00:20",
+      "debito": null,
+      "saldo_no_mes": "00:20",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-11-04",
+      "dia_semana": null,
+      "marcacoes": [
+        "08:09"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:00Horas",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:20",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-11-05",
+      "dia_semana": null,
+      "marcacoes": [
+        "07:52"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:00Horas",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:20",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-11-06",
+      "dia_semana": null,
+      "marcacoes": [
+        "06/11/2025Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "ABONO DE HORAS (06/11/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "10:01",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": null
+    },
+    {
+      "data": "2025-11-07",
+      "dia_semana": null,
+      "marcacoes": [
+        "07:53"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:00Horas",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:20",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-11-10",
+      "dia_semana": null,
+      "marcacoes": [
+        "10/11/2025Dia da Semana: Segunda Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "INDISPONIBILIDADE DO SISTEMA (10/11/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:20"
+    },
+    {
+      "data": "2025-11-11",
+      "dia_semana": null,
+      "marcacoes": [
+        "08:01"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:00Horas",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:20",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-11-12",
+      "dia_semana": null,
+      "marcacoes": [
+        "08:35"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:35",
+      "hc": null,
+      "he": "00:35Total",
+      "ha": "00:35//",
+      "hh": "08:35",
+      "credito": "00:35",
+      "debito": null,
+      "saldo_no_mes": "00:55",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-11-14",
+      "dia_semana": null,
+      "marcacoes": [
+        "05:14"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "05:14",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "05:14",
+      "credito": null,
+      "debito": "-02:46",
+      "saldo_no_mes": "-06:27",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-11-17",
+      "dia_semana": null,
+      "marcacoes": [
+        "07:47"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:00Horas",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-06:27",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-11-18",
+      "dia_semana": null,
+      "marcacoes": [
+        "08:07"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:00Horas",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-06:27",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-11-19",
+      "dia_semana": null,
+      "marcacoes": [],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": null,
+      "ha": "19/11/2025Dia",
+      "hh": "07:18",
+      "credito": "05:44",
+      "debito": "05:44",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": null
+    },
+    {
+      "data": "2025-11-24",
+      "dia_semana": null,
+      "marcacoes": [
+        "07:57"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:00Horas",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-08:43",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-11-26",
+      "dia_semana": null,
+      "marcacoes": [
+        "08:16"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:16",
+      "hc": null,
+      "he": "00:16Total",
+      "ha": "00:16//",
+      "hh": "08:16",
+      "credito": "00:16",
+      "debito": null,
+      "saldo_no_mes": "-08:54",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-11-27",
+      "dia_semana": null,
+      "marcacoes": [
+        "08:11"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:00Horas",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-08:54",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-11-28",
+      "dia_semana": null,
+      "marcacoes": [
+        "08:09"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:00Horas",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "-08:54",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    }
+  ],
+  "fonte": {
+    "tipo": "sigrh-espelho-ponto-visivel",
+    "pagina": "/sigrh/frequencia/ponto_eletronico/consulta/consulta_ponto_eletronico.jsf",
+    "rotulos_visiveis": [
+      "Espelho de Ponto"
+    ]
+  }
+}

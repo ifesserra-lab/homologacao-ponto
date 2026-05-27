@@ -1,12 +1,12 @@
 {
   "schema_version": 2,
-  "run_id": "77d06d9e2ef14327a669c3abf573b287",
-  "captured_at": "2026-05-24T21:30:33.339582+00:00",
+  "run_id": "447ca561a65a4a698c83515606948957",
+  "captured_at": "2026-05-26T22:09:02.763Z",
   "status": "completed",
   "servidor": {
     "nome": "CELIO PROLICIANO MAIOLI",
     "identificador": "1534589",
-    "texto_visivel": "Servidor possui designação remunerada e não possui horário de trabalho condizente com a carga horária praticada."
+    "texto_visivel": null
   },
   "periodo_referencia": "Março/2025",
   "mensagens": [],
@@ -30,102 +30,19 @@
   },
   "registros": [
     {
-      "data": "2025-03-01",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-03-02",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-03-03",
-      "dia_semana": "Segunda",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-03-04",
-      "dia_semana": "Terça",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
       "data": "2025-03-05",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "05/03/2025Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (05/03/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -137,16 +54,17 @@
     {
       "data": "2025-03-06",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "06/03/2025Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (06/03/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "10:11",
       "hc": "04:41",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -164,73 +82,31 @@
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": "Ocorrência:",
-      "ha": "07/03/2025",
+      "ha": "07/03/2025Dia",
       "hh": "13:14",
       "credito": null,
-      "debito": "08:00",
+      "debito": "08:00Horas",
       "saldo_no_mes": null,
       "credito_acumulado": null,
       "dnc": null
     },
     {
-      "data": "2025-03-08",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-03-09",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
       "data": "2025-03-10",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "10/03/2025Dia da Semana: Segunda Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (10/03/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "12:54",
       "hc": "06:58",
-      "he": "07:00",
+      "he": "07:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -242,16 +118,17 @@
     {
       "data": "2025-03-11",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "11/03/2025Dia da Semana: Terça Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (11/03/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "09:10",
       "hc": "06:38",
-      "he": "07:00",
+      "he": "07:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -269,14 +146,13 @@
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": "Ocorrência:",
-      "ha": "12/03/2025",
+      "ha": "12/03/2025Dia",
       "hh": "19:42",
       "credito": null,
-      "debito": "08:00",
+      "debito": "08:00Horas",
       "saldo_no_mes": null,
       "credito_acumulado": null,
       "dnc": null
@@ -290,14 +166,13 @@
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": "Ocorrência:",
-      "ha": "13/03/2025",
+      "ha": "13/03/2025Dia",
       "hh": "19:02",
       "credito": null,
-      "debito": "08:00",
+      "debito": "08:00Horas",
       "saldo_no_mes": null,
       "credito_acumulado": null,
       "dnc": null
@@ -311,73 +186,31 @@
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": "Ocorrência:",
-      "ha": "14/03/2025",
+      "ha": "14/03/2025Dia",
       "hh": "10:15",
       "credito": null,
-      "debito": "08:00",
+      "debito": "08:00Horas",
       "saldo_no_mes": null,
       "credito_acumulado": null,
       "dnc": null
     },
     {
-      "data": "2025-03-15",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-02:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-03-16",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-02:00",
-      "dnc": "00:00"
-    },
-    {
       "data": "2025-03-17",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "17/03/2025Dia da Semana: Segunda Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (17/03/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -388,45 +221,38 @@
     },
     {
       "data": "2025-03-18",
-      "dia_semana": "Terça",
+      "dia_semana": null,
       "marcacoes": [
-        "09:52",
-        "20:24",
-        "09:52",
-        "20:24",
-        "21:44",
-        "20:24"
+        "11:52"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
-      "hr": "11:52",
-      "hc": "10:00",
-      "he": null,
-      "ha": "02:00",
-      "hh": "02:00",
-      "credito": "10:00",
-      "debito": "02:00",
-      "saldo_no_mes": null,
+      "hr": "10:00Horas",
+      "hc": null,
+      "he": "02:00Total",
+      "ha": "02:00//",
+      "hh": "10:00",
+      "credito": "02:00",
+      "debito": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2025-03-19",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "19/03/2025Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (19/03/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "18:42",
       "hc": "03:17",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -438,16 +264,17 @@
     {
       "data": "2025-03-20",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "20/03/2025Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (20/03/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "18:41",
       "hc": "03:04",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -459,16 +286,17 @@
     {
       "data": "2025-03-21",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "21/03/2025Dia da Semana: Sexta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (21/03/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "11:15",
       "hc": "06:13",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -478,110 +306,59 @@
       "dnc": "00:00"
     },
     {
-      "data": "2025-03-22",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-03-23",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
       "data": "2025-03-24",
-      "dia_semana": "Segunda",
+      "dia_semana": null,
       "marcacoes": [
-        "09:41",
-        "19:12",
-        "09:41"
+        "09:31"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
-      "hr": "09:31",
-      "hc": "08:31",
-      "he": null,
-      "ha": "00:31",
-      "hh": "00:00",
-      "credito": "08:00",
+      "hr": "08:31Horas",
+      "hc": null,
+      "he": "00:31Total",
+      "ha": "00:00//",
+      "hh": "08:00",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2025-03-25",
-      "dia_semana": "Terça",
+      "dia_semana": null,
       "marcacoes": [
-        "09:30",
-        "19:11",
-        "09:30"
+        "09:41"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
-      "hr": "09:41",
-      "hc": "08:41",
-      "he": null,
-      "ha": "00:41",
-      "hh": "00:00",
-      "credito": "08:00",
+      "hr": "08:41Horas",
+      "hc": null,
+      "he": "00:41Total",
+      "ha": "00:00//",
+      "hh": "08:00",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2025-03-26",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "26/03/2025Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (26/03/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "18:04",
       "hc": "03:33",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -593,16 +370,17 @@
     {
       "data": "2025-03-27",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "27/03/2025Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (27/03/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "18:47",
       "hc": "03:09",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -614,16 +392,17 @@
     {
       "data": "2025-03-28",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "28/03/2025Dia da Semana: Sexta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (28/03/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "13:00",
       "hc": "04:09",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -633,60 +412,19 @@
       "dnc": "00:00"
     },
     {
-      "data": "2025-03-29",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-03-30",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
       "data": "2025-03-31",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "31/03/2025Dia da Semana: Segunda Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (31/03/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "12:18",
       "hc": "06:57",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,

@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "run_id": "72313c1500db4433bb0a3a723c2693a6",
+  "captured_at": "2026-05-26T21:49:23.795Z",
+  "status": "empty",
+  "servidor": {
+    "nome": "JULIA DE MARCHI MANTOVANI",
+    "identificador": "2140388",
+    "texto_visivel": null
+  },
+  "periodo_referencia": "Setembro/2026",
+  "mensagens": [
+    "Espelho sem registros"
+  ],
+  "resumo": null,
+  "registros": [],
+  "fonte": {
+    "tipo": "sigrh-espelho-ponto-visivel",
+    "pagina": "/sigrh/frequencia/ponto_eletronico/consulta/consulta_ponto_eletronico.jsf",
+    "rotulos_visiveis": [
+      "Espelho de Ponto"
+    ]
+  }
+}

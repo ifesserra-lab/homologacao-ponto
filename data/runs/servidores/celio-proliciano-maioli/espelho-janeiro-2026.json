@@ -1,12 +1,12 @@
 {
   "schema_version": 2,
-  "run_id": "0f79ce7a60844bc29bf2e3540859ef7e",
-  "captured_at": "2026-05-24T21:36:48.489889+00:00",
+  "run_id": "d2ddde04ee534cf1bda91bc59920d70a",
+  "captured_at": "2026-05-26T22:11:33.705Z",
   "status": "empty",
   "servidor": {
     "nome": "CELIO PROLICIANO MAIOLI",
-    "identificador": null,
-    "texto_visivel": "Nenhum registro de ponto de servidor(es) segundo os critérios de busca."
+    "identificador": "1534589",
+    "texto_visivel": null
   },
   "periodo_referencia": "Janeiro/2026",
   "mensagens": [

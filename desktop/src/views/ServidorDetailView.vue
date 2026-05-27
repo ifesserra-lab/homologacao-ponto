@@ -64,7 +64,7 @@ watch(crawlerRefreshKey, () => store.load());
 </script>
 
 <template>
-  <div class="page">
+  <div class="page-wide">
     <div class="nav-row">
       <Breadcrumb :items="[{ label: 'Servidores', to: '/' }, { label: servidor?.nome ?? slug }]" />
       <div class="nav-actions">
@@ -278,10 +278,10 @@ watch(crawlerRefreshKey, () => store.load());
 .section { margin-bottom: 1.5rem; }
 .section-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
 .section-sub-title { font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin: 16px 0 8px; }
-.table-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); }
+.table-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; overflow-y: hidden; box-shadow: var(--shadow-sm); }
 .history-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.history-table th { text-align: left; padding: 10px 16px; background: var(--surface-2); border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-.history-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+.history-table th { text-align: left; padding: 10px 16px; background: var(--surface-2); border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+.history-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
 .history-table tbody tr:last-child td { border-bottom: none; }
 .history-table tbody tr:hover td { background: var(--table-row-hover); }
 .history-table a { color: var(--blue); text-decoration: none; }

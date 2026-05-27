@@ -1,0 +1,500 @@
+{
+  "schema_version": 2,
+  "run_id": "2f2fce9e9df04517b2c4d7baa7fde367",
+  "captured_at": "2026-05-26T21:45:52.124Z",
+  "status": "completed",
+  "servidor": {
+    "nome": "JULIA DE MARCHI MANTOVANI",
+    "identificador": "2140388",
+    "texto_visivel": null
+  },
+  "periodo_referencia": "Maio/2025",
+  "mensagens": [],
+  "resumo": {
+    "carga_horaria_contratada": "168:00",
+    "carga_horaria_esperada_mes": "168:00",
+    "total_horas_registradas": "105:14",
+    "total_horas_justificadas": "80:43",
+    "total_horas_homologadas": "168:00",
+    "saldo_mes_anterior_compensacao": "00:00",
+    "total_horas_mes_anterior_compensadas": "00:00",
+    "debito_mes_anterior_nao_compensado": "00:00",
+    "debito_mes_atual_nao_autorizado": "00:00",
+    "outros_debitos_nao_compensados_vencidos": "00:00",
+    "totalizacao_debito_nao_compensavel": "00:00",
+    "total_horas_pendentes_compensacao": "-01:53",
+    "saldo_horas_mes": "00:00",
+    "saldo_horas_mes_compensar_proximo": null,
+    "credito_horas_disponivel_mes": "00:00",
+    "credito_em_horas": "00:00"
+  },
+  "registros": [
+    {
+      "data": "2025-05-02",
+      "dia_semana": null,
+      "marcacoes": [
+        "02/05/2025Dia da Semana: Sexta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "ABONO DE HORAS (02/05/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-05-05",
+      "dia_semana": null,
+      "marcacoes": [
+        "05/05/2025Dia da Semana: Segunda Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "ABONO DE HORAS (05/05/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "12:33",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": null
+    },
+    {
+      "data": "2025-05-06",
+      "dia_semana": null,
+      "marcacoes": [
+        "09:35"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "09:35",
+      "hc": null,
+      "he": "01:35Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:00",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-05-07",
+      "dia_semana": null,
+      "marcacoes": [
+        "09:24"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "09:24",
+      "hc": null,
+      "he": "01:24Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:00",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-05-08",
+      "dia_semana": null,
+      "marcacoes": [
+        "09:13"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "09:13",
+      "hc": null,
+      "he": "01:13Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:00",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-05-09",
+      "dia_semana": null,
+      "marcacoes": [
+        "08:06"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "08:00Horas",
+      "hc": null,
+      "he": null,
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:00",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-05-12",
+      "dia_semana": null,
+      "marcacoes": [],
+      "ocorrencias": [
+        "ABONO DE HORAS (12/05/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "Ocorrência:",
+      "ha": "12/05/2025Dia",
+      "hh": "12:08",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": null
+    },
+    {
+      "data": "2025-05-13",
+      "dia_semana": null,
+      "marcacoes": [
+        "09:05"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "09:05",
+      "hc": null,
+      "he": "01:05Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:00",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-05-14",
+      "dia_semana": null,
+      "marcacoes": [],
+      "ocorrencias": [
+        "ABONO DE HORAS (14/05/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "Ocorrência:",
+      "ha": "14/05/2025Dia",
+      "hh": "07:40",
+      "credito": null,
+      "debito": "08:00Horas",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": null
+    },
+    {
+      "data": "2025-05-15",
+      "dia_semana": null,
+      "marcacoes": [
+        "15/05/2025Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "ABONO DE HORAS (15/05/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-05-16",
+      "dia_semana": null,
+      "marcacoes": [
+        "16/05/2025Dia da Semana: Sexta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "ABONO DE HORAS (16/05/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-05-19",
+      "dia_semana": null,
+      "marcacoes": [
+        "19/05/2025Dia da Semana: Segunda Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "ABONO DE HORAS (19/05/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-05-20",
+      "dia_semana": null,
+      "marcacoes": [
+        "20/05/2025Dia da Semana: Terça Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "ABONO DE HORAS (20/05/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "10:15",
+      "hc": "05:58",
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-05-21",
+      "dia_semana": null,
+      "marcacoes": [
+        "09:16"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "09:16",
+      "hc": null,
+      "he": "01:16Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:00",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-05-22",
+      "dia_semana": null,
+      "marcacoes": [
+        "10:00"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "10:00",
+      "hc": null,
+      "he": "02:00Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:00",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-05-23",
+      "dia_semana": null,
+      "marcacoes": [
+        "10:00"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "10:00",
+      "hc": null,
+      "he": "02:00Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:00",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-05-26",
+      "dia_semana": null,
+      "marcacoes": [
+        "26/05/2025Dia da Semana: Segunda Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "ABONO DE HORAS (26/05/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-05-27",
+      "dia_semana": null,
+      "marcacoes": [
+        "09:15"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "09:15",
+      "hc": null,
+      "he": "01:15Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:00",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    },
+    {
+      "data": "2025-05-28",
+      "dia_semana": null,
+      "marcacoes": [
+        "28/05/2025Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "ABONO DE HORAS (28/05/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "07:22",
+      "hc": "05:24",
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-05-29",
+      "dia_semana": null,
+      "marcacoes": [
+        "29/05/2025Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "ABONO DE HORAS (29/05/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-05-30",
+      "dia_semana": null,
+      "marcacoes": [
+        "30/05/2025Dia da Semana: Sexta Observação: Servidor com designação remunerada. //"
+      ],
+      "ocorrencias": [
+        "ABONO DE HORAS (30/05/2025)"
+      ],
+      "observacoes": [],
+      "situacao": null,
+      "hr": null,
+      "hc": null,
+      "he": "08:00Horas",
+      "ha": null,
+      "hh": null,
+      "credito": null,
+      "debito": "08:00",
+      "saldo_no_mes": null,
+      "credito_acumulado": null,
+      "dnc": "00:00"
+    },
+    {
+      "data": "2025-05-31",
+      "dia_semana": null,
+      "marcacoes": [
+        "06:03"
+      ],
+      "ocorrencias": [],
+      "observacoes": [],
+      "situacao": null,
+      "hr": "06:03",
+      "hc": null,
+      "he": "06:03Total",
+      "ha": null,
+      "hh": "00:00",
+      "credito": null,
+      "debito": null,
+      "saldo_no_mes": "00:00",
+      "credito_acumulado": "00:00",
+      "dnc": null
+    }
+  ],
+  "fonte": {
+    "tipo": "sigrh-espelho-ponto-visivel",
+    "pagina": "/sigrh/frequencia/ponto_eletronico/consulta/consulta_ponto_eletronico.jsf",
+    "rotulos_visiveis": [
+      "Espelho de Ponto"
+    ]
+  }
+}

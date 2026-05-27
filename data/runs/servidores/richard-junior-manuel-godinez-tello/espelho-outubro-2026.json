@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "run_id": "06b9cf3f106a495a815542e60bddb6b9",
+  "captured_at": "2026-05-26T22:00:46.599Z",
+  "status": "empty",
+  "servidor": {
+    "nome": "RICHARD JUNIOR MANUEL GODINEZ TELLO",
+    "identificador": "2280760",
+    "texto_visivel": null
+  },
+  "periodo_referencia": "Outubro/2026",
+  "mensagens": [
+    "Espelho sem registros"
+  ],
+  "resumo": null,
+  "registros": [],
+  "fonte": {
+    "tipo": "sigrh-espelho-ponto-visivel",
+    "pagina": "/sigrh/frequencia/ponto_eletronico/consulta/consulta_ponto_eletronico.jsf",
+    "rotulos_visiveis": [
+      "Espelho de Ponto"
+    ]
+  }
+}

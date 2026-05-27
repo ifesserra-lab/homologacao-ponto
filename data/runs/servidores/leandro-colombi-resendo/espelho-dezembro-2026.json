@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "run_id": "371633e358414b69856876485bb9d14e",
+  "captured_at": "2026-05-26T21:55:31.095Z",
+  "status": "empty",
+  "servidor": {
+    "nome": "LEANDRO COLOMBI RESENDO",
+    "identificador": "1687072",
+    "texto_visivel": null
+  },
+  "periodo_referencia": "Dezembro/2026",
+  "mensagens": [
+    "Espelho sem registros"
+  ],
+  "resumo": null,
+  "registros": [],
+  "fonte": {
+    "tipo": "sigrh-espelho-ponto-visivel",
+    "pagina": "/sigrh/frequencia/ponto_eletronico/consulta/consulta_ponto_eletronico.jsf",
+    "rotulos_visiveis": [
+      "Espelho de Ponto"
+    ]
+  }
+}

@@ -1,12 +1,12 @@
 {
   "schema_version": 2,
-  "run_id": "eda38fb1b06f4bd58443189692aa9d85",
-  "captured_at": "2026-05-24T21:55:42.401171+00:00",
+  "run_id": "438bd9f75b7744579bc0658928c60983",
+  "captured_at": "2026-05-26T21:50:15.995Z",
   "status": "completed",
   "servidor": {
     "nome": "LEANDRO COLOMBI RESENDO",
     "identificador": "1687072",
-    "texto_visivel": "PONTO DIÁRIO DO SERVIDOR:"
+    "texto_visivel": null
   },
   "periodo_referencia": "Fevereiro/2025",
   "mensagens": [],
@@ -30,79 +30,39 @@
   },
   "registros": [
     {
-      "data": "2025-02-01",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-02-02",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
       "data": "2025-02-03",
-      "dia_semana": "Segunda",
+      "dia_semana": null,
       "marcacoes": [
-        "09:14",
-        "19:44",
-        "09:14"
+        "10:30"
       ],
       "ocorrencias": [],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "10:30",
-      "hc": "10:30",
-      "he": null,
-      "ha": "02:30",
-      "hh": null,
-      "credito": "08:00",
+      "hc": null,
+      "he": "02:30Total",
+      "ha": null,
+      "hh": "08:00",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2025-02-04",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "04/02/2025Dia da Semana: Terça //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (04/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "17:59",
       "hc": "02:51",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -113,40 +73,38 @@
     },
     {
       "data": "2025-02-05",
-      "dia_semana": "Quarta",
+      "dia_semana": null,
       "marcacoes": [
-        "13:11",
-        "21:01",
-        "13:11"
+        "07:50"
       ],
       "ocorrencias": [],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
-      "hr": "07:50",
-      "hc": "08:00",
+      "hr": "08:00Horas",
+      "hc": null,
       "he": null,
       "ha": null,
-      "hh": null,
-      "credito": "08:00",
+      "hh": "08:00",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2025-02-06",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "06/02/2025Dia da Semana: Quinta //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (06/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "14:58",
       "hc": "07:09",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -158,16 +116,17 @@
     {
       "data": "2025-02-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "07/02/2025Dia da Semana: Sexta //"
+      ],
       "ocorrencias": [
         "ABONO DE HORAS (07/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "16:59",
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -177,56 +136,19 @@
       "dnc": "00:00"
     },
     {
-      "data": "2025-02-08",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-02-09",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
       "data": "2025-02-10",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "10/02/2025Dia da Semana: Segunda //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (10/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "08:38",
       "hc": "03:21",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -238,16 +160,17 @@
     {
       "data": "2025-02-11",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "11/02/2025Dia da Semana: Terça //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (11/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "13:32",
       "hc": "05:03",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -259,16 +182,17 @@
     {
       "data": "2025-02-12",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "12/02/2025Dia da Semana: Quarta //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (12/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "14:17",
       "hc": "04:38",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -280,16 +204,17 @@
     {
       "data": "2025-02-13",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "13/02/2025Dia da Semana: Quinta //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (13/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "13:25",
       "hc": "04:44",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -301,16 +226,17 @@
     {
       "data": "2025-02-14",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "14/02/2025Dia da Semana: Sexta //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (14/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -320,56 +246,19 @@
       "dnc": "00:00"
     },
     {
-      "data": "2025-02-15",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-02-16",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
       "data": "2025-02-17",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "17/02/2025Dia da Semana: Segunda //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (17/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "13:33",
       "hc": "05:37",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -380,40 +269,38 @@
     },
     {
       "data": "2025-02-18",
-      "dia_semana": "Terça",
+      "dia_semana": null,
       "marcacoes": [
-        "08:57",
-        "17:10",
-        "08:57"
+        "08:13"
       ],
       "ocorrencias": [],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
-      "hr": "08:13",
-      "hc": "08:00",
+      "hr": "08:00Horas",
+      "hc": null,
       "he": null,
       "ha": null,
-      "hh": null,
-      "credito": "08:00",
+      "hh": "08:00",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2025-02-19",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "19/02/2025Dia da Semana: Quarta //"
+      ],
       "ocorrencias": [
         "ABONO DE HORAS (19/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "17:17",
       "hc": "00:01",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -425,16 +312,17 @@
     {
       "data": "2025-02-20",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "20/02/2025Dia da Semana: Quinta //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (20/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -452,69 +340,31 @@
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": "Ocorrência:",
-      "ha": "21/02/2025",
+      "ha": "21/02/2025Dia",
       "hh": "08:46",
       "credito": null,
-      "debito": "08:00",
+      "debito": "08:00Horas",
       "saldo_no_mes": null,
       "credito_acumulado": null,
       "dnc": null
     },
     {
-      "data": "2025-02-22",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2025-02-23",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
       "data": "2025-02-24",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "24/02/2025Dia da Semana: Segunda //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (24/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "09:20",
       "hc": "06:33",
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -532,14 +382,13 @@
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": "Ocorrência:",
-      "ha": "25/02/2025",
+      "ha": "25/02/2025Dia",
       "hh": "09:06",
       "credito": null,
-      "debito": "08:00",
+      "debito": "08:00Horas",
       "saldo_no_mes": null,
       "credito_acumulado": null,
       "dnc": null
@@ -547,16 +396,17 @@
     {
       "data": "2025-02-26",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "26/02/2025Dia da Semana: Quarta //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (26/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -568,16 +418,17 @@
     {
       "data": "2025-02-27",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "27/02/2025Dia da Semana: Quinta //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (27/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -589,16 +440,17 @@
     {
       "data": "2025-02-28",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "28/02/2025Dia da Semana: Sexta //"
+      ],
       "ocorrencias": [
         "REGISTRO DO PIT - DOCENTE (28/02/2025)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,

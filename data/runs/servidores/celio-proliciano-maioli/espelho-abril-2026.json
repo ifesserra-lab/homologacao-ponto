@@ -1,12 +1,12 @@
 {
   "schema_version": 2,
-  "run_id": "004006e8c08e4076a2e277fadcb1531b",
-  "captured_at": "2026-05-24T21:38:02.988312+00:00",
+  "run_id": "76cc94ce3f724c61ad9baf6b167f25a8",
+  "captured_at": "2026-05-26T22:12:10.902Z",
   "status": "completed",
   "servidor": {
     "nome": "CELIO PROLICIANO MAIOLI",
     "identificador": "1534589",
-    "texto_visivel": "Servidor possui designação remunerada e não possui horário de trabalho condizente com a carga horária praticada."
+    "texto_visivel": null
   },
   "periodo_referencia": "Abril/2026",
   "mensagens": [],
@@ -31,116 +31,43 @@
   "registros": [
     {
       "data": "2026-04-01",
-      "dia_semana": "Quarta",
+      "dia_semana": null,
       "marcacoes": [
-        "08:52",
-        "17:04",
-        "08:52"
+        "08:12"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
-      "hr": "08:12",
-      "hc": "08:00",
+      "hr": "08:00Horas",
+      "hc": null,
       "he": null,
       "ha": null,
-      "hh": null,
-      "credito": "08:00",
+      "hh": "08:00",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
+      "saldo_no_mes": "00:00",
       "credito_acumulado": "00:00",
-      "dnc": "00:00"
+      "dnc": null
     },
     {
       "data": "2026-04-02",
-      "dia_semana": "Quinta",
+      "dia_semana": null,
       "marcacoes": [
-        "18:35",
-        "21:48",
-        "18:35"
+        "03:13"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "03:13",
-      "hc": "03:13",
+      "hc": null,
       "he": null,
       "ha": null,
-      "hh": null,
-      "credito": "03:13",
-      "debito": null,
+      "hh": "03:13",
+      "credito": null,
+      "debito": "-04:47",
       "saldo_no_mes": "-04:47",
-      "credito_acumulado": "-04:47",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-04-03",
-      "dia_semana": "Sexta",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-04:47",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-04-04",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-04:47",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-04-05",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-04:47",
-      "dnc": "00:00"
+      "credito_acumulado": "00:00",
+      "dnc": null
     },
     {
       "data": "2026-04-06",
@@ -149,11 +76,10 @@
       "ocorrencias": [],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
-      "ha": "06/04/2026",
+      "ha": "06/04/2026Dia",
       "hh": "10:29",
       "credito": null,
       "debito": null,
@@ -163,166 +89,83 @@
     },
     {
       "data": "2026-04-07",
-      "dia_semana": "Terça",
+      "dia_semana": null,
       "marcacoes": [
-        "09:54",
-        "14:35",
-        "09:54"
+        "04:41"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "04:41",
-      "hc": "04:41",
+      "hc": null,
       "he": null,
       "ha": null,
-      "hh": null,
-      "credito": "04:41",
+      "hh": "04:41",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-09:10",
-      "dnc": "00:00"
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-03:19"
     },
     {
       "data": "2026-04-08",
-      "dia_semana": "Quarta",
+      "dia_semana": null,
       "marcacoes": [
-        "08:41",
-        "12:10",
-        "08:41"
+        "03:29"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "03:29",
-      "hc": "03:29",
+      "hc": null,
       "he": null,
       "ha": null,
-      "hh": null,
-      "credito": "03:29",
+      "hh": "03:29",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-09:10",
-      "dnc": "00:00"
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-04:31"
     },
     {
       "data": "2026-04-09",
-      "dia_semana": "Quinta",
+      "dia_semana": null,
       "marcacoes": [
-        "18:32",
-        "22:03",
-        "18:32"
+        "03:31"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "03:31",
-      "hc": "03:31",
+      "hc": null,
       "he": null,
       "ha": null,
-      "hh": null,
-      "credito": "03:31",
+      "hh": "03:31",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-09:10",
-      "dnc": "00:00"
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-04:29"
     },
     {
       "data": "2026-04-10",
-      "dia_semana": "Sexta",
+      "dia_semana": null,
       "marcacoes": [
-        "10:03",
-        "22:05",
-        "10:03"
+        "12:02"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "12:02",
-      "hc": "12:02",
-      "he": null,
-      "ha": "04:02",
-      "hh": "02:00",
-      "credito": "10:00",
-      "debito": "02:00",
-      "saldo_no_mes": null,
-      "credito_acumulado": "-07:10",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-04-11",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
       "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
+      "he": "04:02Total",
+      "ha": "02:00//",
+      "hh": "10:00",
+      "credito": "02:00",
       "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-07:10",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-04-12",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-07:10",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-04-13",
-      "dia_semana": "Segunda",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-07:10",
-      "dnc": "00:00"
+      "saldo_no_mes": "-07:10",
+      "credito_acumulado": "00:00",
+      "dnc": null
     },
     {
       "data": "2026-04-14",
@@ -331,11 +174,10 @@
       "ocorrencias": [],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
-      "ha": "14/04/2026",
+      "ha": "14/04/2026Dia",
       "hh": null,
       "credito": null,
       "debito": null,
@@ -345,162 +187,63 @@
     },
     {
       "data": "2026-04-15",
-      "dia_semana": "Quarta",
+      "dia_semana": null,
       "marcacoes": [
-        "09:24",
-        "14:16",
-        "09:24"
+        "04:52"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "04:52",
-      "hc": "04:52",
+      "hc": null,
       "he": null,
       "ha": null,
-      "hh": null,
-      "credito": "04:52",
+      "hh": "04:52",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-09:10",
-      "dnc": "00:00"
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-03:08"
     },
     {
       "data": "2026-04-16",
-      "dia_semana": "Quinta",
+      "dia_semana": null,
       "marcacoes": [
-        "09:04",
-        "21:58",
-        "09:04"
+        "12:54"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "12:54",
-      "hc": "12:54",
-      "he": null,
-      "ha": "04:54",
-      "hh": "02:00",
-      "credito": "10:00",
-      "debito": "02:00",
-      "saldo_no_mes": null,
-      "credito_acumulado": "-07:10",
-      "dnc": "00:00"
+      "hc": null,
+      "he": "04:54Total",
+      "ha": "02:00//",
+      "hh": "10:00",
+      "credito": "02:00",
+      "debito": null,
+      "saldo_no_mes": "-07:10",
+      "credito_acumulado": "00:00",
+      "dnc": null
     },
     {
       "data": "2026-04-17",
-      "dia_semana": "Sexta",
+      "dia_semana": null,
       "marcacoes": [
-        "09:59",
-        "18:34",
-        "09:59"
+        "08:35"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "08:35",
-      "hc": "08:35",
-      "he": null,
-      "ha": "00:35",
-      "hh": "00:35",
-      "credito": "08:35",
-      "debito": "00:35",
-      "saldo_no_mes": null,
-      "credito_acumulado": "-06:35",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-04-18",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
       "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
+      "he": "00:35Total",
+      "ha": "00:35//",
+      "hh": "08:35",
+      "credito": "00:35",
       "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-06:35",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-04-19",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-06:35",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-04-20",
-      "dia_semana": "Segunda",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-06:35",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-04-21",
-      "dia_semana": "Terça",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-06:35",
-      "dnc": "00:00"
+      "saldo_no_mes": "-06:35",
+      "credito_acumulado": "00:00",
+      "dnc": null
     },
     {
       "data": "2026-04-22",
@@ -509,11 +252,10 @@
       "ocorrencias": [],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
-      "ha": "22/04/2026",
+      "ha": "22/04/2026Dia",
       "hh": null,
       "credito": null,
       "debito": null,
@@ -528,11 +270,10 @@
       "ocorrencias": [],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
-      "ha": "23/04/2026",
+      "ha": "23/04/2026Dia",
       "hh": null,
       "credito": null,
       "debito": null,
@@ -547,11 +288,10 @@
       "ocorrencias": [],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
-      "ha": "24/04/2026",
+      "ha": "24/04/2026Dia",
       "hh": "10:44",
       "credito": null,
       "debito": null,
@@ -560,59 +300,16 @@
       "dnc": null
     },
     {
-      "data": "2026-04-25",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-09:10",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-04-26",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-09:10",
-      "dnc": "00:00"
-    },
-    {
       "data": "2026-04-27",
       "dia_semana": null,
       "marcacoes": [],
       "ocorrencias": [],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
-      "ha": "27/04/2026",
+      "ha": "27/04/2026Dia",
       "hh": "11:42",
       "credito": null,
       "debito": null,
@@ -622,53 +319,43 @@
     },
     {
       "data": "2026-04-28",
-      "dia_semana": "Terça",
+      "dia_semana": null,
       "marcacoes": [
-        "09:41",
-        "17:06",
-        "09:41"
+        "07:25"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "07:25",
-      "hc": "07:25",
+      "hc": null,
       "he": null,
       "ha": null,
-      "hh": null,
-      "credito": "07:25",
+      "hh": "07:25",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-09:10",
-      "dnc": "00:00"
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-00:35"
     },
     {
       "data": "2026-04-29",
-      "dia_semana": "Quarta",
+      "dia_semana": null,
       "marcacoes": [
-        "10:30",
-        "15:15",
-        "10:30"
+        "04:45"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "04:45",
-      "hc": "04:45",
+      "hc": null,
       "he": null,
       "ha": null,
-      "hh": null,
-      "credito": "04:45",
+      "hh": "04:45",
+      "credito": null,
       "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-09:10",
-      "dnc": "00:00"
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-03:15"
     },
     {
       "data": "2026-04-30",
@@ -677,11 +364,10 @@
       "ocorrencias": [],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
-      "ha": "30/04/2026",
+      "ha": "30/04/2026Dia",
       "hh": null,
       "credito": null,
       "debito": null,

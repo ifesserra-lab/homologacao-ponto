@@ -1,65 +1,45 @@
 {
   "schema_version": 2,
-  "run_id": "62d7d6ce701d4c38a7ef4a9f54fac49a",
-  "captured_at": "2026-05-24T22:11:15.292390+00:00",
+  "run_id": "280bc27454ef4366971505f8d1d37d62",
+  "captured_at": "2026-05-26T21:59:39.569Z",
   "status": "completed",
   "servidor": {
     "nome": "RICHARD JUNIOR MANUEL GODINEZ TELLO",
     "identificador": "2280760",
-    "texto_visivel": "Servidor possui designação remunerada e não possui horário de trabalho condizente com a carga horária praticada."
+    "texto_visivel": null
   },
   "periodo_referencia": "Maio/2026",
   "mensagens": [],
   "resumo": {
     "carga_horaria_contratada": "160:00",
     "carga_horaria_esperada_mes": "160:00",
-    "total_horas_registradas": "02:03",
+    "total_horas_registradas": "04:52",
     "total_horas_justificadas": "112:00",
-    "total_horas_homologadas": "114:03",
+    "total_horas_homologadas": "116:52",
     "saldo_mes_anterior_compensacao": "00:00",
     "total_horas_mes_anterior_compensadas": "00:00",
     "debito_mes_anterior_nao_compensado": "00:00",
-    "debito_mes_atual_nao_autorizado": "00:00",
+    "debito_mes_atual_nao_autorizado": "-09:58",
     "outros_debitos_nao_compensados_vencidos": "-24:00",
-    "totalizacao_debito_nao_compensavel": "-24:00",
-    "total_horas_pendentes_compensacao": "-29:57",
-    "saldo_horas_mes": "-05:57",
-    "saldo_horas_mes_compensar_proximo": "-05:57",
+    "totalizacao_debito_nao_compensavel": "-33:58",
+    "total_horas_pendentes_compensacao": "-33:10",
+    "saldo_horas_mes": "-09:10",
+    "saldo_horas_mes_compensar_proximo": "-09:10",
     "credito_horas_disponivel_mes": "00:00",
     "credito_em_horas": "00:00"
   },
   "registros": [
     {
-      "data": "2026-05-01",
-      "dia_semana": "Sexta",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "00:00",
-      "dnc": "00:00"
-    },
-    {
       "data": "2026-05-02",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "02/05/2026Dia da Semana: Sábado Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "LIC. PATERNIDADE - EST (02/05/2026 a 06/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
@@ -74,13 +54,14 @@
     {
       "data": "2026-05-02",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "03/05/2026Dia da Semana: Domingo Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "LIC. PATERNIDADE - EST (02/05/2026 a 06/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
@@ -95,16 +76,17 @@
     {
       "data": "2026-05-02",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "04/05/2026Dia da Semana: Segunda Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "LIC. PATERNIDADE - EST (02/05/2026 a 06/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -116,16 +98,17 @@
     {
       "data": "2026-05-02",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "05/05/2026Dia da Semana: Terça Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "LIC. PATERNIDADE - EST (02/05/2026 a 06/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -137,16 +120,17 @@
     {
       "data": "2026-05-02",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "06/05/2026Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "LIC. PATERNIDADE - EST (02/05/2026 a 06/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -158,16 +142,17 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "07/05/2026Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -179,16 +164,17 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "08/05/2026Dia da Semana: Sexta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -200,13 +186,14 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "09/05/2026Dia da Semana: Sábado Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
@@ -221,13 +208,14 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "10/05/2026Dia da Semana: Domingo Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
@@ -242,16 +230,17 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "11/05/2026Dia da Semana: Segunda Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -263,16 +252,17 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "12/05/2026Dia da Semana: Terça Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -284,16 +274,17 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "13/05/2026Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -305,16 +296,17 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "14/05/2026Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -326,16 +318,17 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "15/05/2026Dia da Semana: Sexta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -347,13 +340,14 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "16/05/2026Dia da Semana: Sábado Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
@@ -368,13 +362,14 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "17/05/2026Dia da Semana: Domingo Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
@@ -389,16 +384,17 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "18/05/2026Dia da Semana: Segunda Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -410,16 +406,17 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "19/05/2026Dia da Semana: Terça Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -431,16 +428,17 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "20/05/2026Dia da Semana: Quarta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -452,16 +450,17 @@
     {
       "data": "2026-05-07",
       "dia_semana": null,
-      "marcacoes": [],
+      "marcacoes": [
+        "21/05/2026Dia da Semana: Quinta Observação: Servidor com designação remunerada. //"
+      ],
       "ocorrencias": [
         "PRORROGAÇÃO LICENÇA PATERNIDADE (07/05/2026 a 21/05/2026)"
       ],
       "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
-      "he": "08:00",
+      "he": "08:00Horas",
       "ha": null,
       "hh": null,
       "credito": null,
@@ -472,217 +471,61 @@
     },
     {
       "data": "2026-05-22",
-      "dia_semana": "Sexta",
+      "dia_semana": null,
       "marcacoes": [
-        "13:31",
-        "15:34",
-        "13:31"
+        "02:03"
       ],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": "02:03",
-      "hc": "02:03",
+      "hc": null,
       "he": null,
       "ha": null,
-      "hh": null,
-      "credito": "02:03",
-      "debito": null,
+      "hh": "02:03",
+      "credito": null,
+      "debito": "-05:57",
       "saldo_no_mes": "-05:57",
-      "credito_acumulado": "-05:57",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-05-23",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-05:57",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-05-24",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-05:57",
-      "dnc": "00:00"
+      "credito_acumulado": "00:00",
+      "dnc": null
     },
     {
       "data": "2026-05-25",
-      "dia_semana": "Segunda",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
+      "dia_semana": null,
+      "marcacoes": [
+        "02:49"
       ],
+      "ocorrencias": [],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
+      "hr": "02:49",
       "hc": null,
       "he": null,
       "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-05:57",
-      "dnc": "00:00"
+      "hh": "02:49",
+      "credito": null,
+      "debito": "-03:13",
+      "saldo_no_mes": "-09:10",
+      "credito_acumulado": "00:00",
+      "dnc": "-01:58"
     },
     {
       "data": "2026-05-26",
-      "dia_semana": "Terça",
+      "dia_semana": null,
       "marcacoes": [],
       "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
+      "observacoes": [],
       "situacao": null,
-      "textos_visiveis": [],
       "hr": null,
       "hc": null,
       "he": null,
-      "ha": null,
+      "ha": "26/05/2026Dia",
       "hh": null,
-      "credito": "00:00",
+      "credito": null,
       "debito": null,
       "saldo_no_mes": null,
-      "credito_acumulado": "-05:57",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-05-27",
-      "dia_semana": "Quarta",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-05:57",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-05-28",
-      "dia_semana": "Quinta",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-05:57",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-05-29",
-      "dia_semana": "Sexta",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-05:57",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-05-30",
-      "dia_semana": "Sábado",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-05:57",
-      "dnc": "00:00"
-    },
-    {
-      "data": "2026-05-31",
-      "dia_semana": "Domingo",
-      "marcacoes": [],
-      "ocorrencias": [],
-      "observacoes": [
-        "Servidor com designação remunerada."
-      ],
-      "situacao": null,
-      "textos_visiveis": [],
-      "hr": null,
-      "hc": null,
-      "he": null,
-      "ha": null,
-      "hh": null,
-      "credito": "00:00",
-      "debito": null,
-      "saldo_no_mes": null,
-      "credito_acumulado": "-05:57",
-      "dnc": "00:00"
+      "credito_acumulado": null,
+      "dnc": null
     }
   ],
   "fonte": {

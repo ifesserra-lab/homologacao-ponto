@@ -58,9 +58,9 @@ defineProps<{ meses: EspelhoMesResume[]; slug: string }>();
 
 <style scoped>
 .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
-.month-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 620px; }
-.month-table th { text-align: left; padding: 10px 16px; background: var(--surface-2); border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-.month-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.month-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
+.month-table th { text-align: left; padding: 8px 12px; background: var(--surface-2); border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+.month-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
 .month-table tbody tr:last-child td { border-bottom: none; }
 .month-table tbody tr:hover td { background: var(--table-row-hover); }
 .num { text-align: right; }

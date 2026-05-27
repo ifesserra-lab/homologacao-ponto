@@ -1,0 +1,24 @@
+{
+  "schema_version": 2,
+  "run_id": "5e03da07de0c4e3cba22fdd5fef9ee6c",
+  "captured_at": "2026-05-26T21:43:08.655Z",
+  "status": "empty",
+  "servidor": {
+    "nome": "GUSTAVO MAIA DE ALMEIDA",
+    "identificador": "2701647",
+    "texto_visivel": null
+  },
+  "periodo_referencia": "Junho/2026",
+  "mensagens": [
+    "Espelho sem registros"
+  ],
+  "resumo": null,
+  "registros": [],
+  "fonte": {
+    "tipo": "sigrh-espelho-ponto-visivel",
+    "pagina": "/sigrh/frequencia/ponto_eletronico/consulta/consulta_ponto_eletronico.jsf",
+    "rotulos_visiveis": [
+      "Espelho de Ponto"
+    ]
+  }
+}
