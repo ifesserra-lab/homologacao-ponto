@@ -189,3 +189,122 @@ export const STATUS_LABEL: Record<HomologacaoStatus, string> = {
   mes_atual: "Mês atual",
   vazio: "Vazio",
 };
+
+export interface BloqueioEntry {
+  nome: string;
+  periodoReferencia: string;
+  raw: RawEspelho;
+  result: HomologacaoResult;
+}
+
+export function gerarEmailServidor(entries: BloqueioEntry[], nomeChefia = ""): string {
+  if (entries.length === 0) return "";
+  const nome = entries[0].nome;
+  const sepThin = "─".repeat(44);
+
+  const linhas: string[] = [
+    `Assunto: Pendências Espelho de Ponto`,
+    "",
+    `${nome},`,
+    "",
+    `Seu(s) espelho(s) de ponto abaixo possui(em) pendências que precisam ser resolvidas antes da homologação do ponto eletrônico e da frequência mensal.`,
+    "",
+  ];
+
+  for (const entry of entries) {
+    linhas.push(`PERÍODO: ${entry.periodoReferencia}`, sepThin);
+
+    for (const dia of entry.result.diasProblema) {
+      const label = dia.diaSemana ? `${dia.dataFormatada} (${dia.diaSemana})` : dia.dataFormatada;
+      linhas.push(`□  ${label}`);
+      for (const r of dia.razoes) linhas.push(`   • ${r.detalhe}`);
+      linhas.push("");
+    }
+
+    if (entry.result.debitoNaoAutorizado) {
+      linhas.push(`□  Débito não autorizado no mês: ${entry.result.debitoNaoAutorizado}`);
+      linhas.push(`   • Verifique dias de ausência sem justificativa.`, "");
+    }
+  }
+
+  linhas.push(
+    "COMO CORRIGIR:",
+    sepThin,
+    "SIGRH → Consultas → Frequência → Espelho de Ponto → selecione o mês correspondente",
+    "",
+    "Após corrigir, aguarde o processamento do SIGRH para que as alterações reflitam no espelho.",
+    "",
+    "Qualquer dúvida, entre em contato.",
+    "",
+    "Atenciosamente,",
+    nomeChefia || "Chefia de Unidade",
+  );
+
+  return linhas.join("\n");
+}
+
+export function gerarEmailGlobal(entries: BloqueioEntry[], nomeChefia = ""): string {
+  if (entries.length === 0) return "";
+
+  // Group by period
+  const byPeriodo = new Map<string, BloqueioEntry[]>();
+  for (const e of entries) {
+    if (!byPeriodo.has(e.periodoReferencia)) byPeriodo.set(e.periodoReferencia, []);
+    byPeriodo.get(e.periodoReferencia)!.push(e);
+  }
+  const periods = Array.from(byPeriodo.keys()).sort(
+    (a, b) => periodoToDate(b).getTime() - periodoToDate(a).getTime()
+  );
+
+  const sep = "═".repeat(44);
+  const sepThin = "─".repeat(44);
+
+  const linhas: string[] = [
+    `Assunto: Pendências Espelho de Ponto`,
+    "",
+    `Prezados servidores,`,
+    "",
+    `Os espelhos de ponto abaixo possuem pendências que precisam ser resolvidas para que eu possa homologar o ponto eletrônico e a frequência mensal de cada um.`,
+    "",
+    sep,
+  ];
+
+  for (const periodo of periods) {
+    linhas.push(``, `  PERÍODO: ${periodo}`, sepThin);
+
+    for (const entry of byPeriodo.get(periodo)!) {
+      linhas.push(``, `  ${entry.nome}`);
+
+      for (const dia of entry.result.diasProblema) {
+        const label = dia.diaSemana ? `${dia.dataFormatada} (${dia.diaSemana})` : dia.dataFormatada;
+        linhas.push(`  □  ${label}`);
+        for (const r of dia.razoes) {
+          linhas.push(`       • ${r.detalhe}`);
+        }
+      }
+
+      if (entry.result.debitoNaoAutorizado) {
+        linhas.push(`  □  Débito não autorizado no mês: ${entry.result.debitoNaoAutorizado}`);
+        linhas.push(`       • Verifique dias de ausência sem justificativa.`);
+      }
+    }
+
+    linhas.push(``, sep);
+  }
+
+  linhas.push(
+    ``,
+    `COMO CORRIGIR:`,
+    sepThin,
+    `SIGRH → Consultas → Frequência → Espelho de Ponto → selecione o mês correspondente`,
+    ``,
+    `Após corrigir, aguarde o processamento do SIGRH para que as alterações reflitam no espelho.`,
+    ``,
+    `Qualquer dúvida, entre em contato.`,
+    ``,
+    `Atenciosamente,`,
+    nomeChefia || `Chefia de Unidade`,
+  );
+
+  return linhas.join("\n");
+}
