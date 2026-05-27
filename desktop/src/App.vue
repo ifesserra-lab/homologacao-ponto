@@ -2,6 +2,7 @@
 import { onMounted } from "vue";
 import { useThemeStore } from "@/stores/theme";
 import { useAuthStore } from "@/stores/auth";
+import CrawlerLogModal from "@/components/CrawlerLogModal.vue";
 
 const theme = useThemeStore();
 const auth = useAuthStore();
@@ -14,4 +15,5 @@ onMounted(() => {
 
 <template>
   <router-view />
+  <CrawlerLogModal />
 </template>

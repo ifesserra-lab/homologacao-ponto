@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, watch } from "vue";
 import { useServidoresStore } from "@/stores/servidores";
 import { useAuthStore } from "@/stores/auth";
-import { crawlerRefreshKey } from "@/stores/crawler";
+import { crawlerRefreshKey, useCrawlerStore } from "@/stores/crawler";
 import {
   checkHomologavel, gerarEmailServidor, periodoToDate,
   RAZAO_LABEL, STATUS_LABEL,
@@ -14,6 +14,7 @@ import type { RawEspelho } from "@/types/dashboard";
 
 const store = useServidoresStore();
 const auth = useAuthStore();
+const crawler = useCrawlerStore();
 
 interface HRow {
   slug: string;
@@ -94,8 +95,9 @@ const grouped = computed(() => {
     .sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))
     .map((g) => ({
       ...g,
-      rows: g.rows.sort((a, b) => periodoToDate(b.periodoReferencia).getTime() - periodoToDate(a.periodoReferencia).getTime()),
-      blocked: g.rows.filter((r) => r.result?.status === "bloqueado"),
+      rows: g.rows.sort((a, b) => periodoToDate(a.periodoReferencia).getTime() - periodoToDate(b.periodoReferencia).getTime()),
+      blocked:  g.rows.filter((r) => r.result?.status === "bloqueado"),
+      liberados: g.rows.filter((r) => r.result?.status === "liberado"),
     }));
 });
 
@@ -184,6 +186,8 @@ function razaoSummary(result: HomologacaoResult): string {
   return parts.join(" · ") || "—";
 }
 
+const showLegenda = ref(false);
+
 onMounted(() => loadRows());
 watch(crawlerRefreshKey, () => loadRows());
 watch(filterMeses, () => loadRows());
@@ -240,6 +244,38 @@ watch(filterMeses, () => loadRows());
       </div>
     </div>
 
+    <!-- Legenda -->
+    <div class="legenda-wrap">
+      <button class="legenda-toggle" @click="showLegenda = !showLegenda">
+        {{ showLegenda ? '▲' : '▼' }} Legenda
+      </button>
+      <div v-if="showLegenda" class="legenda">
+        <div class="legenda-col">
+          <div class="legenda-title">Status do espelho</div>
+          <div class="legenda-row"><span class="badge badge--liberado">Liberado</span> Sem pendências — ponto pode ser homologado</div>
+          <div class="legenda-row"><span class="badge badge--bloqueado">Bloqueado</span> Há pendências que impedem a homologação</div>
+          <div class="legenda-row"><span class="badge badge--mes_atual">Mês atual</span> Mês em aberto — registros ainda sendo lançados</div>
+          <div class="legenda-row"><span class="badge badge--vazio">Vazio</span> Espelho sem registros no período</div>
+        </div>
+        <div class="legenda-col">
+          <div class="legenda-title">Tipos de pendência</div>
+          <div class="legenda-row"><span class="razao-pill razao-pill--dias_pendentes">dias pendentes</span> Dia com situação Pendente — ocorrência ou ausência em aberto no SIGRH (AX-006)</div>
+          <div class="legenda-row"><span class="razao-pill razao-pill--he_nao_autorizado">HE s/ autorização</span> Horas Excedentes registradas sem autorização da chefia (AX-007)</div>
+          <div class="legenda-row"><span class="razao-pill razao-pill--debito_nao_autorizado">débito n. autorizado</span> Débito do mês não compensado e não autorizado — impede homologação da frequência (AX-007)</div>
+          <div class="legenda-row"><span class="razao-pill razao-pill--marcacoes_incompletas">marcações incompletas</span> Número ímpar de batidas em dia útil sem ocorrência — possível registro esquecido (AX-003)</div>
+        </div>
+        <div class="legenda-col">
+          <div class="legenda-title">Siglas das colunas de horas</div>
+          <div class="legenda-row"><strong>HR</strong> Horas Registradas — total batido no relógio no dia</div>
+          <div class="legenda-row"><strong>HC</strong> Horas Contabilizadas — horas aceitas para cômputo da jornada</div>
+          <div class="legenda-row"><strong>HE</strong> Horas Excedentes — horas além da jornada prevista</div>
+          <div class="legenda-row"><strong>HA</strong> Horas Autorizadas — excedentes aprovados pela chefia</div>
+          <div class="legenda-row"><strong>HH</strong> Horas Homologadas — total homologado pela chefia imediata</div>
+          <div class="legenda-row"><strong>DNC</strong> Débito Não Compensado — saldo negativo do dia não abonado</div>
+        </div>
+      </div>
+    </div>
+
     <div v-if="loadingAll" class="empty-state">Carregando espelhos…</div>
     <div v-else-if="grouped.length === 0" class="empty-state">Nenhum espelho encontrado para os filtros selecionados.</div>
 
@@ -265,6 +301,13 @@ watch(filterMeses, () => loadRows());
             class="btn-email-srv"
             @click="openEmailServidor(group.slug)"
           >✉ E-mail</button>
+          <button
+            v-if="group.liberados.length > 0 && counts.loading === 0"
+            class="btn-homologar-srv"
+            :disabled="crawler.running"
+            :title="`Homologar ${group.liberados.length} mês(es) liberado(s) no SIGRH`"
+            @click="crawler.startHomologar(group.slug)"
+          >▶ Homologar ({{ group.liberados.length }})</button>
         </div>
 
         <!-- Linhas de período -->
@@ -387,6 +430,9 @@ watch(filterMeses, () => loadRows());
 .btn-csv-srv:hover { background: var(--surface-2); color: var(--text); }
 .btn-email-srv { padding: 4px 12px; background: var(--blue-light, #e8f2fc); color: var(--blue); border: 1px solid transparent; border-radius: var(--radius-sm); font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.15s, color 0.15s; }
 .btn-email-srv:hover { background: var(--blue); color: #fff; }
+.btn-homologar-srv { padding: 4px 12px; background: var(--green-light, #ddedea); color: var(--green, #0f7b6c); border: 1px solid transparent; border-radius: var(--radius-sm); font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.15s, color 0.15s; }
+.btn-homologar-srv:hover:not(:disabled) { background: var(--green, #0f7b6c); color: #fff; }
+.btn-homologar-srv:disabled { opacity: 0.4; cursor: default; }
 
 /* Period rows */
 .hom-row {
@@ -455,6 +501,17 @@ watch(filterMeses, () => loadRows());
 .btn-copy.copied { background: var(--green, #0f7b6c); }
 .btn-close-modal { padding: 6px 14px; background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 12px; cursor: pointer; }
 .btn-close-modal:hover { color: var(--text); }
+
+/* ── Legenda ── */
+.legenda-wrap { margin-bottom: 1.25rem; }
+.legenda-toggle { background: none; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 12px; font-size: 11px; font-weight: 600; color: var(--muted); cursor: pointer; letter-spacing: 0.04em; text-transform: uppercase; }
+.legenda-toggle:hover { color: var(--text); background: var(--surface-2); }
+.legenda { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 10px; padding: 16px 20px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); }
+.legenda-title { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+.legenda-row { display: flex; align-items: flex-start; gap: 8px; font-size: 11px; color: var(--text-2); line-height: 1.5; margin-bottom: 7px; }
+.legenda-row strong { font-family: var(--mono); font-size: 11px; color: var(--text); background: var(--surface); border: 1px solid var(--border-mid); border-radius: 3px; padding: 1px 5px; white-space: nowrap; }
+.legenda-row .badge { flex-shrink: 0; }
+.legenda-row .razao-pill { flex-shrink: 0; }
 
 .empty-state { text-align: center; padding: 3rem; color: var(--muted); }
 .muted { color: var(--muted); }

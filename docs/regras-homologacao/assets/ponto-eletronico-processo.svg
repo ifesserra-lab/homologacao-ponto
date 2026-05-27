@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="240" viewBox="0 0 920 240">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker></defs>
+  <style>text{font-family:Arial,sans-serif;font-size:13px;fill:#0f172a}.b{fill:#f8fafc;stroke:#334155;stroke-width:1.5;rx:8}.d{fill:#fff7ed;stroke:#334155;stroke-width:1.5}.l{stroke:#334155;stroke-width:1.7;fill:none;marker-end:url(#a)}</style>
+  <rect class="b" x="20" y="96" width="125" height="48"/><text x="83" y="124" text-anchor="middle">Espelho</text>
+  <polygon class="d" points="240,80 320,120 240,160 160,120"/><text x="240" y="116" text-anchor="middle">Pendencias?</text>
+  <rect class="b" x="360" y="35" width="125" height="48"/><text x="423" y="63" text-anchor="middle">Tratar no SIGRH</text>
+  <rect class="b" x="360" y="145" width="125" height="48"/><text x="423" y="165" text-anchor="middle">Revisar dias</text><text x="423" y="182" text-anchor="middle">e horas</text>
+  <polygon class="d" points="590,130 660,168 590,206 520,168"/><text x="590" y="164" text-anchor="middle">Resumo</text><text x="590" y="181" text-anchor="middle">existe?</text>
+  <rect class="b" x="710" y="96" width="85" height="48"/><text x="753" y="124" text-anchor="middle">Revisar</text>
+  <rect class="b" x="820" y="145" width="80" height="48"/><text x="860" y="173" text-anchor="middle">Homologar</text>
+  <path class="l" d="M145 120H160"/><path class="l" d="M320 120C340 120 340 59 360 59"/><path class="l" d="M320 120C340 120 340 169 360 169"/><path class="l" d="M485 59C505 59 505 169 520 169"/><path class="l" d="M485 169H520"/><path class="l" d="M660 168C690 168 690 120 710 120"/><path class="l" d="M660 168H820"/>
+</svg>

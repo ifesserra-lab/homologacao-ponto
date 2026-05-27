@@ -34,9 +34,15 @@ async function submit() {
   <div class="login-page">
     <div class="login-card">
       <div class="login-logo">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <rect width="32" height="32" rx="8" fill="var(--blue)" opacity="0.12"/>
-          <path d="M8 10h16M8 16h10M8 22h13" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"/>
+        <svg width="64" height="64" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <rect width="512" height="512" rx="112" fill="#0F7B6C"/>
+          <rect x="76" y="130" width="360" height="300" rx="36" fill="white" opacity="0.15"/>
+          <rect x="76" y="130" width="360" height="300" rx="36" fill="none" stroke="white" stroke-width="10" opacity="0.4"/>
+          <rect x="76" y="130" width="360" height="96" rx="36" fill="white" opacity="0.92"/>
+          <rect x="76" y="190" width="360" height="36" fill="white" opacity="0.92"/>
+          <rect x="168" y="88" width="32" height="86" rx="16" fill="white"/>
+          <rect x="312" y="88" width="32" height="86" rx="16" fill="white"/>
+          <polyline points="158,310 224,376 354,246" fill="none" stroke="white" stroke-width="48" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
       <h1 class="login-title">Gestor de Ponto</h1>
@@ -60,5 +66,6 @@ async function submit() {
 </template>
 
 <style scoped>
-.login-logo { margin-bottom: 1.25rem; }
+.login-logo { margin-bottom: 1.25rem; display: flex; justify-content: center; }
+.login-title, .login-subtitle { text-align: center; }
 </style>

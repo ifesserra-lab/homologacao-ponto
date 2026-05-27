@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="210" viewBox="0 0 920 210">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker></defs>
+  <style>text{font-family:Arial,sans-serif;font-size:13px;fill:#0f172a}.b{fill:#f8fafc;stroke:#334155;stroke-width:1.5;rx:8}.d{fill:#fff7ed;stroke:#334155;stroke-width:1.5}.l{stroke:#334155;stroke-width:1.7;fill:none;marker-end:url(#a)}</style>
+  <rect class="b" x="20" y="82" width="145" height="48"/><text x="93" y="102" text-anchor="middle">Ponto</text><text x="93" y="119" text-anchor="middle">homologado</text>
+  <polygon class="d" points="270,68 350,106 270,144 190,106"/><text x="270" y="102" text-anchor="middle">Tem</text><text x="270" y="119" text-anchor="middle">ausencia?</text>
+  <rect class="b" x="420" y="35" width="140" height="48"/><text x="490" y="63" text-anchor="middle">Usar ausencias</text>
+  <rect class="b" x="420" y="130" width="140" height="48"/><text x="490" y="150" text-anchor="middle">Frequencia</text><text x="490" y="167" text-anchor="middle">integral</text>
+  <rect class="b" x="630" y="82" width="120" height="48"/><text x="690" y="110" text-anchor="middle">Selecionar lote</text>
+  <rect class="b" x="800" y="82" width="100" height="48"/><text x="850" y="110" text-anchor="middle">Homologar</text>
+  <path class="l" d="M165 106H190"/><path class="l" d="M350 106C385 106 385 59 420 59"/><path class="l" d="M350 106C385 106 385 154 420 154"/><path class="l" d="M560 59C595 59 595 106 630 106"/><path class="l" d="M560 154C595 154 595 106 630 106"/><path class="l" d="M750 106H800"/>
+</svg>

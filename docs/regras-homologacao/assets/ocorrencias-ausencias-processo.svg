@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="210" viewBox="0 0 920 210">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker></defs>
+  <style>text{font-family:Arial,sans-serif;font-size:13px;fill:#0f172a}.b{fill:#f8fafc;stroke:#334155;stroke-width:1.5;rx:8}.d{fill:#fff7ed;stroke:#334155;stroke-width:1.5}.l{stroke:#334155;stroke-width:1.7;fill:none;marker-end:url(#a)}</style>
+  <rect class="b" x="20" y="82" width="150" height="48"/><text x="95" y="102" text-anchor="middle">Cadastrar</text><text x="95" y="119" text-anchor="middle">solicitacao</text>
+  <rect class="b" x="210" y="82" width="130" height="48"/><text x="275" y="110" text-anchor="middle">Enviar</text>
+  <polygon class="d" points="430,68 500,106 430,144 360,106"/><text x="430" y="102" text-anchor="middle">Existe</text><text x="430" y="119" text-anchor="middle">pendencia?</text>
+  <rect class="b" x="570" y="35" width="140" height="48"/><text x="640" y="55" text-anchor="middle">Chefia analisa</text><text x="640" y="72" text-anchor="middle">dados/anexos</text>
+  <rect class="b" x="570" y="130" width="140" height="48"/><text x="640" y="158" text-anchor="middle">Sem bloqueio</text>
+  <rect class="b" x="760" y="82" width="140" height="48"/><text x="830" y="102" text-anchor="middle">Homologar</text><text x="830" y="119" text-anchor="middle">solicitacao</text>
+  <path class="l" d="M170 106H210"/><path class="l" d="M340 106H360"/><path class="l" d="M500 106C535 106 535 59 570 59"/><path class="l" d="M500 106C535 106 535 154 570 154"/><path class="l" d="M710 59C735 59 735 106 760 106"/>
+</svg>

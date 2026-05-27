@@ -3,6 +3,560 @@
 
 schema_version: 2
 
+axiomas:
+  descricao: >
+    Regras de domínio usadas para interpretar o espelho de ponto exportado.
+    As regras abaixo vêm do Manual SIG Ponto Eletrônico do Ifes, atualizado em
+    13/11/2019, e devem ser tratadas como contexto normativo para validação,
+    alertas e workflows. O schema continua descrevendo apenas dados visíveis
+    capturados do SIGRH; ações executadas fora do espelho são registradas como
+    workflows e não como campos obrigatórios do JSON exportado.
+  fonte_normativa:
+    titulo: "Manual SIG Ponto Eletrônico"
+    orgao: "Ifes"
+    atualizado_em: "2019-11-13"
+    url: "https://ifes.edu.br/images/stories/noticias_gerais/2019/08-agosto/manual-sig-ponto-eletronico_atualizado-13-11.pdf"
+
+  regras:
+    - id: AX-001
+      nome: "Espelho mensal por servidor"
+      regra: >
+        Um espelho de ponto representa a frequência de um servidor em um mês
+        selecionado no SIGRH. A combinação servidor.identificador,
+        periodo_referencia e fonte.pagina deve ser suficiente para rastrear a
+        origem funcional da captura.
+      impacto_schema:
+        - periodo_referencia deve ser preservado como texto exibido pelo SIGRH.
+        - registros contém uma entrada por dia exibido na tabela do espelho.
+
+    - id: AX-002
+      nome: "Formato de horários"
+      regra: >
+        Marcações de relógio e totais de horas usam o formato HH:MM exibido
+        pelo SIGRH. Saldos negativos aparecem apenas em campos de saldo ou
+        débito mensal, com prefixo "-".
+      impacto_schema:
+        - marcacoes aceita somente horários de batida no formato HH:MM.
+        - campos diários de horas e saldo usam HH:MM quando presentes.
+        - campos de resumo que representam saldo/debito podem usar -HH:MM.
+
+    - id: AX-003
+      nome: "Jornada com ou sem intervalo de almoço"
+      regra: >
+        Servidores com jornada comum registram entrada, saída para almoço,
+        retorno do almoço e saída. Servidores com jornada de até 30 horas
+        semanais podem registrar saída escolhendo a opção de não sair para
+        almoço.
+      impacto_schema:
+        - marcacoes pode conter menos de quatro horários sem ser inválido.
+        - validações não devem inferir ausência apenas pela quantidade de batidas.
+
+    - id: AX-004
+      nome: "Ocorrências e ausências alteram a leitura do dia"
+      regra: >
+        Ocorrências ou ausências cadastradas no espelho ou via solicitações
+        justificam ou complementam a frequência do dia. O manual inclui abono de
+        horas, PIT docente, afastamento, viagem em serviço, atividade externa,
+        recesso e saldo retroativo como processos relacionados à apuração.
+      impacto_schema:
+        - ocorrencias deve preservar o texto visível lançado pelo SIGRH.
+        - observacoes deve preservar textos facultativos associados ao dia.
+        - consumidores devem avaliar ocorrencias junto com debito, dnc e resumo.
+
+    - id: AX-005
+      nome: "PIT docente é ocorrência de espelho"
+      regra: >
+        O Registro do PIT - Docente é lançado no Espelho de Ponto. O SIGRH
+        calcula o tempo restante do dia para incluir a ocorrência, e a observação
+        no espelho é facultativa.
+      impacto_schema:
+        - REGISTRO DO PIT - DOCENTE e variantes devem ser tratadas como horas
+          justificadas/contabilizáveis, não como simples falta de marcação.
+        - Dia com PIT pode ter marcacoes vazio e ainda assim não representar
+          déficit real quando dnc for 00:00.
+
+    - id: AX-006
+      nome: "Homologação de ocorrências precede homologação do ponto"
+      regra: >
+        Se o servidor possuir ocorrências ou ausências em aberto, a chefia deve
+        homologá-las antes de homologar o ponto eletrônico.
+      impacto_schema:
+        - situacao pendente ou mensagens de pendência devem gerar alerta de
+          workflow antes de considerar o ponto como final.
+        - O exportador não deve marcar status completed como aprovação gerencial;
+          completed indica apenas que o espelho foi capturado com registros.
+
+    - id: AX-007
+      nome: "Horas excedentes dependem de autorização da chefia"
+      regra: >
+        A chefia pode autorizar/homologar horas excedentes, informar
+        justificativa ou zerar as horas autorizadas quando não houver autorização
+        prévia.
+      impacto_schema:
+        - he registra horas excedentes apuradas.
+        - ha registra horas autorizadas/dispensadas quando exibidas.
+        - observacoes e textos_visiveis devem preservar justificativas visíveis.
+        - he maior que 00:00 com ha igual a 00:00 deve ser tratado como caso a
+          revisar, não como crédito automaticamente válido.
+
+    - id: AX-008
+      nome: "Frequência é homologada depois do ponto eletrônico"
+      regra: >
+        Após homologar o ponto eletrônico, a chefia deve homologar a frequência
+        do servidor. A homologação da frequência pode ser individual ou coletiva,
+        desde que os pontos eletrônicos estejam homologados.
+      impacto_schema:
+        - situacao deve ser lida como estado visível do dia ou do espelho, não
+          como garantia isolada de frequência mensal homologada.
+        - Relatórios consumidores devem diferenciar ponto eletrônico homologado
+          de frequência mensal homologada quando houver evidência textual.
+
+    - id: AX-009
+      nome: "Ausências e afastamentos exigem envio e homologação"
+      regra: >
+        Solicitações de ausência, afastamento e viagem em serviço precisam ser
+        cadastradas/enviadas e depois homologadas por chefe ou vice da unidade.
+        O servidor pode consultar, alterar ou excluir solicitações conforme o
+        estado permitido pelo SIGRH.
+      impacto_schema:
+        - ocorrencias relacionadas a ausência/afastamento devem ser mantidas
+          mesmo quando não houver marcação de ponto no dia.
+        - mensagens de solicitação pendente devem permanecer em mensagens ou
+          textos_visiveis para auditoria.
+
+    - id: AX-010
+      nome: "Sem auto-homologação de afastamento pela chefia"
+      regra: >
+        O gestor não pode homologar afastamentos solicitados por si próprio; a
+        homologação deve ser feita pelo vice-chefe correspondente, e vice-versa.
+      impacto_schema:
+        - O JSON não contém identidade da chefia homologadora.
+        - Qualquer auditoria de auto-homologação depende de fonte externa ao
+          espelho exportado.
+
+    - id: AX-011
+      nome: "Frequência homologada bloqueia novos afastamentos no período"
+      regra: >
+        O servidor não pode cadastrar afastamentos para períodos onde a
+        frequência dos servidores já foi homologada.
+      impacto_schema:
+        - Registros com frequência já homologada devem ser considerados finais
+          para fins de fluxo, salvo operação administrativa de desfazer
+          frequência.
+
+    - id: AX-012
+      nome: "Recesso pode consumir banco de horas"
+      regra: >
+        Na solicitação de recesso, o servidor escolhe se utiliza o saldo de horas
+        vigente para abater o débito a compensar. A chefia/gestor de ponto
+        autoriza a solicitação, que deixa a lista de enviados e passa à lista de
+        autorizados.
+      impacto_schema:
+        - Ocorrências de recesso devem ser cruzadas com credito_acumulado,
+          credito_horas_disponivel_mes e saldo_horas_mes_compensar_proximo.
+        - O espelho não mostra necessariamente a decisão completa da solicitação
+          de recesso; preserve textos detalhados quando aparecerem.
+
+    - id: AX-013
+      nome: "Docente com aula ativa exige plano de reposição"
+      regra: >
+        Em solicitação de afastamento de docente com aulas ativas no período, o
+        SIGRH/SIGAA exige plano de reposição de aulas antes da autorização.
+      impacto_schema:
+        - O espelho não contém o plano de reposição.
+        - Ocorrências docentes de afastamento devem ser tratadas como dependentes
+          de validação externa quando essa auditoria for necessária.
+
+    - id: AX-014
+      nome: "Frequência integral sem ausência"
+      regra: >
+        Na homologação de frequência, se o servidor não tiver registro de
+        ausência, o SIGRH considera frequência integral no mês/ano correspondente.
+      impacto_schema:
+        - Ausência de ocorrencias não significa ausência de frequência.
+        - Resumo mensal deve prevalecer sobre heurísticas baseadas somente em
+          marcacoes vazias.
+
+workflows:
+  descricao: >
+    Fluxos operacionais do manual que explicam como os dados do espelho são
+    produzidos ou consolidados. Estes workflows não são executados pelo
+    exportador; eles orientam validações, mensagens ao usuário e documentação.
+
+  itens:
+    - id: WF-001
+      nome: "Registro diário de ponto"
+      perfil: "servidor"
+      passos:
+        - "Acessar o SIGRH."
+        - "Registrar entrada."
+        - "Registrar saída para almoço, quando aplicável."
+        - "Registrar retorno do almoço, quando aplicável."
+        - "Registrar saída."
+      saida_esperada_schema:
+        - "registros[].marcacoes preenchido com os horários visíveis."
+        - "registros[].hr, hc, credito, debito e saldo_no_mes calculados pelo SIGRH quando exibidos."
+
+    - id: WF-002
+      nome: "Registro de ocorrência direto no espelho"
+      perfil: "servidor ou chefia autorizada"
+      passos:
+        - "Abrir Consultas > Frequência > Espelho de Ponto."
+        - "Selecionar o mês."
+        - "Clicar no ícone de inclusão da linha do dia."
+        - "Selecionar o tipo de ocorrência/ausência."
+        - "Preencher os campos exigidos e cadastrar."
+        - "Adicionar observação no espelho, se necessário."
+      saida_esperada_schema:
+        - "registros[].ocorrencias contém o tipo visível cadastrado."
+        - "registros[].observacoes contém observações visíveis quando existirem."
+
+    - id: WF-003
+      nome: "Registro do PIT docente"
+      perfil: "docente ou chefia autorizada"
+      passos:
+        - "Abrir o Espelho de Ponto do mês."
+        - "Selecionar o servidor docente."
+        - "Incluir ocorrência Registro do PIT - Docente."
+        - "Permitir que o SIGRH calcule o tempo restante do dia."
+        - "Adicionar observação facultativa, quando necessário."
+      saida_esperada_schema:
+        - "registros[].ocorrencias inclui REGISTRO DO PIT - DOCENTE ou variante equivalente."
+        - "registros[].marcacoes pode ficar vazio."
+        - "resumo.total_horas_justificadas ou total_horas_homologadas pode refletir o lançamento."
+
+    - id: WF-004
+      nome: "Solicitação de ausência ou afastamento"
+      perfil: "servidor; chefia pode cadastrar em nome do servidor em fluxos específicos"
+      passos:
+        - "Acessar Menu Servidor > Solicitações > Ausências/Afastamentos."
+        - "Selecionar Informar Ausência, Solicitar Afastamento ou Solicitar Viagem a Serviço."
+        - "Selecionar o tipo da ocorrência/ausência."
+        - "Preencher os campos exigidos."
+        - "Anexar comprovante quando o fluxo exigir."
+        - "Cadastrar e enviar para homologação."
+        - "Consultar, alterar ou excluir a solicitação enquanto o SIGRH permitir."
+      saida_esperada_schema:
+        - "registros[].ocorrencias mostra a ausência/afastamento quando refletido no espelho."
+        - "mensagens ou textos_visiveis podem indicar pendências ou estado da solicitação."
+
+    - id: WF-005
+      nome: "Homologação de ocorrências e ausências"
+      perfil: "chefia ou vice-chefia"
+      passos:
+        - "Abrir Portal da Chefia da Unidade."
+        - "Acessar Ausências ou Homologações de Ponto Eletrônico > Ocorrências/Ausência do Servidor > Homologar."
+        - "Selecionar servidor ou múltiplas solicitações."
+        - "Visualizar anexos quando necessário."
+        - "Homologar as solicitações selecionadas."
+      pre_condicoes:
+        - "Solicitação cadastrada/enviada pelo servidor ou pela chefia autorizada."
+      pos_condicoes:
+        - "Ocorrências/ausências deixam de bloquear a homologação do ponto eletrônico."
+      saida_esperada_schema:
+        - "registros[].situacao e textos_visiveis podem indicar estado homologado ou pendente."
+
+    - id: WF-006
+      nome: "Homologação do ponto eletrônico"
+      perfil: "chefia"
+      passos:
+        - "Acessar Chefia de Unidade > Homologação de Ponto Eletrônico > Homologar Ponto Eletrônico."
+        - "Selecionar unidade."
+        - "Selecionar mês."
+        - "Verificar se há ocorrências/ausências em aberto."
+        - "Autorizar horas excedentes quando cabível."
+        - "Informar justificativa quando necessário."
+        - "Zerar horas autorizadas quando as horas excedentes não forem aceitas."
+        - "Homologar o ponto eletrônico."
+      pre_condicoes:
+        - "Ocorrências e ausências em aberto devem estar homologadas."
+      saida_esperada_schema:
+        - "registros[].he registra excedentes apurados."
+        - "registros[].ha registra horas autorizadas quando exibidas."
+        - "registros[].hh registra horas homologadas quando exibidas."
+
+    - id: WF-007
+      nome: "Homologação da frequência mensal"
+      perfil: "chefia imediata"
+      passos:
+        - "Acessar Menu Servidor > Chefia de Unidade > Homologação de Frequência > Homologar Frequência."
+        - "Selecionar unidade."
+        - "Selecionar servidor ou conjunto de servidores."
+        - "Homologar individualmente ou coletivamente."
+      pre_condicoes:
+        - "Ponto eletrônico dos servidores selecionados deve estar homologado."
+      pos_condicoes:
+        - "Frequência mensal fica homologada no SIGRH."
+      saida_esperada_schema:
+        - "O espelho pode não distinguir todos os estados administrativos; preservar situacao, mensagens e textos_visiveis."
+
+    - id: WF-008
+      nome: "Autorização de banco de horas"
+      perfil: "chefia"
+      passos:
+        - "Formalizar autorização no SIPAC, módulo Protocolo > Mesa Virtual."
+        - "Cadastrar documento."
+        - "Carregar modelo de formulário."
+        - "Adicionar assinante."
+        - "Incluir interessado."
+        - "Encaminhar para o setor."
+      saida_esperada_schema:
+        - "Não há campo específico no espelho para o documento SIPAC."
+        - "Efeitos podem aparecer em ha, credito, credito_acumulado ou campos de resumo."
+
+    - id: WF-009
+      nome: "Cadastro de saldo retroativo de horas"
+      perfil: "gestão de frequência"
+      passos:
+        - "Abrir módulo de frequência."
+        - "Acessar Ponto Eletrônico > Saldo de Horas Retroativo > Cadastrar."
+        - "Selecionar servidor."
+        - "Escolher crédito de horas."
+        - "Preencher mês, descrição e quantidade de horas."
+        - "Cadastrar."
+      restricoes:
+        - "No exemplo do manual, a quantidade é limitada às horas não trabalhadas no período específico informado."
+      saida_esperada_schema:
+        - "Efeitos podem aparecer em credito_acumulado, credito_em_horas ou credito_horas_disponivel_mes."
+
+    - id: WF-010
+      nome: "Solicitação e autorização de recesso"
+      perfil: "servidor; gestor de ponto/chefia para autorização"
+      passos:
+        - "Servidor acessa Menu Servidor > Solicitações > Período de Recesso > Cadastrar."
+        - "Seleciona ano e período."
+        - "Mantém ou remove a opção de utilizar saldo de horas vigente."
+        - "Gestor acessa Homologação de Ponto Eletrônico > Homologar Solicitações de Período de Recesso."
+        - "Seleciona ano de referência."
+        - "Autoriza a solicitação."
+      saida_esperada_schema:
+        - "registros[].ocorrencias pode conter Recesso e detalhes de compensação."
+        - "resumo.saldo_horas_mes_compensar_proximo e campos de crédito devem ser avaliados no fechamento."
+
+eventos_derivados:
+  descricao: >
+    Eventos de domínio calculados a partir dos campos visíveis do espelho.
+    Estes eventos não são campos obrigatórios do JSON exportado; consumidores
+    podem gerá-los em memória para alertas, filas de revisão e relatórios.
+  contrato: "derivado; não persistido obrigatoriamente no espelho"
+
+  itens:
+    - nome: "EspelhoCapturado"
+      dominio: "Espelho Mensal"
+      severidade: "informativo"
+      condicao: "JSON persistido com servidor, periodo_referencia e registros"
+      campos_origem:
+        - servidor
+        - periodo_referencia
+        - registros
+
+    - nome: "ResumoMensalAusente"
+      dominio: "Espelho Mensal"
+      severidade: "media"
+      condicao: "resumo é null ou campo ausente em schema v1"
+      campos_origem:
+        - resumo
+      acao_recomendada: "Revisar fechamento no SIGRH ou recapturar o período"
+
+    - nome: "MensagemVisivelEncontrada"
+      dominio: "Espelho Mensal"
+      severidade: "informativo"
+      condicao: "mensagens contém pelo menos um texto"
+      campos_origem:
+        - mensagens
+
+    - nome: "OcorrenciaRegistrada"
+      dominio: "Ocorrências e Ausências"
+      severidade: "informativo"
+      condicao: "registros[].ocorrencias contém lançamento visível"
+      campos_origem:
+        - registros[].ocorrencias
+
+    - nome: "AusenciaPendente"
+      dominio: "Ocorrências e Ausências"
+      severidade: "alta"
+      condicao: >
+        mensagens, registros[].situacao ou registros[].textos_visiveis indicam
+        pendência de solicitação, ocorrência ou ausência
+      campos_origem:
+        - mensagens
+        - registros[].situacao
+        - registros[].textos_visiveis
+      acao_recomendada: "Homologar ocorrências/ausências antes do ponto eletrônico"
+
+    - nome: "AusenciaHomologada"
+      dominio: "Ocorrências e Ausências"
+      severidade: "informativo"
+      condicao: >
+        SIGRH mostra estado aceito/homologado ou não exibe bloqueio visível para
+        a ocorrência/ausência
+      campos_origem:
+        - registros[].situacao
+        - registros[].textos_visiveis
+      observacao: "Inferência fraca; confirmação final depende do SIGRH"
+
+    - nome: "PitDocenteRegistrado"
+      dominio: "PIT Docente"
+      severidade: "informativo"
+      condicao: >
+        registros[].ocorrencias contém REGISTRO DO PIT - DOCENTE ou variante
+        equivalente
+      campos_origem:
+        - registros[].ocorrencias
+
+    - nome: "HoraExcedenteApurada"
+      dominio: "Horas e Banco"
+      severidade: "baixa"
+      condicao: "registros[].he maior que 00:00"
+      campos_origem:
+        - registros[].he
+
+    - nome: "HoraExcedenteSemAutorizacao"
+      dominio: "Horas e Banco"
+      severidade: "media"
+      condicao: "registros[].he maior que 00:00 e registros[].ha vazio, null ou 00:00"
+      campos_origem:
+        - registros[].he
+        - registros[].ha
+      acao_recomendada: "Chefia deve autorizar, justificar ou zerar horas autorizadas"
+
+    - nome: "DebitoNaoCompensado"
+      dominio: "Horas e Banco"
+      severidade: "media"
+      condicao: "registros[].dnc maior que 00:00"
+      campos_origem:
+        - registros[].dnc
+      acao_recomendada: "Revisar compensação, abono ou desconto do débito"
+
+    - nome: "SaldoMensalNegativo"
+      dominio: "Horas e Banco"
+      severidade: "media"
+      condicao: >
+        resumo.saldo_horas_mes, resumo.total_horas_pendentes_compensacao ou
+        resumo.saldo_horas_mes_compensar_proximo começa com "-"
+      campos_origem:
+        - resumo.saldo_horas_mes
+        - resumo.total_horas_pendentes_compensacao
+        - resumo.saldo_horas_mes_compensar_proximo
+
+    - nome: "RecessoRegistrado"
+      dominio: "Recesso"
+      severidade: "informativo"
+      condicao: "registros[].ocorrencias contém Recesso"
+      campos_origem:
+        - registros[].ocorrencias
+
+    - nome: "RecessoComTempoPendente"
+      dominio: "Recesso"
+      severidade: "media"
+      condicao: >
+        registros[].ocorrencias, registros[].observacoes ou
+        registros[].textos_visiveis contém texto de tempo pendente de recesso
+      campos_origem:
+        - registros[].ocorrencias
+        - registros[].observacoes
+        - registros[].textos_visiveis
+
+    - nome: "SaldoUsadoParaRecesso"
+      dominio: "Recesso"
+      severidade: "informativo"
+      condicao: >
+        ocorrência de recesso aparece junto de alteração compatível em crédito,
+        crédito acumulado ou saldo a compensar
+      campos_origem:
+        - registros[].ocorrencias
+        - registros[].credito_acumulado
+        - resumo.credito_horas_disponivel_mes
+        - resumo.saldo_horas_mes_compensar_proximo
+      observacao: "Inferência parcial; decisão completa da solicitação fica no SIGRH"
+
+    - nome: "PontoProntoParaHomologacao"
+      dominio: "Ponto Eletrônico"
+      severidade: "informativo"
+      condicao: >
+        Não há AusenciaPendente, HoraExcedenteSemAutorizacao,
+        RecessoComTempoPendente ou ResumoMensalAusente para o servidor/período
+      campos_origem:
+        - mensagens
+        - registros
+        - resumo
+      observacao: "Indica prontidão operacional; não prova homologação no SIGRH"
+
+    - nome: "PontoRequerRevisao"
+      dominio: "Ponto Eletrônico"
+      severidade: "alta"
+      condicao: >
+        Pelo menos um evento de bloqueio ou alerta médio/alto foi derivado para
+        o servidor/período
+      campos_origem:
+        - mensagens
+        - registros
+        - resumo
+
+    - nome: "FrequenciaProntaParaHomologacao"
+      dominio: "Frequência Mensal"
+      severidade: "informativo"
+      condicao: >
+        Ponto eletrônico foi confirmado como homologado no SIGRH e ausências do
+        período estão tratadas
+      campos_origem:
+        - registros[].situacao
+        - mensagens
+      observacao: >
+        O espelho pode sugerir prontidão, mas a confirmação do ponto homologado
+        é externa quando não houver evidência textual suficiente.
+
+eventos_externos:
+  descricao: >
+    Eventos de domínio que não podem ser comprovados apenas pelo espelho
+    exportado. Eles exigem navegação, confirmação visual ou extração adicional
+    em telas do SIGRH, SIGAA ou SIPAC.
+  contrato: "externo ao JSON de espelho"
+
+  itens:
+    - nome: "PontoHomologadoNoSIGRH"
+      dominio: "Ponto Eletrônico"
+      fonte_autoritativa: "Tela de Homologação de Ponto Eletrônico do SIGRH"
+      motivo_externo: >
+        status completed e registros[].hh não provam sozinhos que a chefia
+        executou a homologação administrativa do ponto.
+      acao_recomendada: "Capturar estado da tela de homologação ou registrar confirmação manual"
+
+    - nome: "FrequenciaHomologadaNoSIGRH"
+      dominio: "Frequência Mensal"
+      fonte_autoritativa: "Tela de Homologação de Frequência do SIGRH"
+      motivo_externo: >
+        O espelho de ponto não distingue de forma confiável ponto eletrônico
+        homologado de frequência mensal homologada.
+      acao_recomendada: "Capturar lista/estado na tela de Homologação de Frequência"
+
+    - nome: "PeriodoAdministrativoFechado"
+      dominio: "Frequência Mensal"
+      fonte_autoritativa: "Estado de frequência homologada no SIGRH"
+      motivo_externo: >
+        Ajustes posteriores dependem da operação de desfazer frequência; esse
+        bloqueio não está garantido no JSON do espelho.
+
+    - nome: "ValidacaoExternaNecessaria"
+      dominio: "PIT Docente"
+      fonte_autoritativa: "SIGAA/SIGRH"
+      motivo_externo: >
+        Docente com afastamento e aulas ativas pode exigir plano de reposição,
+        mas o plano e as aulas ativas não aparecem no espelho exportado.
+
+    - nome: "DocumentoSipacAutorizacaoBancoHoras"
+      dominio: "Horas e Banco"
+      fonte_autoritativa: "SIPAC Mesa Virtual"
+      motivo_externo: >
+        O documento de autorização de banco de horas não aparece como campo
+        próprio no espelho.
+
+    - nome: "AutoHomologacaoAfastamentoDetectada"
+      dominio: "Ocorrências e Ausências"
+      fonte_autoritativa: "Histórico/estado da solicitação no SIGRH"
+      motivo_externo: >
+        O JSON não contém identidade da chefia homologadora nem do vice-chefe.
+
 campos_raiz:
   schema_version:
     tipo: inteiro

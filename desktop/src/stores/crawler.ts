@@ -29,7 +29,7 @@ export const useCrawlerStore = defineStore("crawler", () => {
     logs.value.push(line);
   }
 
-  async function _start(cmd: string, label: string) {
+  async function _start(cmd: string, label: string, extraArgs: string[] = []) {
     if (running.value) return;
     running.value = true;
     exitCode.value = null;
@@ -48,7 +48,7 @@ export const useCrawlerStore = defineStore("crawler", () => {
     });
 
     try {
-      await invoke("run_crawler", { command: cmd, extraArgs: [] });
+      await invoke("run_crawler", { command: cmd, extraArgs });
     } catch (e) {
       logs.value.push(`Erro: ${e}`);
       running.value = false;
@@ -59,6 +59,14 @@ export const useCrawlerStore = defineStore("crawler", () => {
 
   function startBatch()   { return _start("batch",   "Baixando todos os meses…"); }
   function startRefresh() { return _start("refresh", "Verificando meses pendentes…"); }
+  function startDescobrir() { return _start("descobrir", "Descobrindo servidores da unidade…"); }
+  function startHomologar(slug?: string) {
+    const label = slug
+      ? `Homologando espelhos liberados de ${slug}…`
+      : "Homologando todos os espelhos liberados…";
+    const extra = slug ? ["--slug", slug] : [];
+    return _start("homologar", label, extra);
+  }
 
   function clearLogs() {
     if (!running.value) {
@@ -69,5 +77,5 @@ export const useCrawlerStore = defineStore("crawler", () => {
     }
   }
 
-  return { running, logs, exitCode, progressDone, progressTotal, progressPct, startBatch, startRefresh, clearLogs };
+  return { running, logs, exitCode, progressDone, progressTotal, progressPct, startBatch, startRefresh, startDescobrir, startHomologar, clearLogs };
 });

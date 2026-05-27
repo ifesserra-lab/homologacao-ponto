@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="190" viewBox="0 0 920 190">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker></defs>
+  <style>text{font-family:Arial,sans-serif;font-size:13px;fill:#0f172a}.b{fill:#f8fafc;stroke:#334155;stroke-width:1.5;rx:8}.d{fill:#fff7ed;stroke:#334155;stroke-width:1.5}.l{stroke:#334155;stroke-width:1.7;fill:none;marker-end:url(#a)}</style>
+  <rect class="b" x="20" y="70" width="130" height="48"/><text x="85" y="98" text-anchor="middle">Espelho</text>
+  <rect class="b" x="190" y="70" width="140" height="48"/><text x="260" y="98" text-anchor="middle">Executar regras</text>
+  <rect class="b" x="370" y="70" width="140" height="48"/><text x="440" y="98" text-anchor="middle">Consolidar alertas</text>
+  <polygon class="d" points="610,55 685,94 610,133 535,94"/><text x="610" y="90" text-anchor="middle">Alerta</text><text x="610" y="107" text-anchor="middle">bloqueante?</text>
+  <rect class="b" x="745" y="28" width="150" height="48"/><text x="820" y="56" text-anchor="middle">Revisao manual</text>
+  <rect class="b" x="745" y="112" width="150" height="48"/><text x="820" y="132" text-anchor="middle">Pronto para</text><text x="820" y="149" text-anchor="middle">proxima etapa</text>
+  <path class="l" d="M150 94H190"/><path class="l" d="M330 94H370"/><path class="l" d="M510 94H535"/><path class="l" d="M685 94C715 94 715 52 745 52"/><path class="l" d="M685 94C715 94 715 136 745 136"/>
+</svg>

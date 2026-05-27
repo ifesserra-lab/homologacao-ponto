@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readFileSync, existsSync } from "fs";
+import { readFileSync, writeFileSync, existsSync } from "fs";
 import { resolve, dirname } from "path";
 import { parseArgs } from "util";
 import yaml from "js-yaml";
@@ -8,6 +8,8 @@ import { runBatch, runEntries, MONTH_NAMES } from "./batch.js";
 import { parseEspelho } from "./parser.js";
 import { writeEspelho } from "./writer.js";
 import { scanStaleMonths } from "./stale.js";
+import { scanLiberados, homologarServidor } from "./homologar.js";
+import { descobrirServidores, mergeServidoresYaml } from "./descobrir.js";
 import { randomUUID } from "crypto";
 
 // CJS bundle (esbuild): __dirname injected automatically.
@@ -53,6 +55,8 @@ async function main() {
       siape:        { type: "string" },
       mes:          { type: "string" },
       ano:          { type: "string" },
+      slug:         { type: "string" },
+      "dry-run":    { type: "boolean", default: false },
     },
   });
 
@@ -126,6 +130,73 @@ async function main() {
       const espelho = parseEspelho({ html, url, capturedAt: new Date().toISOString(), runId, serverName: opts.servidor, identifier: opts.siape ?? null });
       const path    = writeEspelho(espelho, outputDir);
       console.log(`Salvo: ${path}`);
+      process.exit(0);
+    }
+
+    if (command === "homologar") {
+      const politicaHe = process.env.POLITICA_HE ?? "manual";
+      const slugFilter = opts.slug ? opts.slug.split(",").map(s => s.trim()).filter(Boolean) : null;
+
+      const liberados = scanLiberados(outputDir, politicaHe, slugFilter);
+
+      if (liberados.length === 0) {
+        console.log("Nenhum espelho liberado para homologar.");
+        process.exit(0);
+      }
+
+      console.log(`\n[homologar] ${liberados.length} espelho(s) liberado(s) | politica_he=${politicaHe}:\n`);
+      for (const e of liberados) {
+        console.log(`  ${e.nome}  ${e.periodoReferencia}`);
+      }
+      console.log();
+
+      if (opts["dry-run"]) {
+        console.log("[dry-run] Nenhuma ação executada.");
+        process.exit(0);
+      }
+
+      let ok = 0, fail = 0;
+      for (const entry of liberados) {
+        try {
+          console.log(`→ ${entry.nome}  ${entry.periodoReferencia}`);
+          await homologarServidor(browser, entry);
+          console.log(`  ✓ Homologado`);
+          ok++;
+        } catch (e) {
+          console.log(`  ✗ Erro: ${e.message}`);
+          fail++;
+        }
+      }
+
+      console.log(`\nConcluído: ${ok} ok, ${fail} falhas`);
+      process.exit(fail > 0 ? 1 : 0);
+    }
+
+    if (command === "descobrir") {
+      const setor = process.env.CHEFIA_SETOR ?? "";
+      if (!setor) { console.error("CHEFIA_SETOR não definido (configuration.yaml → chefia.setor)"); process.exit(1); }
+
+      console.log(`\n[descobrir] Buscando servidores da unidade:\n  ${setor}\n`);
+
+      const encontrados = await descobrirServidores(browser, setor);
+
+      if (encontrados.length === 0) {
+        console.log("Nenhum servidor encontrado na tela de homologação.");
+        process.exit(0);
+      }
+
+      console.log(`\n${encontrados.length} servidor(es) encontrado(s):`);
+      for (const s of encontrados) console.log(`  ${s.siape || "???????"}  ${s.nome}`);
+
+      if (opts["dry-run"]) {
+        console.log("\n[dry-run] servidores.yaml não alterado.");
+        process.exit(0);
+      }
+
+      const yamlPath = resolve(opts.file ?? resolve(_dir, "../../servidores.yaml"));
+      const { data, adicionados, atualizados } = mergeServidoresYaml(yamlPath, encontrados);
+      writeFileSync(yamlPath, yaml.dump(data, { indent: 2, lineWidth: -1 }), "utf-8");
+      console.log(`\n✓ servidores.yaml atualizado — ${adicionados} adicionado(s), ${atualizados} atualizado(s)`);
       process.exit(0);
     }
 
