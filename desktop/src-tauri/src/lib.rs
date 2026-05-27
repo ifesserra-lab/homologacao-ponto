@@ -138,7 +138,7 @@ fn resolve_crawler_sidecar() -> Option<PathBuf> {
 }
 
 #[tauri::command]
-async fn run_crawler(app: AppHandle, extra_args: Vec<String>) -> Result<(), String> {
+async fn run_crawler(app: AppHandle, command: Option<String>, extra_args: Vec<String>) -> Result<(), String> {
     let base = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     let cli  = base.join("../src-crawler/cli.js");
     let yaml = base.join("../../servidores.yaml");
@@ -159,10 +159,10 @@ async fn run_crawler(app: AppHandle, extra_args: Vec<String>) -> Result<(), Stri
     };
 
     if extra_args.is_empty() {
-        args.extend(["batch", "--file"].map(String::from));
-        args.push(yaml.to_string_lossy().to_string());
-        args.extend(["--output-dir"].map(String::from));
-        args.push(output_dir.to_string_lossy().to_string());
+        let cmd = command.as_deref().unwrap_or("batch");
+        args.push(cmd.to_string());
+        args.extend(["--file".to_string(), yaml.to_string_lossy().to_string()]);
+        args.extend(["--output-dir".to_string(), output_dir.to_string_lossy().to_string()]);
     } else {
         args.extend(extra_args);
     }

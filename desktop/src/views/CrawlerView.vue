@@ -8,6 +8,7 @@ import TabNav from "@/components/TabNav.vue";
 const auth = useAuthStore();
 const crawler = useCrawlerStore();
 const termEl = ref<HTMLElement | null>(null);
+const showTip = ref(false);
 
 async function scrollBottom() {
   await nextTick();
@@ -23,7 +24,7 @@ watch(() => crawler.logs.length, () => scrollBottom());
       <div class="page-header-row">
         <div>
           <h1 class="page-title">Crawler SIGRH</h1>
-          <p class="page-meta">Baixa espelhos de ponto via Playwright · Node.js</p>
+          <p class="page-meta">Baixa espelhos de ponto via Playwright · Node.js · analisa e baixa apenas meses necessários</p>
         </div>
         <div class="nav-actions">
           <ThemeToggle />
@@ -45,7 +46,26 @@ watch(() => crawler.logs.length, () => scrollBottom());
         </div>
         <div class="toolbar-right">
           <button v-if="crawler.logs.length > 0 && !crawler.running" class="btn-clear" @click="crawler.clearLogs()">Limpar</button>
-          <button v-if="!crawler.running" class="btn-run" @click="crawler.startBatch()">▶ Executar Batch</button>
+          <div v-if="!crawler.running" class="btn-run-wrap">
+            <button
+              class="btn-run"
+              @click="crawler.startRefresh()"
+              @mouseenter="showTip = true"
+              @mouseleave="showTip = false"
+            >▶ Executar</button>
+            <Teleport to="body">
+              <div v-if="showTip" class="run-tooltip">
+                <div class="run-tooltip-title">Algoritmo inteligente</div>
+                <ul>
+                  <li><span class="tip-dot new"></span> Arquivo ausente → <b>baixa</b></li>
+                  <li><span class="tip-dot warn"></span> Dias pendentes → <b>atualiza</b></li>
+                  <li><span class="tip-dot warn"></span> Débito não autorizado → <b>atualiza</b></li>
+                  <li><span class="tip-dot warn"></span> Mês atual → <b>sempre atualiza</b></li>
+                  <li><span class="tip-dot ok"></span> Completo e homologado → <b>ignora</b></li>
+                </ul>
+              </div>
+            </Teleport>
+          </div>
           <button v-else class="btn-run btn-run--running" disabled>
             <span class="spinner"></span> Executando…
           </button>
@@ -66,7 +86,7 @@ watch(() => crawler.logs.length, () => scrollBottom());
       <!-- Terminal sempre visível -->
       <div ref="termEl" class="terminal">
         <template v-if="crawler.logs.length === 0">
-          <span class="term-placeholder">Clique em "Executar Batch" para iniciar o crawler.<br/>Lê servidores.yaml · grava em data/runs/servidores/</span>
+          <span class="term-placeholder">▶ Executar — analisa JSONs existentes e baixa apenas meses desatualizados<br/>"Forçar tudo" — re-baixa todos os meses sem análise prévia</span>
         </template>
         <template v-else>
           <div
@@ -101,6 +121,39 @@ watch(() => crawler.logs.length, () => scrollBottom());
 .status-ok { font-size: 11px; color: var(--green); font-weight: 500; }
 .status-fail { font-size: 11px; color: var(--red); font-weight: 500; }
 
+.btn-run-wrap { position: relative; }
+.run-tooltip {
+  position: fixed;
+  bottom: 32px; right: 32px;
+  background: #1a1a1a;
+  color: #e8e8e5;
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 13px;
+  line-height: 1.9;
+  z-index: 9999;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.55);
+  pointer-events: none;
+  min-width: 280px;
+}
+.run-tooltip-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #333;
+}
+.run-tooltip ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+.run-tooltip li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #ccc; }
+.run-tooltip li b { color: #fff; font-weight: 500; }
+.tip-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.tip-dot.new  { background: #5b9fe8; }
+.tip-dot.warn { background: #f4c66a; }
+.tip-dot.ok   { background: #4caf90; }
 .btn-run { padding: 5px 14px; background: var(--blue); color: var(--on-accent); border: none; border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; }
 .btn-run:disabled { opacity: 0.7; cursor: default; }
 .btn-run--running { background: #444; color: #ccc; }

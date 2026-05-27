@@ -4,9 +4,10 @@ import { resolve, dirname } from "path";
 import { parseArgs } from "util";
 import yaml from "js-yaml";
 import { SigrhBrowser } from "./sigrh.js";
-import { runBatch } from "./batch.js";
+import { runBatch, runEntries, MONTH_NAMES } from "./batch.js";
 import { parseEspelho } from "./parser.js";
 import { writeEspelho } from "./writer.js";
+import { scanStaleMonths } from "./stale.js";
 import { randomUUID } from "crypto";
 
 // CJS bundle (esbuild): __dirname injected automatically.
@@ -81,6 +82,30 @@ async function main() {
       const entries = await runBatch({ browser, config, outputDir, onProgress: (msg) => console.log(msg) });
       const ok   = entries.filter(e => e.status !== "failed").length;
       const fail = entries.filter(e => e.status === "failed").length;
+      console.log(`\nConcluído: ${ok} ok, ${fail} falhas`);
+      process.exit(fail > 0 ? 1 : 0);
+    }
+
+    if (command === "refresh") {
+      if (!opts.file) { console.error("--file obrigatório para refresh"); process.exit(1); }
+      const config = yaml.load(readFileSync(resolve(opts.file), "utf-8"));
+
+      const stale = scanStaleMonths(outputDir, config);
+
+      if (stale.length === 0) {
+        console.log("Nenhum mês desatualizado. Tudo em dia.");
+        process.exit(0);
+      }
+
+      console.log(`\n[refresh] ${stale.length} mês(es) para atualizar:\n`);
+      for (const s of stale) {
+        console.log(`  ${s.nome} ${MONTH_NAMES[s.mes]}/${s.ano}  [${s.reasons.join(", ")}]`);
+      }
+      console.log();
+
+      const results = await runEntries({ browser, entries: stale, outputDir, onProgress: (msg) => console.log(msg) });
+      const ok   = results.filter(e => e.status !== "failed").length;
+      const fail = results.filter(e => e.status === "failed").length;
       console.log(`\nConcluído: ${ok} ok, ${fail} falhas`);
       process.exit(fail > 0 ? 1 : 0);
     }

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- fundo -->
+  <rect width="512" height="512" rx="112" fill="#0F7B6C"/>
+
+  <!-- corpo calendário -->
+  <rect x="76" y="130" width="360" height="300" rx="36" fill="white" opacity="0.15"/>
+  <rect x="76" y="130" width="360" height="300" rx="36" fill="none" stroke="white" stroke-width="10" opacity="0.4"/>
+
+  <!-- cabeçalho calendário -->
+  <rect x="76" y="130" width="360" height="96" rx="36" fill="white" opacity="0.92"/>
+  <rect x="76" y="190" width="360" height="36" fill="white" opacity="0.92"/>
+
+  <!-- pinos do calendário -->
+  <rect x="168" y="88" width="32" height="86" rx="16" fill="white"/>
+  <rect x="312" y="88" width="32" height="86" rx="16" fill="white"/>
+
+  <!-- checkmark -->
+  <polyline points="158,310 224,376 354,246"
+    fill="none" stroke="white" stroke-width="48"
+    stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

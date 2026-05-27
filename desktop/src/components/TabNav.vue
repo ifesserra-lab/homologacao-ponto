@@ -28,7 +28,8 @@ const servidores = useServidoresStore();
 <style scoped>
 .tab-nav { display: flex; gap: 4px; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
 .tab-btn { position: relative; padding: 8px 20px; font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s; display: flex; align-items: center; gap: 6px; }
-.tab-btn:hover, .tab-btn.active, .router-link-active { color: var(--text); border-bottom-color: var(--blue); font-weight: 600; }
+.tab-btn:hover { color: var(--text); background: transparent; }
+.tab-btn.active, .router-link-active { color: var(--blue); background: transparent; border-color: transparent; border-bottom-color: var(--blue); font-weight: 600; }
 .tab-btn--refresh { margin-left: auto; font-size: 16px; padding: 8px 10px; background: none; border: none; cursor: pointer; transition: transform 0.2s, color 0.15s; }
 .tab-btn--refresh:hover { color: var(--blue); }
 .tab-btn--refresh:disabled { opacity: 0.4; cursor: default; }

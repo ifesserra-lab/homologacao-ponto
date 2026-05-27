@@ -29,13 +29,13 @@ export const useCrawlerStore = defineStore("crawler", () => {
     logs.value.push(line);
   }
 
-  async function startBatch() {
+  async function _start(cmd: string, label: string) {
     if (running.value) return;
     running.value = true;
     exitCode.value = null;
     progressDone.value = 0;
     progressTotal.value = 0;
-    logs.value = ["$ node src-crawler/cli.js batch", "Iniciando crawler…"];
+    logs.value = [`$ crawler ${cmd}`, label];
 
     unlistenLog = await listen<string>("crawler-log", (e) => handleLine(e.payload));
     unlistenDone = await listen<number>("crawler-done", (e) => {
@@ -44,13 +44,11 @@ export const useCrawlerStore = defineStore("crawler", () => {
       running.value = false;
       unlistenLog?.(); unlistenLog = null;
       unlistenDone?.(); unlistenDone = null;
-      if (e.payload === 0) {
-        crawlerRefreshKey.value += 1; // signals all views to reload
-      }
+      if (e.payload === 0) crawlerRefreshKey.value += 1;
     });
 
     try {
-      await invoke("run_crawler", { extraArgs: [] });
+      await invoke("run_crawler", { command: cmd, extraArgs: [] });
     } catch (e) {
       logs.value.push(`Erro: ${e}`);
       running.value = false;
@@ -58,6 +56,9 @@ export const useCrawlerStore = defineStore("crawler", () => {
       unlistenDone?.(); unlistenDone = null;
     }
   }
+
+  function startBatch()   { return _start("batch",   "Baixando todos os meses…"); }
+  function startRefresh() { return _start("refresh", "Verificando meses pendentes…"); }
 
   function clearLogs() {
     if (!running.value) {
@@ -68,5 +69,5 @@ export const useCrawlerStore = defineStore("crawler", () => {
     }
   }
 
-  return { running, logs, exitCode, progressDone, progressTotal, progressPct, startBatch, clearLogs };
+  return { running, logs, exitCode, progressDone, progressTotal, progressPct, startBatch, startRefresh, clearLogs };
 });

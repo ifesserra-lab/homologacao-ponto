@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { invoke } from "@tauri-apps/api/core";
 import { useRouter, useRoute } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
+import ThemeToggle from "@/components/ThemeToggle.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -29,21 +30,28 @@ async function submit() {
 </script>
 
 <template>
+  <ThemeToggle class="login-theme" />
   <div class="login-page">
     <div class="login-card">
+      <div class="login-logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="var(--blue)" opacity="0.12"/>
+          <path d="M8 10h16M8 16h10M8 22h13" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
       <h1 class="login-title">Gestor de Ponto</h1>
-      <p class="login-sub">SIGRH · Acesso restrito</p>
+      <p class="login-subtitle">SIGRH · Acesso restrito</p>
       <form class="login-form" @submit.prevent="submit">
-        <div class="field">
+        <div class="login-field">
           <label for="user">Usuário</label>
-          <input id="user" v-model="user" type="text" autocomplete="username" required />
+          <input id="user" v-model="user" type="text" autocomplete="username" placeholder="seu usuário" required />
         </div>
-        <div class="field">
+        <div class="login-field">
           <label for="pass">Senha</label>
-          <input id="pass" v-model="password" type="password" autocomplete="current-password" required />
+          <input id="pass" v-model="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
         </div>
-        <p v-if="error" class="error-msg">Credenciais inválidas.</p>
-        <button type="submit" class="btn-primary" :disabled="loading">
+        <div v-if="error" class="login-error">Credenciais inválidas.</div>
+        <button type="submit" class="login-btn" :disabled="loading">
           {{ loading ? "Entrando…" : "Entrar" }}
         </button>
       </form>
@@ -52,17 +60,5 @@ async function submit() {
 </template>
 
 <style scoped>
-.login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--bg); }
-.login-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; width: 100%; max-width: 360px; box-shadow: var(--shadow); }
-.login-title { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 4px; }
-.login-sub { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
-.login-form { display: flex; flex-direction: column; gap: 14px; }
-.field { display: flex; flex-direction: column; gap: 6px; }
-.field label { font-size: 12px; font-weight: 500; color: var(--text-2); }
-.field input { padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 14px; outline: none; }
-.field input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--focus-ring); }
-.error-msg { font-size: 12px; color: var(--red); }
-.btn-primary { padding: 9px; background: var(--blue); color: var(--on-accent); border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.15s; }
-.btn-primary:hover { opacity: 0.88; }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.login-logo { margin-bottom: 1.25rem; }
 </style>
