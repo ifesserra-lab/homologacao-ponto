@@ -188,6 +188,36 @@ function razaoSummary(result: HomologacaoResult): string {
 
 const showLegenda = ref(false);
 
+// ── Multi-select homologação ──────────────────────────────────────────────────
+const selectedSlugs = ref<Set<string>>(new Set());
+
+const selectableSlugs = computed(() =>
+  grouped.value.filter((g) => g.liberados.length > 0 && counts.loading === 0).map((g) => g.slug)
+);
+
+const allSelected = computed(() =>
+  selectableSlugs.value.length > 0 && selectableSlugs.value.every((s) => selectedSlugs.value.has(s))
+);
+
+function toggleSelect(slug: string) {
+  const s = new Set(selectedSlugs.value);
+  s.has(slug) ? s.delete(slug) : s.add(slug);
+  selectedSlugs.value = s;
+}
+
+function toggleAll() {
+  if (allSelected.value) {
+    selectedSlugs.value = new Set();
+  } else {
+    selectedSlugs.value = new Set(selectableSlugs.value);
+  }
+}
+
+function homologarSelecionados() {
+  if (selectedSlugs.value.size === 0) return;
+  crawler.startHomologar(Array.from(selectedSlugs.value).join(","));
+}
+
 onMounted(() => loadRows());
 watch(crawlerRefreshKey, () => loadRows());
 watch(filterMeses, () => loadRows());
@@ -241,6 +271,20 @@ watch(filterMeses, () => loadRows());
           :disabled="counts.loading > 0"
           @click="exportCSV"
         >↓ Exportar CSV</button>
+        <button
+          v-if="selectableSlugs.length > 0"
+          class="btn-select-all"
+          @click="toggleAll"
+        >{{ allSelected ? 'Desmarcar todos' : 'Selecionar todos' }}</button>
+        <button
+          v-if="selectedSlugs.size > 0"
+          class="btn-homologar-sel"
+          :disabled="crawler.running"
+          @click="homologarSelecionados"
+        >
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Homologar selecionados ({{ selectedSlugs.size }})
+        </button>
       </div>
     </div>
 
@@ -285,6 +329,14 @@ watch(filterMeses, () => loadRows());
 
         <!-- Cabeçalho do servidor -->
         <div class="srv-header">
+          <input
+            v-if="group.liberados.length > 0 && counts.loading === 0"
+            type="checkbox"
+            class="srv-check"
+            :checked="selectedSlugs.has(group.slug)"
+            @change="toggleSelect(group.slug)"
+            :title="`Selecionar ${group.nome}`"
+          />
           <span class="srv-nome">{{ group.nome }}</span>
           <div class="srv-meta">
             <span v-if="group.blocked.length > 0" class="srv-blocked-count">
@@ -307,7 +359,10 @@ watch(filterMeses, () => loadRows());
             :disabled="crawler.running"
             :title="`Homologar ${group.liberados.length} mês(es) liberado(s) no SIGRH`"
             @click="crawler.startHomologar(group.slug)"
-          >▶ Homologar ({{ group.liberados.length }})</button>
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Homologar ({{ group.liberados.length }})
+          </button>
         </div>
 
         <!-- Linhas de período -->
@@ -412,6 +467,11 @@ watch(filterMeses, () => loadRows());
 .btn-csv { padding: 5px 13px; background: var(--surface); color: var(--text-2); border: 1px solid var(--border-mid); border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
 .btn-csv:hover { background: var(--surface-2); color: var(--text); }
 .btn-csv:disabled { opacity: 0.4; cursor: default; }
+.btn-select-all { padding: 5px 12px; background: transparent; color: var(--text-2); border: 1px solid var(--border-mid); border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.btn-select-all:hover { background: var(--surface-2); color: var(--text); }
+.btn-homologar-sel { display: inline-flex; align-items: center; gap: 5px; padding: 5px 14px; background: var(--green, #0f7b6c); color: #fff; border: none; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.15s, opacity 0.15s; box-shadow: 0 1px 3px rgba(15,123,108,0.25); }
+.btn-homologar-sel:hover:not(:disabled) { background: #0a6358; }
+.btn-homologar-sel:disabled { opacity: 0.4; cursor: default; }
 
 /* ── Table ── */
 .hom-table { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
@@ -423,6 +483,7 @@ watch(filterMeses, () => loadRows());
   background: var(--surface-2);
   border-bottom: 1px solid var(--border);
 }
+.srv-check { width: 15px; height: 15px; accent-color: var(--green, #0f7b6c); cursor: pointer; flex-shrink: 0; }
 .srv-nome { font-size: 13px; font-weight: 700; color: var(--text); flex: 1; }
 .srv-meta { display: flex; align-items: center; gap: 6px; }
 .srv-blocked-count { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; background: #fde8e8; color: #b91c1c; }
@@ -430,8 +491,8 @@ watch(filterMeses, () => loadRows());
 .btn-csv-srv:hover { background: var(--surface-2); color: var(--text); }
 .btn-email-srv { padding: 4px 12px; background: var(--blue-light, #e8f2fc); color: var(--blue); border: 1px solid transparent; border-radius: var(--radius-sm); font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.15s, color 0.15s; }
 .btn-email-srv:hover { background: var(--blue); color: #fff; }
-.btn-homologar-srv { padding: 4px 12px; background: var(--green-light, #ddedea); color: var(--green, #0f7b6c); border: 1px solid transparent; border-radius: var(--radius-sm); font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.15s, color 0.15s; }
-.btn-homologar-srv:hover:not(:disabled) { background: var(--green, #0f7b6c); color: #fff; }
+.btn-homologar-srv { display: inline-flex; align-items: center; gap: 5px; padding: 6px 14px; background: var(--green, #0f7b6c); color: #fff; border: none; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.15s, opacity 0.15s; box-shadow: 0 1px 3px rgba(15,123,108,0.25); }
+.btn-homologar-srv:hover:not(:disabled) { background: #0a6358; }
 .btn-homologar-srv:disabled { opacity: 0.4; cursor: default; }
 
 /* Period rows */

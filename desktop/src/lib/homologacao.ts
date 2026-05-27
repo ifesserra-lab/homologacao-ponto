@@ -160,12 +160,9 @@ export function gerarEmailHomologacao(raw: RawEspelho, result: HomologacaoResult
     linhas.push("");
   }
 
+  linhas.push(...buildSolucoesBlock(result.razoes, sep));
   linhas.push(
-    "COMO CORRIGIR:",
-    sep,
-    `SIGRH → Consultas → Frequência → Espelho de Ponto → ${periodo}`,
-    "",
-    "Após corrigir, aguarde o próximo processamento do SIGRH para que as alterações reflitam no espelho.",
+    "Após corrigir, aguarde o processamento do SIGRH para que as alterações reflitam no espelho.",
     "",
     "Qualquer dúvida, entre em contato.",
     "",
@@ -174,6 +171,57 @@ export function gerarEmailHomologacao(raw: RawEspelho, result: HomologacaoResult
   );
 
   return linhas.join("\n");
+}
+
+const RAZAO_SOLUCAO: Record<RazaoBloqueio, { titulo: string; passos: string[] }> = {
+  dias_pendentes: {
+    titulo: "Ocorrência/ausência em aberto",
+    passos: [
+      "Verifique se você possui solicitações de ausência ou afastamento ainda não enviadas.",
+      "Caminho: SIGRH → Menu Servidor → Solicitações → Ausências/Afastamentos",
+      "Localize a solicitação pendente, complete os dados exigidos e envie para homologação.",
+      "Se já enviou e continua pendente, aguarde a homologação pela chefia ou entre em contato.",
+    ],
+  },
+  he_nao_autorizado: {
+    titulo: "Horas excedentes registradas sem autorização",
+    passos: [
+      "Você possui horas extras registradas que ainda não foram autorizadas pela chefia.",
+      "Não há ação necessária da sua parte — aguarde a chefia autorizar ou zerar as horas excedentes.",
+      "Se as horas foram registradas por engano, solicite à chefia que as zere na tela de homologação.",
+    ],
+  },
+  debito_nao_autorizado: {
+    titulo: "Débito de horas não compensado no mês",
+    passos: [
+      "Você possui horas de débito no mês que ainda não foram justificadas ou compensadas.",
+      "Opções:",
+      "  • Registre uma ocorrência de justificativa no dia com déficit (ex.: Abono de Horas, Atividade Externa, Falta Justificada).",
+      "  • Se houver saldo de horas extras em outro dia, o SIGRH pode compensar automaticamente.",
+      "Caminho para registrar ocorrência: SIGRH → Consultas → Frequência → Espelho de Ponto → selecione o mês → clique no ícone ✎ na linha do dia",
+    ],
+  },
+  marcacoes_incompletas: {
+    titulo: "Marcações de ponto incompletas",
+    passos: [
+      "Um ou mais dias possuem número ímpar de batidas — provavelmente uma entrada ou saída esquecida.",
+      "Verifique se esqueceu de bater o ponto em algum momento do dia indicado.",
+      "Se a batida não puder ser incluída retroativamente, registre uma ocorrência de justificativa para o dia:",
+      "  • Exemplos: Abono de Horas, Atividade Externa, ou outra ocorrência aplicável.",
+      "Caminho: SIGRH → Consultas → Frequência → Espelho de Ponto → selecione o mês → clique no ícone ✎ na linha do dia",
+    ],
+  },
+};
+
+function buildSolucoesBlock(razoes: RazaoBloqueio[], sep: string): string[] {
+  const linhas: string[] = ["COMO RESOLVER:", sep];
+  for (const razao of razoes) {
+    const sol = RAZAO_SOLUCAO[razao];
+    linhas.push(`▸ ${sol.titulo}`);
+    for (const passo of sol.passos) linhas.push(`  ${passo}`);
+    linhas.push("");
+  }
+  return linhas;
 }
 
 export const RAZAO_LABEL: Record<RazaoBloqueio, string> = {
@@ -227,11 +275,9 @@ export function gerarEmailServidor(entries: BloqueioEntry[], nomeChefia = ""): s
     }
   }
 
+  const todasRazoes = Array.from(new Set(entries.flatMap((e) => e.result.razoes)));
+  linhas.push(...buildSolucoesBlock(todasRazoes, sepThin));
   linhas.push(
-    "COMO CORRIGIR:",
-    sepThin,
-    "SIGRH → Consultas → Frequência → Espelho de Ponto → selecione o mês correspondente",
-    "",
     "Após corrigir, aguarde o processamento do SIGRH para que as alterações reflitam no espelho.",
     "",
     "Qualquer dúvida, entre em contato.",
@@ -292,12 +338,9 @@ export function gerarEmailGlobal(entries: BloqueioEntry[], nomeChefia = ""): str
     linhas.push(``, sep);
   }
 
+  const todasRazoesGlobal = Array.from(new Set(entries.flatMap((e) => e.result.razoes)));
+  linhas.push(``, ...buildSolucoesBlock(todasRazoesGlobal, sepThin));
   linhas.push(
-    ``,
-    `COMO CORRIGIR:`,
-    sepThin,
-    `SIGRH → Consultas → Frequência → Espelho de Ponto → selecione o mês correspondente`,
-    ``,
     `Após corrigir, aguarde o processamento do SIGRH para que as alterações reflitam no espelho.`,
     ``,
     `Qualquer dúvida, entre em contato.`,
