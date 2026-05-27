@@ -133,14 +133,12 @@ async function copyEmail() {
   setTimeout(() => { copied.value = false; }, 2000);
 }
 
-function exportCSV() {
-  const bloqueados = rows.value.filter((r) => r.result?.status === "bloqueado" && r.raw && r.result);
-  const csvLines = ["Servidor,Período,Data,Dia da Semana,Tipo de Pendência,Detalhe"];
-
-  for (const r of bloqueados.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"))) {
+function buildCSVLines(source: HRow[]): string[] {
+  const lines = ["Servidor,Período,Data,Dia da Semana,Tipo de Pendência,Detalhe"];
+  for (const r of source.filter((r) => r.result?.status === "bloqueado" && r.result)) {
     for (const dia of r.result!.diasProblema) {
       for (const razao of dia.razoes) {
-        csvLines.push([
+        lines.push([
           `"${r.nome}"`,
           `"${r.periodoReferencia}"`,
           `"${dia.dataFormatada}"`,
@@ -151,23 +149,33 @@ function exportCSV() {
       }
     }
     if (r.result!.debitoNaoAutorizado) {
-      csvLines.push([
-        `"${r.nome}"`,
-        `"${r.periodoReferencia}"`,
-        `""`, `""`,
+      lines.push([
+        `"${r.nome}"`, `"${r.periodoReferencia}"`, `""`, `""`,
         `"débito não autorizado"`,
         `"Débito não autorizado no mês: ${r.result!.debitoNaoAutorizado}"`,
       ].join(","));
     }
   }
+  return lines;
+}
 
-  const blob = new Blob(["﻿" + csvLines.join("\n")], { type: "text/csv;charset=utf-8;" });
+function downloadCSV(lines: string[], filename: string) {
+  const blob = new Blob(["﻿" + lines.join("\n")], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
-  a.href = url;
-  a.download = `pendencias-homologacao-${new Date().toISOString().slice(0, 10)}.csv`;
-  a.click();
+  a.href = url; a.download = filename; a.click();
   URL.revokeObjectURL(url);
+}
+
+function exportCSV() {
+  const sorted = [...rows.value].sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+  downloadCSV(buildCSVLines(sorted), `pendencias-homologacao-${new Date().toISOString().slice(0, 10)}.csv`);
+}
+
+function exportCSVServidor(slug: string, nome: string) {
+  const srvRows = rows.value.filter((r) => r.slug === slug);
+  const slugNome = nome.split(" ").slice(0, 2).join("-").toLowerCase().replace(/[^a-z0-9-]/g, "");
+  downloadCSV(buildCSVLines(srvRows), `pendencias-${slugNome}-${new Date().toISOString().slice(0, 10)}.csv`);
 }
 
 function razaoSummary(result: HomologacaoResult): string {
@@ -247,6 +255,11 @@ watch(filterMeses, () => loadRows());
               {{ group.blocked.length }} bloqueado{{ group.blocked.length > 1 ? 's' : '' }}
             </span>
           </div>
+          <button
+            v-if="group.blocked.length > 0 && counts.loading === 0"
+            class="btn-csv-srv"
+            @click="exportCSVServidor(group.slug, group.nome)"
+          >↓ CSV</button>
           <button
             v-if="group.blocked.length > 0 && counts.loading === 0"
             class="btn-email-srv"
@@ -370,6 +383,8 @@ watch(filterMeses, () => loadRows());
 .srv-nome { font-size: 13px; font-weight: 700; color: var(--text); flex: 1; }
 .srv-meta { display: flex; align-items: center; gap: 6px; }
 .srv-blocked-count { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; background: #fde8e8; color: #b91c1c; }
+.btn-csv-srv { padding: 4px 10px; background: var(--surface); color: var(--text-2); border: 1px solid var(--border-mid); border-radius: var(--radius-sm); font-size: 11px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
+.btn-csv-srv:hover { background: var(--surface-2); color: var(--text); }
 .btn-email-srv { padding: 4px 12px; background: var(--blue-light, #e8f2fc); color: var(--blue); border: 1px solid transparent; border-radius: var(--radius-sm); font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: background 0.15s, color 0.15s; }
 .btn-email-srv:hover { background: var(--blue); color: #fff; }
 
