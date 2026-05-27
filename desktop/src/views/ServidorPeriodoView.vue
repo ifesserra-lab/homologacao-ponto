@@ -5,6 +5,7 @@ import { useServidoresStore } from "@/stores/servidores";
 import { useAuthStore } from "@/stores/auth";
 import { crawlerRefreshKey } from "@/stores/crawler";
 import { aggregateMonth, formatMin, pctCarga, countOcorrencias } from "@/lib/aggregation";
+import { dedupRegistros } from "@/lib/dedupRegistros";
 import DayTable from "@/components/DayTable.vue";
 import ThemeToggle from "@/components/ThemeToggle.vue";
 import Breadcrumb from "@/components/Breadcrumb.vue";
@@ -18,9 +19,13 @@ const slug = route.params.slug as string;
 const periodo = route.params.periodo as string;
 const espelho = ref<RawEspelho | null>(null);
 
-const agg = computed(() => espelho.value ? aggregateMonth(espelho.value.registros, espelho.value.resumo ?? null, espelho.value.captured_at) : null);
+const registros = computed(() =>
+  espelho.value ? dedupRegistros(espelho.value.registros) : []
+);
+
+const agg = computed(() => espelho.value ? aggregateMonth(registros.value, espelho.value.resumo ?? null, espelho.value.captured_at) : null);
 const pct = computed(() => agg.value ? pctCarga(agg.value.somaCreditoMin, agg.value.cargaEsperadaMin) : null);
-const ocorrencias = computed(() => espelho.value ? countOcorrencias(espelho.value.registros) : []);
+const ocorrencias = computed(() => espelho.value ? countOcorrencias(registros.value) : []);
 const faltaMin = computed(() => agg.value?.balanceMin !== null && agg.value?.balanceMin! < 0 ? -agg.value!.balanceMin! : 0);
 
 onMounted(async () => {
@@ -76,7 +81,7 @@ watch(crawlerRefreshKey, () => store.load());
       </div>
 
       <div class="section">
-        <DayTable :registros="espelho.registros" />
+        <DayTable :registros="registros" />
       </div>
     </template>
   </div>

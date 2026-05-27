@@ -22,7 +22,7 @@ export const useServidoresStore = defineStore("servidores", () => {
         listServers(dataDir.value),
         loadAllAfastamentos(dataDir.value),
       ]);
-      servidores.value = srvs;
+      servidores.value = srvs.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
       afastamentos.value = afas;
     } catch (e) {
       error.value = String(e);

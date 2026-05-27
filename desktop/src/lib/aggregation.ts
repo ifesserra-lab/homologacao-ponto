@@ -48,7 +48,7 @@ export function parseSignedHHMM(s: string | null | undefined): number | null {
   const abs = negative ? s.slice(1) : s;
   const parsed = parseHHMM(abs);
   if (parsed === null) return null;
-  return negative ? -parsed : parsed;
+  return parsed === 0 ? 0 : negative ? -parsed : parsed;
 }
 
 export function formatMin(minutes: number | null): string {
