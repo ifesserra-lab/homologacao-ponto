@@ -9,6 +9,7 @@ const servidores = useServidoresStore();
   <div class="tab-nav">
     <router-link class="tab-btn" to="/" active-class="active" exact>Servidores</router-link>
     <router-link class="tab-btn" to="/indicadores" active-class="active">Indicadores</router-link>
+    <router-link class="tab-btn" to="/homologacao" active-class="active">Homologação</router-link>
     <router-link class="tab-btn" to="/crawler" active-class="active">
       Crawler
       <span v-if="crawler.running" class="tab-badge tab-badge--running"></span>
