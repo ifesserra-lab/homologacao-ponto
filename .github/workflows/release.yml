@@ -1,0 +1,136 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag da versão (ex: v1.0.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  # ── Passo 1: build dos binários do crawler (cross-compile via pkg) ──────────
+  build-crawler:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Instalar dependências desktop
+        working-directory: desktop
+        run: npm ci
+
+      - name: Instalar dependências do crawler
+        working-directory: desktop/src-crawler
+        run: npm ci
+
+      - name: Build binários do crawler (todos os targets)
+        working-directory: desktop
+        run: node scripts/bundle-crawler.mjs
+
+      - name: Upload binários do crawler
+        uses: actions/upload-artifact@v4
+        with:
+          name: crawler-binaries
+          path: desktop/src-tauri/binaries/
+          retention-days: 1
+
+  # ── Passo 2: build dos instaladores Tauri por plataforma ───────────────────
+  build-tauri:
+    needs: build-crawler
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            args: --target universal-apple-darwin
+            rust-targets: aarch64-apple-darwin x86_64-apple-darwin
+          - os: windows-latest
+            args: ''
+            rust-targets: ''
+          - os: ubuntu-22.04
+            args: ''
+            rust-targets: ''
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Instalar Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust-targets }}
+
+      - name: Cache Rust
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: desktop/src-tauri
+
+      - name: Dependências do sistema (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libappindicator3-dev \
+            librsvg2-dev \
+            patchelf
+
+      - name: Download binários do crawler
+        uses: actions/download-artifact@v4
+        with:
+          name: crawler-binaries
+          path: desktop/src-tauri/binaries/
+
+      - name: Permissão de execução nos binários (Unix)
+        if: runner.os != 'Windows'
+        run: chmod +x desktop/src-tauri/binaries/*
+
+      - name: Instalar dependências desktop
+        working-directory: desktop
+        run: npm ci
+
+      - name: Build e publicar release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_DATA_DIR: ''
+          VITE_USER_HASH: ${{ secrets.VITE_USER_HASH }}
+          VITE_PASSWORD_HASH: ${{ secrets.VITE_PASSWORD_HASH }}
+        with:
+          projectPath: desktop
+          tagName: ${{ github.ref_name || inputs.tag }}
+          releaseName: 'Espelhos de Ponto ${{ github.ref_name || inputs.tag }}'
+          releaseBody: |
+            ## Instaladores
+
+            | Plataforma | Arquivo |
+            |-----------|---------|
+            | macOS (Apple Silicon + Intel) | `.dmg` universal |
+            | Windows 64-bit | `.msi` ou `.exe` |
+            | Linux 64-bit | `.deb` ou `.AppImage` |
+
+            ## Configuração após instalar
+
+            1. Crie o arquivo `.env` na pasta do app com `SIGRH_USERNAME` e `SIGRH_PASSWORD`
+            2. Configure os servidores em `servidores.yaml`
+            3. Execute o Crawler na aba correspondente
+          releaseDraft: true
+          args: ${{ matrix.args }}

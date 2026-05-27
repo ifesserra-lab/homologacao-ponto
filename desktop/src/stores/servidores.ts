@@ -1,12 +1,11 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
+import { invoke } from "@tauri-apps/api/core";
 import { listServers, serverDetail, monthDetail, loadAllAfastamentos } from "@/lib/espelhoRepository";
 import type { ServidorResume, RawEspelho, AfastamentoPeriodo } from "@/types/dashboard";
 
-const DATA_DIR = import.meta.env.VITE_DATA_DIR as string;
-
 export const useServidoresStore = defineStore("servidores", () => {
-  const dataDir = ref<string>(DATA_DIR);
+  const dataDir = ref<string>(import.meta.env.VITE_DATA_DIR ?? "");
   const servidores = ref<ServidorResume[]>([]);
   const afastamentos = ref<AfastamentoPeriodo[]>([]);
   const loading = ref(false);
@@ -15,10 +14,10 @@ export const useServidoresStore = defineStore("servidores", () => {
   const isEmpty = computed(() => servidores.value.length === 0);
 
   async function load() {
-    if (!dataDir.value) return;
     loading.value = true;
     error.value = null;
     try {
+      dataDir.value = await invoke<string>("resolve_data_dir");
       const [srvs, afas] = await Promise.all([
         listServers(dataDir.value),
         loadAllAfastamentos(dataDir.value),
