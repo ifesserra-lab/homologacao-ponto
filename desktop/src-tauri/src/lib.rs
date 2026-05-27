@@ -84,9 +84,12 @@ fn get_app_auth() -> serde_json::Value {
 fn resolve_data_dir(app: tauri::AppHandle) -> String {
     let cfg = read_app_config();
     if !cfg.dados.pasta.is_empty() {
-        let p = PathBuf::from(&cfg.dados.pasta);
-        if p.exists() { return p.to_string_lossy().to_string(); }
-        return cfg.dados.pasta;
+        // dados.pasta is the root dir chosen by the user.
+        // The frontend reads the servidores subdirectory.
+        return PathBuf::from(&cfg.dados.pasta)
+            .join("servidores")
+            .to_string_lossy()
+            .to_string();
     }
     let dev = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../data/runs/servidores");
     if let Ok(resolved) = dev.canonicalize() {
@@ -141,11 +144,12 @@ async fn run_crawler(app: AppHandle, extra_args: Vec<String>) -> Result<(), Stri
     let yaml = base.join("../../servidores.yaml");
 
     let cfg = read_app_config();
-    let servidores_dir = resolve_data_dir(app.clone());
-    let output_dir = PathBuf::from(&servidores_dir)
-        .parent()
-        .map(|p| p.to_path_buf())
-        .unwrap_or_else(|| base.join("../../data/runs"));
+    // output_dir is the root folder; crawler writes to output_dir/servidores/<slug>/
+    let output_dir = if !cfg.dados.pasta.is_empty() {
+        PathBuf::from(&cfg.dados.pasta)
+    } else {
+        base.join("../../data/runs")
+    };
 
     let (bin, mut args) = if let Some(sidecar) = resolve_crawler_sidecar() {
         (sidecar.to_string_lossy().to_string(), vec![])
