@@ -5,22 +5,30 @@ use tokio::process::Command;
 
 #[tauri::command]
 fn resolve_data_dir(app: tauri::AppHandle) -> String {
-    let candidates = vec![
-        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("../../data/runs/servidores"),
-        app.path().app_local_data_dir()
-            .unwrap_or_default()
-            .join("servidores"),
-    ];
-    for candidate in candidates {
-        if let Ok(resolved) = candidate.canonicalize() {
-            if resolved.exists() {
-                return resolved.to_string_lossy().to_string();
+    // 1. User-configured path in .env (DATA_DIR key)
+    if let Ok(content) = std::fs::read_to_string(env_path()) {
+        for line in content.lines() {
+            let t = line.trim();
+            if t.starts_with("DATA_DIR=") {
+                let v = t["DATA_DIR=".len()..].trim().trim_matches('"');
+                if !v.is_empty() {
+                    let p = PathBuf::from(v);
+                    if p.exists() { return p.to_string_lossy().to_string(); }
+                    // path configured but not yet created — return as-is so crawler can create it
+                    return v.to_string();
+                }
             }
         }
     }
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../../data/runs/servidores")
+    // 2. Dev repo path
+    let dev = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../data/runs/servidores");
+    if let Ok(resolved) = dev.canonicalize() {
+        if resolved.exists() { return resolved.to_string_lossy().to_string(); }
+    }
+    // 3. App local data dir (installed app, first run)
+    app.path().app_local_data_dir()
+        .unwrap_or_default()
+        .join("servidores")
         .to_string_lossy()
         .to_string()
 }
@@ -65,10 +73,17 @@ fn resolve_crawler_sidecar() -> Option<PathBuf> {
 #[tauri::command]
 async fn run_crawler(app: AppHandle, extra_args: Vec<String>) -> Result<(), String> {
     let base = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-    let cli        = base.join("../src-crawler/cli.js");
-    let yaml       = base.join("../../servidores.yaml");
-    let output_dir = base.join("../../data/runs");
-    let env_file   = env_path();
+    let cli      = base.join("../src-crawler/cli.js");
+    let yaml     = base.join("../../servidores.yaml");
+    let env_file = env_path();
+
+    // output-dir for the crawler is the parent of the servidores dir
+    // resolve_data_dir returns .../data/runs/servidores → parent = .../data/runs
+    let servidores_dir = resolve_data_dir(app.clone());
+    let output_dir = PathBuf::from(&servidores_dir)
+        .parent()
+        .map(|p| p.to_path_buf())
+        .unwrap_or_else(|| base.join("../../data/runs"));
 
     let (bin, mut args) = if let Some(sidecar) = resolve_crawler_sidecar() {
         (sidecar.to_string_lossy().to_string(), vec![])
@@ -172,6 +187,7 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
             resolve_data_dir, run_crawler,
             get_config_paths,

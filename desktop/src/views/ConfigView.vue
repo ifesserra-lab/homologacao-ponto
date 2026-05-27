@@ -1,13 +1,42 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { invoke } from "@tauri-apps/api/core";
+import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import yaml from "js-yaml";
 import { useAuthStore } from "@/stores/auth";
+import { useServidoresStore } from "@/stores/servidores";
 import TabNav from "@/components/TabNav.vue";
 import ThemeToggle from "@/components/ThemeToggle.vue";
 
 const auth = useAuthStore();
-const activeTab = ref<"credenciais" | "servidores">("credenciais");
+const servidoresStore = useServidoresStore();
+const activeTab = ref<"credenciais" | "dados" | "servidores">("credenciais");
+
+// ── Pasta de dados ───────────────────────────────────────────
+const dataDir = ref("");
+const dataDirSaving = ref(false);
+const dataDirMsg = ref<{ ok: boolean; text: string } | null>(null);
+
+async function loadDataDir() {
+  dataDir.value = await invoke<string>("resolve_data_dir");
+}
+
+async function pickDataDir() {
+  const selected = await openDialog({ directory: true, multiple: false, title: "Selecionar pasta de dados" });
+  if (selected && typeof selected === "string") dataDir.value = selected;
+}
+
+async function saveDataDir() {
+  dataDirSaving.value = true; dataDirMsg.value = null;
+  try {
+    let content = await invoke<string>("read_env_file");
+    content = updateEnvKey(content, "DATA_DIR", dataDir.value.trim());
+    await invoke("write_env_file", { content });
+    await servidoresStore.load();
+    dataDirMsg.value = { ok: true, text: "✓ Pasta salva e dados recarregados" };
+  } catch (e) { dataDirMsg.value = { ok: false, text: `Erro: ${e}` }; }
+  finally { dataDirSaving.value = false; }
+}
 
 const envPath = ref("");
 const servidoresPath = ref("");
@@ -34,6 +63,7 @@ onMounted(async () => {
   servidoresPath.value = paths.servidores_path;
   await loadCredenciais();
   await loadServidores();
+  await loadDataDir();
 });
 
 // ── .env helpers ─────────────────────────────────────────────
@@ -133,6 +163,9 @@ async function saveServidores() {
       <button :class="['ctab', activeTab === 'credenciais' && 'ctab--active']" @click="activeTab = 'credenciais'">
         Credenciais SIGRH
       </button>
+      <button :class="['ctab', activeTab === 'dados' && 'ctab--active']" @click="activeTab = 'dados'">
+        Pasta de Dados
+      </button>
       <button :class="['ctab', activeTab === 'servidores' && 'ctab--active']" @click="activeTab = 'servidores'">
         Servidores ({{ servidores.length }})
       </button>
@@ -164,6 +197,32 @@ async function saveServidores() {
         <span v-if="credMsg" :class="['msg', credMsg.ok ? 'msg--ok' : 'msg--err']">{{ credMsg.text }}</span>
       </div>
 
+      <p class="card-path">{{ envPath }}</p>
+    </div>
+
+    <!-- ── Pasta de dados ── -->
+    <div v-if="activeTab === 'dados'" class="card">
+      <p class="card-hint">Pasta onde os espelhos de ponto são salvos e lidos pelo app.</p>
+
+      <div class="field">
+        <label>Caminho da pasta</label>
+        <div class="dir-wrap">
+          <input v-model="dataDir" type="text" placeholder="Ex: /Users/nome/espelhos" class="dir-input" />
+          <button type="button" class="btn-pick" @click="pickDataDir">Selecionar…</button>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-save" :disabled="dataDirSaving" @click="saveDataDir">
+          {{ dataDirSaving ? 'Salvando…' : 'Salvar pasta' }}
+        </button>
+        <span v-if="dataDirMsg" :class="['msg', dataDirMsg.ok ? 'msg--ok' : 'msg--err']">{{ dataDirMsg.text }}</span>
+      </div>
+
+      <p class="card-hint" style="font-size:11px; opacity:0.65;">
+        O crawler salva os arquivos em <code>pasta/servidores/&lt;nome&gt;/espelho-*.json</code>.
+        Deixe em branco para usar o padrão do sistema.
+      </p>
       <p class="card-path">{{ envPath }}</p>
     </div>
 
@@ -224,6 +283,11 @@ async function saveServidores() {
 .field-anos { flex: 0 0 180px; }
 .field-hint { font-size: 11px; color: var(--muted); }
 
+.dir-wrap { display: flex; gap: 6px; }
+.dir-input { flex: 1; padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 13px; font-family: var(--mono); }
+.dir-input:focus { outline: none; border-color: var(--blue); }
+.btn-pick { padding: 7px 14px; font-size: 12px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); cursor: pointer; white-space: nowrap; }
+.btn-pick:hover { border-color: var(--blue); color: var(--blue); }
 .pass-wrap { display: flex; gap: 6px; }
 .pass-wrap input { flex: 1; }
 .btn-toggle-pass { padding: 6px 12px; font-size: 12px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--muted); cursor: pointer; white-space: nowrap; }
