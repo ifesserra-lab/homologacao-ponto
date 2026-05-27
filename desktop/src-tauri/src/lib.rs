@@ -1,31 +1,97 @@
 use std::path::PathBuf;
+use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Emitter, Manager};
 use tokio::io::{AsyncBufReadExt, BufReader};
 use tokio::process::Command;
 
+// ── Config structs ────────────────────────────────────────────────────────────
+
+#[derive(Serialize, Deserialize, Default, Clone)]
+struct AppConfig {
+    #[serde(default)]
+    dados: DadosConfig,
+    #[serde(default)]
+    sigrh: SigrhConfig,
+    #[serde(default)]
+    app: AppLoginConfig,
+}
+
+#[derive(Serialize, Deserialize, Default, Clone)]
+struct DadosConfig {
+    #[serde(default)]
+    pasta: String,
+}
+
+#[derive(Serialize, Deserialize, Default, Clone)]
+struct SigrhConfig {
+    #[serde(default)]
+    usuario: String,
+    #[serde(default)]
+    senha: String,
+}
+
+#[derive(Serialize, Deserialize, Default, Clone)]
+struct AppLoginConfig {
+    #[serde(default)]
+    usuario_hash: String,
+    #[serde(default)]
+    senha_hash: String,
+}
+
+fn config_path() -> PathBuf {
+    let p = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../configuration.yaml");
+    p.canonicalize().unwrap_or(p)
+}
+
+fn read_app_config() -> AppConfig {
+    std::fs::read_to_string(config_path())
+        .ok()
+        .and_then(|s| serde_yaml::from_str(&s).ok())
+        .unwrap_or_default()
+}
+
+// ── Tauri commands ────────────────────────────────────────────────────────────
+
+#[tauri::command]
+fn get_config_path() -> String {
+    config_path().to_string_lossy().to_string()
+}
+
+#[tauri::command]
+fn read_config_file() -> Result<String, String> {
+    std::fs::read_to_string(config_path()).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+fn write_config_file(content: String) -> Result<(), String> {
+    let path = config_path();
+    if let Some(parent) = path.parent() {
+        std::fs::create_dir_all(parent).map_err(|e| e.to_string())?;
+    }
+    std::fs::write(path, content).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+fn get_app_auth() -> serde_json::Value {
+    let cfg = read_app_config();
+    serde_json::json!({
+        "usuario_hash": cfg.app.usuario_hash,
+        "senha_hash": cfg.app.senha_hash,
+    })
+}
+
 #[tauri::command]
 fn resolve_data_dir(app: tauri::AppHandle) -> String {
-    // 1. User-configured path in .env (DATA_DIR key)
-    if let Ok(content) = std::fs::read_to_string(env_path()) {
-        for line in content.lines() {
-            let t = line.trim();
-            if t.starts_with("DATA_DIR=") {
-                let v = t["DATA_DIR=".len()..].trim().trim_matches('"');
-                if !v.is_empty() {
-                    let p = PathBuf::from(v);
-                    if p.exists() { return p.to_string_lossy().to_string(); }
-                    // path configured but not yet created — return as-is so crawler can create it
-                    return v.to_string();
-                }
-            }
-        }
+    let cfg = read_app_config();
+    if !cfg.dados.pasta.is_empty() {
+        let p = PathBuf::from(&cfg.dados.pasta);
+        if p.exists() { return p.to_string_lossy().to_string(); }
+        return cfg.dados.pasta;
     }
-    // 2. Dev repo path
     let dev = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../data/runs/servidores");
     if let Ok(resolved) = dev.canonicalize() {
         if resolved.exists() { return resolved.to_string_lossy().to_string(); }
     }
-    // 3. App local data dir (installed app, first run)
     app.path().app_local_data_dir()
         .unwrap_or_default()
         .join("servidores")
@@ -46,16 +112,14 @@ fn resolve_node_bin() -> String {
         "/usr/bin/node",
     ];
     for c in candidates {
-        if std::path::Path::new(c).exists() {
-            return c.to_string();
-        }
+        if std::path::Path::new(c).exists() { return c.to_string(); }
     }
     "node".to_string()
 }
 
 fn resolve_crawler_sidecar() -> Option<PathBuf> {
     #[cfg(debug_assertions)]
-    return None; // dev mode: always use node + cli.js
+    return None;
 
     #[cfg(not(debug_assertions))]
     {
@@ -73,12 +137,10 @@ fn resolve_crawler_sidecar() -> Option<PathBuf> {
 #[tauri::command]
 async fn run_crawler(app: AppHandle, extra_args: Vec<String>) -> Result<(), String> {
     let base = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-    let cli      = base.join("../src-crawler/cli.js");
-    let yaml     = base.join("../../servidores.yaml");
-    let env_file = env_path();
+    let cli  = base.join("../src-crawler/cli.js");
+    let yaml = base.join("../../servidores.yaml");
 
-    // output-dir for the crawler is the parent of the servidores dir
-    // resolve_data_dir returns .../data/runs/servidores → parent = .../data/runs
+    let cfg = read_app_config();
     let servidores_dir = resolve_data_dir(app.clone());
     let output_dir = PathBuf::from(&servidores_dir)
         .parent()
@@ -97,8 +159,6 @@ async fn run_crawler(app: AppHandle, extra_args: Vec<String>) -> Result<(), Stri
         args.push(yaml.to_string_lossy().to_string());
         args.extend(["--output-dir"].map(String::from));
         args.push(output_dir.to_string_lossy().to_string());
-        args.extend(["--env-file"].map(String::from));
-        args.push(env_file.to_string_lossy().to_string());
     } else {
         args.extend(extra_args);
     }
@@ -111,6 +171,8 @@ async fn run_crawler(app: AppHandle, extra_args: Vec<String>) -> Result<(), Stri
     let mut child = Command::new(&bin)
         .args(&args)
         .env("PATH", &expanded_path)
+        .env("SIGRH_USERNAME", &cfg.sigrh.usuario)
+        .env("SIGRH_PASSWORD", &cfg.sigrh.senha)
         .stdout(std::process::Stdio::piped())
         .stderr(std::process::Stdio::piped())
         .spawn()
@@ -144,11 +206,6 @@ async fn run_crawler(app: AppHandle, extra_args: Vec<String>) -> Result<(), Stri
     Ok(())
 }
 
-fn env_path() -> PathBuf {
-    let p = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../.env");
-    p.canonicalize().unwrap_or(p)
-}
-
 fn servidores_path() -> PathBuf {
     let p = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../servidores.yaml");
     p.canonicalize().unwrap_or(p)
@@ -157,19 +214,9 @@ fn servidores_path() -> PathBuf {
 #[tauri::command]
 fn get_config_paths() -> serde_json::Value {
     serde_json::json!({
-        "env_path": env_path().to_string_lossy(),
+        "config_path": config_path().to_string_lossy(),
         "servidores_path": servidores_path().to_string_lossy(),
     })
-}
-
-#[tauri::command]
-fn read_env_file() -> Result<String, String> {
-    std::fs::read_to_string(env_path()).map_err(|e| e.to_string())
-}
-
-#[tauri::command]
-fn write_env_file(content: String) -> Result<(), String> {
-    std::fs::write(env_path(), content).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
@@ -189,10 +236,15 @@ pub fn run() {
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
-            resolve_data_dir, run_crawler,
+            resolve_data_dir,
+            run_crawler,
+            get_config_path,
             get_config_paths,
-            read_env_file, write_env_file,
-            read_servidores_file, write_servidores_file,
+            get_app_auth,
+            read_config_file,
+            write_config_file,
+            read_servidores_file,
+            write_servidores_file,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

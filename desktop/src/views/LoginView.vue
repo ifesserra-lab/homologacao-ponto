@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { invoke } from "@tauri-apps/api/core";
 import { useRouter, useRoute } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 
@@ -12,13 +13,11 @@ const password = ref("");
 const error = ref(false);
 const loading = ref(false);
 
-const USER_HASH = import.meta.env.VITE_USER_HASH as string | undefined;
-const PASS_HASH = import.meta.env.VITE_PASSWORD_HASH as string | undefined;
-
 async function submit() {
   loading.value = true;
   error.value = false;
-  const ok = await auth.login(user.value, password.value, USER_HASH, PASS_HASH);
+  const { usuario_hash, senha_hash } = await invoke<{ usuario_hash: string; senha_hash: string }>("get_app_auth");
+  const ok = await auth.login(user.value, password.value, usuario_hash || undefined, senha_hash || undefined);
   loading.value = false;
   if (ok) {
     const redirect = (route.query.redirect as string) ?? "/";

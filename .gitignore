@@ -11,6 +11,7 @@ venv/
 dist/
 build/
 *.egg-info/
+configuration.yaml
 .env
 .env.*
 !.env.example
