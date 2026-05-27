@@ -354,10 +354,10 @@ watch(filterMeses, () => loadRows());
             @click="openEmailServidor(group.slug)"
           >✉ E-mail</button>
           <button
-            v-if="group.liberados.length > 0 && counts.loading === 0"
+            v-if="counts.loading === 0"
             class="btn-homologar-srv"
-            :disabled="crawler.running"
-            :title="`Homologar ${group.liberados.length} mês(es) liberado(s) no SIGRH`"
+            :disabled="crawler.running || group.liberados.length === 0"
+            :title="group.liberados.length > 0 ? `Homologar ${group.liberados.length} mês(es) liberado(s) no SIGRH` : 'Nenhum mês liberado para homologar'"
             @click="crawler.startHomologar(group.slug)"
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
