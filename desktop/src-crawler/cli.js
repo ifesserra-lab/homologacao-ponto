@@ -170,6 +170,13 @@ async function main() {
         try {
           console.log(`→ ${entry.nome}  ${entry.periodoReferencia}`);
           await homologarServidor(browser, entry);
+          if (entry.filePath) {
+            try {
+              const raw = JSON.parse(readFileSync(entry.filePath, "utf-8"));
+              raw.homologado = true;
+              writeFileSync(entry.filePath, JSON.stringify(raw, null, 2), "utf-8");
+            } catch { /* silently skip if file write fails */ }
+          }
           console.log(`  ✓ Homologado`);
           ok++;
         } catch (e) {

@@ -35,6 +35,7 @@ function parseHHMM(v) {
 // JS port of checkHomologavel — respects politicaHe
 function checkHomologavelJS(raw, politicaHe = "manual") {
   if (raw.status === "empty") return { status: "vazio", razoes: [] };
+  if (raw.homologado) return { status: "homologado", razoes: [] };
   if (isCurrentMonth(raw.periodo_referencia)) return { status: "mes_atual", razoes: [] };
 
   const razoes = new Set();
@@ -89,6 +90,7 @@ export function scanLiberados(outputDir, politicaHe = "manual", slugFilter = nul
           mes: d.getMonth() + 1,
           ano: d.getFullYear(),
           politicaHe,
+          filePath: join(slugPath, file),
           heEntries: (raw.registros ?? []).filter(r => {
             const he = parseHHMM(r.he);
             return he !== null && he > 0;

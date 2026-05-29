@@ -87,6 +87,7 @@ export interface RawEspelho {
     texto_visivel: string | null;
   };
   resumo?: ResumoHorasApuradas | null;
+  homologado?: boolean;
   registros: RegistroDia[];
   fonte: {
     tipo: string;

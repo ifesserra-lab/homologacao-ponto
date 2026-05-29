@@ -1,7 +1,7 @@
 import type { RawEspelho, RegistroDia } from "@/types/dashboard";
 import { dedupRegistros } from "@/lib/dedupRegistros";
 
-export type HomologacaoStatus = "liberado" | "bloqueado" | "mes_atual" | "vazio";
+export type HomologacaoStatus = "liberado" | "bloqueado" | "mes_atual" | "vazio" | "homologado";
 
 export type RazaoBloqueio =
   | "dias_pendentes"
@@ -48,6 +48,9 @@ function isCurrentMonth(periodoReferencia: string | null): boolean {
 export function checkHomologavel(raw: RawEspelho): HomologacaoResult {
   if (raw.status === "empty") {
     return { status: "vazio", razoes: [], diasProblema: [], debitoNaoAutorizado: null };
+  }
+  if (raw.homologado) {
+    return { status: "homologado", razoes: [], diasProblema: [], debitoNaoAutorizado: null };
   }
   if (isCurrentMonth(raw.periodo_referencia)) {
     return { status: "mes_atual", razoes: [], diasProblema: [], debitoNaoAutorizado: null };
@@ -224,6 +227,7 @@ export const STATUS_LABEL: Record<HomologacaoStatus, string> = {
   bloqueado: "Bloqueado",
   mes_atual: "Mês atual",
   vazio: "Vazio",
+  homologado: "Homologado",
 };
 
 export interface BloqueioEntry {

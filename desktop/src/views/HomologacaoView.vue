@@ -105,7 +105,7 @@ const grouped = computed(() => {
 });
 
 const counts = computed(() => {
-  const c: Record<HomologacaoStatus | "loading", number> = { liberado: 0, bloqueado: 0, mes_atual: 0, vazio: 0, loading: 0 };
+  const c: Record<HomologacaoStatus | "loading", number> = { liberado: 0, bloqueado: 0, mes_atual: 0, vazio: 0, homologado: 0, loading: 0 };
   for (const r of rows.value) {
     if (r.loading) c.loading++;
     else if (r.result) c[r.result.status]++;
@@ -274,6 +274,7 @@ watch(filterMeses, () => loadRows());
         <span v-if="counts.bloqueado > 0" class="count-chip bloqueado" title="Bloqueado — há pendências que impedem a homologação (dias pendentes, HE sem autorização, débito não autorizado)">{{ counts.bloqueado }} bloqueado{{ counts.bloqueado > 1 ? 's' : '' }}</span>
         <span v-if="counts.liberado > 0"  class="count-chip liberado" title="Liberado — sem pendências, ponto pode ser homologado no SIGRH">{{ counts.liberado }} liberado{{ counts.liberado > 1 ? 's' : '' }}</span>
         <span v-if="counts.mes_atual > 0" class="count-chip mes-atual" title="Em aberto — mês atual ainda em andamento, registros ainda sendo lançados">{{ counts.mes_atual }} em aberto</span>
+        <span v-if="counts.homologado > 0" class="count-chip homologado" title="Homologado — ponto já homologado no SIGRH">{{ counts.homologado }} homologado{{ counts.homologado > 1 ? 's' : '' }}</span>
         <button
           v-if="counts.bloqueado > 0"
           class="btn-csv"
@@ -309,6 +310,8 @@ watch(filterMeses, () => loadRows());
         <span class="status-key-item"><span class="badge badge--bloqueado">Bloqueado</span> Há pendências que impedem a homologação</span>
         <span class="status-key-sep">·</span>
         <span class="status-key-item"><span class="badge badge--mes_atual">Em aberto</span> Mês atual — registros ainda sendo lançados</span>
+        <span class="status-key-sep">·</span>
+        <span class="status-key-item"><span class="badge badge--homologado">Homologado</span> Ponto já homologado no SIGRH</span>
         <button class="legenda-toggle" @click="showLegenda = !showLegenda">{{ showLegenda ? '▲' : '▼' }} mais detalhes</button>
       </div>
       <div v-if="showLegenda" class="legenda">
@@ -318,6 +321,7 @@ watch(filterMeses, () => loadRows());
           <div class="legenda-row"><span class="badge badge--bloqueado">Bloqueado</span> Há pendências que impedem a homologação</div>
           <div class="legenda-row"><span class="badge badge--mes_atual">Mês atual</span> Mês em aberto — registros ainda sendo lançados</div>
           <div class="legenda-row"><span class="badge badge--vazio">Vazio</span> Espelho sem registros no período</div>
+          <div class="legenda-row"><span class="badge badge--homologado">Homologado</span> Ponto já homologado no SIGRH via esta ferramenta</div>
         </div>
         <div class="legenda-col">
           <div class="legenda-title">Tipos de pendência</div>
@@ -485,6 +489,7 @@ watch(filterMeses, () => loadRows());
 .count-chip { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
 .count-chip.bloqueado { background: #fde8e8; color: #b91c1c; }
 .count-chip.liberado { background: var(--green-light, #ddedea); color: var(--green, #0f7b6c); }
+.count-chip.homologado { background: #d1fae5; color: #065f46; }
 .count-chip.mes-atual { background: #fef3c7; color: #92400e; }
 .count-chip.loading { background: var(--surface-2); color: var(--muted); }
 
@@ -543,6 +548,7 @@ watch(filterMeses, () => loadRows());
 .badge { font-size: 11px; font-weight: 600; padding: 2px 9px; border-radius: 20px; }
 .badge--liberado { background: var(--green-light, #ddedea); color: var(--green, #0f7b6c); }
 .badge--bloqueado { background: #fde8e8; color: #b91c1c; }
+.badge--homologado { background: #d1fae5; color: #065f46; }
 .badge--mes_atual { background: #fef3c7; color: #92400e; }
 .badge--vazio { background: var(--surface-2); color: var(--muted); }
 .badge--loading { background: var(--surface-2); color: var(--muted); }
