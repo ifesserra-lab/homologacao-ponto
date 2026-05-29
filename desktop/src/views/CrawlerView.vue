@@ -24,7 +24,6 @@ watch(() => crawler.logs.length, () => scrollBottom());
       <div class="page-header-row">
         <div>
           <h1 class="page-title">Crawler SIGRH</h1>
-          <p class="page-meta">Baixa espelhos de ponto via Playwright · Node.js · analisa e baixa apenas meses necessários</p>
         </div>
         <div class="nav-actions">
           <ThemeToggle />

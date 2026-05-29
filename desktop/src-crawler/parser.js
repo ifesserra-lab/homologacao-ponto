@@ -107,15 +107,22 @@ function parseSigrhRow(cells) {
   const occCell = cells.find(c => /Ocorrên[çc]ia:|Ocorrencia:/i.test(c)) ?? "";
   const occMatch = occCell.match(/Ocorrên[çc]ia:\s*(.*?)(?=\s*Situa[çc][aã]o:|$)/is);
 
+  // Extract HH:MM (optionally negative) from cell text — ignores adjacent label text
   const cv = (off) => {
-    const v = (cells[dateIdx + off] ?? "").split(/\s/)[0] ?? "";
-    return v && v !== "---" ? v : null;
+    const raw = cells[dateIdx + off] ?? "";
+    const match = raw.match(/-?\d+:\d{2}/);
+    return match ? match[0] : null;
   };
+
+  // Split time cell into individual HH:MM tokens
+  const marcacoesTokens = timeCell && timeCell !== "---"
+    ? (timeCell.match(/\d{1,2}:\d{2}/g) ?? [])
+    : [];
 
   return {
     data: `${y}-${m}-${d}`,
     dia_semana: dayMatch?.[1] ?? null,
-    marcacoes: timeCell && timeCell !== "---" ? [timeCell] : [],
+    marcacoes: marcacoesTokens,
     ocorrencias: occMatch ? [occMatch[1].trim()] : [],
     observacoes: obsMatch ? [obsMatch[1].trim()] : [],
     situacao: null,

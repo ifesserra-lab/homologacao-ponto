@@ -33,6 +33,7 @@ const emailModal = ref({ show: false, text: "", titulo: "" });
 const copied = ref(false);
 const filterStatus = ref<"todos" | "bloqueado" | "liberado">("todos");
 const filterMeses = ref<1 | 3 | 6 | 0>(3);
+const searchQuery = ref("");
 
 function rowKey(r: HRow) { return `${r.slug}::${r.periodoSlug}`; }
 
@@ -83,11 +84,13 @@ async function loadRows() {
 // Group by servidor (alphabetical), periods sorted descending within each group
 const grouped = computed(() => {
   const map = new Map<string, { nome: string; slug: string; rows: HRow[] }>();
+  const q = searchQuery.value.trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
   for (const r of rows.value) {
     const show =
       filterStatus.value === "bloqueado" ? r.result?.status === "bloqueado" :
       filterStatus.value === "liberado"  ? r.result?.status === "liberado"  : true;
     if (!show) continue;
+    if (q && !r.nome.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").includes(q)) continue;
     if (!map.has(r.slug)) map.set(r.slug, { nome: r.nome, slug: r.slug, rows: [] });
     map.get(r.slug)!.rows.push(r);
   }
@@ -187,6 +190,7 @@ function razaoSummary(result: HomologacaoResult): string {
 }
 
 const showLegenda = ref(false);
+const zerarHE = ref(false);
 
 // ── Multi-select homologação ──────────────────────────────────────────────────
 const selectedSlugs = ref<Set<string>>(new Set());
@@ -215,7 +219,7 @@ function toggleAll() {
 
 function homologarSelecionados() {
   if (selectedSlugs.value.size === 0) return;
-  crawler.startHomologar(Array.from(selectedSlugs.value).join(","));
+  crawler.startHomologar(Array.from(selectedSlugs.value).join(","), zerarHE.value ? "zerar" : "manual");
 }
 
 onMounted(() => loadRows());
@@ -260,11 +264,16 @@ watch(filterMeses, () => loadRows());
         </div>
       </div>
 
+      <div class="search-wrap">
+        <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input v-model="searchQuery" type="search" placeholder="Buscar servidor…" class="search-input" />
+      </div>
+
       <div class="counts">
         <span v-if="counts.loading > 0"  class="count-chip loading">{{ counts.loading }} carregando</span>
-        <span v-if="counts.bloqueado > 0" class="count-chip bloqueado">{{ counts.bloqueado }} bloqueado{{ counts.bloqueado > 1 ? 's' : '' }}</span>
-        <span v-if="counts.liberado > 0"  class="count-chip liberado">{{ counts.liberado }} liberado{{ counts.liberado > 1 ? 's' : '' }}</span>
-        <span v-if="counts.mes_atual > 0" class="count-chip mes-atual">{{ counts.mes_atual }} em aberto</span>
+        <span v-if="counts.bloqueado > 0" class="count-chip bloqueado" title="Bloqueado — há pendências que impedem a homologação (dias pendentes, HE sem autorização, débito não autorizado)">{{ counts.bloqueado }} bloqueado{{ counts.bloqueado > 1 ? 's' : '' }}</span>
+        <span v-if="counts.liberado > 0"  class="count-chip liberado" title="Liberado — sem pendências, ponto pode ser homologado no SIGRH">{{ counts.liberado }} liberado{{ counts.liberado > 1 ? 's' : '' }}</span>
+        <span v-if="counts.mes_atual > 0" class="count-chip mes-atual" title="Em aberto — mês atual ainda em andamento, registros ainda sendo lançados">{{ counts.mes_atual }} em aberto</span>
         <button
           v-if="counts.bloqueado > 0"
           class="btn-csv"
@@ -276,6 +285,10 @@ watch(filterMeses, () => loadRows());
           class="btn-select-all"
           @click="toggleAll"
         >{{ allSelected ? 'Desmarcar todos' : 'Selecionar todos' }}</button>
+          <label class="toggle-zerar-he" :title="'Zerar HA dos servidores com HE não autorizado durante a homologação (AX-007)'">
+            <input type="checkbox" v-model="zerarHE" :disabled="crawler.running" />
+            Zerar HE
+          </label>
         <button
           v-if="selectedSlugs.size > 0"
           class="btn-homologar-sel"
@@ -290,9 +303,14 @@ watch(filterMeses, () => loadRows());
 
     <!-- Legenda -->
     <div class="legenda-wrap">
-      <button class="legenda-toggle" @click="showLegenda = !showLegenda">
-        {{ showLegenda ? '▲' : '▼' }} Legenda
-      </button>
+      <div class="status-key">
+        <span class="status-key-item"><span class="badge badge--liberado">Liberado</span> Sem pendências — pode homologar</span>
+        <span class="status-key-sep">·</span>
+        <span class="status-key-item"><span class="badge badge--bloqueado">Bloqueado</span> Há pendências que impedem a homologação</span>
+        <span class="status-key-sep">·</span>
+        <span class="status-key-item"><span class="badge badge--mes_atual">Em aberto</span> Mês atual — registros ainda sendo lançados</span>
+        <button class="legenda-toggle" @click="showLegenda = !showLegenda">{{ showLegenda ? '▲' : '▼' }} mais detalhes</button>
+      </div>
       <div v-if="showLegenda" class="legenda">
         <div class="legenda-col">
           <div class="legenda-title">Status do espelho</div>
@@ -358,7 +376,7 @@ watch(filterMeses, () => loadRows());
             class="btn-homologar-srv"
             :disabled="crawler.running || group.liberados.length === 0"
             :title="group.liberados.length > 0 ? `Homologar ${group.liberados.length} mês(es) liberado(s) no SIGRH` : 'Nenhum mês liberado para homologar'"
-            @click="crawler.startHomologar(group.slug)"
+            @click="crawler.startHomologar(group.slug, zerarHE ? 'zerar' : 'manual')"
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             Homologar ({{ group.liberados.length }})
@@ -456,6 +474,12 @@ watch(filterMeses, () => loadRows());
 .btn-seg:last-child { border-right: none; }
 .btn-seg.active { background: var(--blue); color: #fff; }
 .btn-seg:hover:not(.active) { background: var(--surface-2); }
+
+.search-wrap { position: relative; display: flex; align-items: center; }
+.search-icon { position: absolute; left: 9px; color: var(--muted); pointer-events: none; }
+.search-input { padding: 5px 10px 5px 28px; font-size: 12px; background: var(--surface); color: var(--text); border: 1px solid var(--border-mid); border-radius: var(--radius-sm); outline: none; width: 180px; transition: border-color 0.15s, box-shadow 0.15s; }
+.search-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--focus-ring); }
+.search-input::placeholder { color: var(--muted); }
 
 .counts { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-left: auto; }
 .count-chip { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
@@ -565,7 +589,10 @@ watch(filterMeses, () => loadRows());
 
 /* ── Legenda ── */
 .legenda-wrap { margin-bottom: 1.25rem; }
-.legenda-toggle { background: none; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 12px; font-size: 11px; font-weight: 600; color: var(--muted); cursor: pointer; letter-spacing: 0.04em; text-transform: uppercase; }
+.status-key { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 8px; }
+.status-key-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-2); }
+.status-key-sep { color: var(--border-mid); font-size: 13px; }
+.legenda-toggle { background: none; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 4px 12px; font-size: 11px; font-weight: 600; color: var(--muted); cursor: pointer; letter-spacing: 0.04em; text-transform: uppercase; margin-left: auto; }
 .legenda-toggle:hover { color: var(--text); background: var(--surface-2); }
 .legenda { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 10px; padding: 16px 20px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius); }
 .legenda-title { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
@@ -576,4 +603,7 @@ watch(filterMeses, () => loadRows());
 
 .empty-state { text-align: center; padding: 3rem; color: var(--muted); }
 .muted { color: var(--muted); }
+.toggle-zerar-he { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; color: var(--text-2); cursor: pointer; user-select: none; }
+.toggle-zerar-he input { accent-color: var(--green, #0f7b6c); cursor: pointer; }
+.toggle-zerar-he:has(input:disabled) { opacity: 0.4; cursor: default; }
 </style>

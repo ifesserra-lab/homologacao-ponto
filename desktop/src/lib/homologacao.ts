@@ -1,5 +1,4 @@
 import type { RawEspelho, RegistroDia } from "@/types/dashboard";
-import { parseHHMM } from "@/lib/aggregation";
 import { dedupRegistros } from "@/lib/dedupRegistros";
 
 export type HomologacaoStatus = "liberado" | "bloqueado" | "mes_atual" | "vazio";
@@ -77,17 +76,6 @@ export function checkHomologavel(raw: RawEspelho): HomologacaoResult {
       getDia(r).razoes.push({
         tipo: "dias_pendentes",
         detalhe: "Situação Pendente — verifique se há ocorrência ou ausência em aberto no SIGRH",
-      });
-    }
-
-    // AX-007: horas excedentes sem autorização
-    const he = parseHHMM(r.he);
-    const ha = parseHHMM(r.ha);
-    if (he !== null && he > 0 && (ha === null || ha === 0)) {
-      razoes.add("he_nao_autorizado");
-      getDia(r).razoes.push({
-        tipo: "he_nao_autorizado",
-        detalhe: `Horas excedentes ${r.he} não autorizadas pela chefia`,
       });
     }
 

@@ -57,6 +57,7 @@ async function main() {
       ano:          { type: "string" },
       slug:         { type: "string" },
       "dry-run":    { type: "boolean", default: false },
+      "he-policy":  { type: "string", default: "manual" },
     },
   });
 
@@ -134,10 +135,19 @@ async function main() {
     }
 
     if (command === "homologar") {
-      const politicaHe = process.env.POLITICA_HE ?? "manual";
+      const politicaHe = opts["he-policy"] ?? process.env.POLITICA_HE ?? "manual";
       const slugFilter = opts.slug ? opts.slug.split(",").map(s => s.trim()).filter(Boolean) : null;
 
-      const liberados = scanLiberados(outputDir, politicaHe, slugFilter);
+      let liberados = scanLiberados(outputDir, politicaHe, slugFilter);
+
+      if (opts.mes || opts.ano) {
+        const mesFilter = opts.mes ? parseInt(opts.mes) : null;
+        const anoFilter = opts.ano ? parseInt(opts.ano) : null;
+        liberados = liberados.filter(e =>
+          (!mesFilter || e.mes === mesFilter) &&
+          (!anoFilter || e.ano === anoFilter)
+        );
+      }
 
       if (liberados.length === 0) {
         console.log("Nenhum espelho liberado para homologar.");

@@ -60,11 +60,13 @@ export const useCrawlerStore = defineStore("crawler", () => {
   function startBatch()   { return _start("batch",   "Baixando todos os meses…"); }
   function startRefresh() { return _start("refresh", "Verificando meses pendentes…"); }
   function startDescobrir() { return _start("descobrir", "Descobrindo servidores da unidade…"); }
-  function startHomologar(slug?: string) {
+  function startHomologar(slug?: string, hePolicy?: string) {
     const label = slug
       ? `Homologando espelhos liberados de ${slug}…`
       : "Homologando todos os espelhos liberados…";
-    const extra = slug ? ["--slug", slug] : [];
+    const extra: string[] = [];
+    if (slug) { extra.push("--slug", slug); }
+    if (hePolicy && hePolicy !== "manual") { extra.push("--he-policy", hePolicy); }
     return _start("homologar", label, extra);
   }
 
