@@ -31,7 +31,7 @@ const loadingAll = ref(false);
 const expandedKey = ref<string | null>(null);
 const emailModal = ref({ show: false, text: "", titulo: "" });
 const copied = ref(false);
-const filterStatus = ref<"todos" | "bloqueado" | "liberado">("todos");
+const filterStatus = ref<"todos" | "bloqueado" | "liberado" | "homologado">("todos");
 const filterMeses = ref<1 | 3 | 6 | 0>(3);
 const searchQuery = ref("");
 
@@ -87,8 +87,9 @@ const grouped = computed(() => {
   const q = searchQuery.value.trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
   for (const r of rows.value) {
     const show =
-      filterStatus.value === "bloqueado" ? r.result?.status === "bloqueado" :
-      filterStatus.value === "liberado"  ? r.result?.status === "liberado"  : true;
+      filterStatus.value === "bloqueado"   ? r.result?.status === "bloqueado"   :
+      filterStatus.value === "liberado"    ? r.result?.status === "liberado"    :
+      filterStatus.value === "homologado"  ? r.result?.status === "homologado"  : true;
     if (!show) continue;
     if (q && !r.nome.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").includes(q)) continue;
     if (!map.has(r.slug)) map.set(r.slug, { nome: r.nome, slug: r.slug, rows: [] });
@@ -261,6 +262,7 @@ watch(filterMeses, () => loadRows());
           <button :class="['btn-seg', filterStatus === 'todos' && 'active']" @click="filterStatus = 'todos'">Todos</button>
           <button :class="['btn-seg', filterStatus === 'bloqueado' && 'active']" @click="filterStatus = 'bloqueado'">Bloqueados</button>
           <button :class="['btn-seg', filterStatus === 'liberado' && 'active']" @click="filterStatus = 'liberado'">Liberados</button>
+          <button :class="['btn-seg', filterStatus === 'homologado' && 'active']" @click="filterStatus = 'homologado'">Homologados</button>
         </div>
       </div>
 
