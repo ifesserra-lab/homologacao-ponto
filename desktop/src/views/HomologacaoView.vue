@@ -35,6 +35,29 @@ const filterStatus = ref<"todos" | "bloqueado" | "liberado" | "homologado">("tod
 const filterMeses = ref<1 | 3 | 6 | 0>(3);
 const searchQuery = ref("");
 
+type HomologarItem = { slug: string; mes: number; ano: number; hePolicy: string };
+const homologarQueue = ref<HomologarItem[]>([]);
+
+function homologarGrupo(group: { slug: string; liberados: HRow[] }) {
+  const hePolicy = zerarHE.value ? "zerar" : "manual";
+  const items: HomologarItem[] = group.liberados.map((row) => {
+    const d = periodoToDate(row.periodoReferencia);
+    return { slug: group.slug, mes: d.getMonth() + 1, ano: d.getFullYear(), hePolicy };
+  });
+  if (items.length === 0) return;
+  const [first, ...rest] = items;
+  homologarQueue.value = rest;
+  crawler.startHomologar(first.slug, first.hePolicy, first.mes, first.ano);
+}
+
+watch(() => crawler.running, (running) => {
+  if (!running && homologarQueue.value.length > 0) {
+    const [next, ...rest] = homologarQueue.value;
+    homologarQueue.value = rest;
+    crawler.startHomologar(next.slug, next.hePolicy, next.mes, next.ano);
+  }
+});
+
 function rowKey(r: HRow) { return `${r.slug}::${r.periodoSlug}`; }
 
 function isRecent(periodo: string): boolean {
@@ -381,8 +404,8 @@ watch(filterMeses, () => loadRows());
             v-if="counts.loading === 0"
             class="btn-homologar-srv"
             :disabled="crawler.running || group.liberados.length === 0"
-            :title="group.liberados.length > 0 ? `Homologar ${group.liberados.length} mês(es) liberado(s) no SIGRH` : 'Nenhum mês liberado para homologar'"
-            @click="crawler.startHomologar(group.slug, zerarHE ? 'zerar' : 'manual')"
+            :title="group.liberados.length > 0 ? `Homologar ${group.liberados.length} mês(es) visível(eis) no SIGRH` : 'Nenhum mês liberado para homologar'"
+            @click="homologarGrupo(group)"
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             Homologar ({{ group.liberados.length }})
